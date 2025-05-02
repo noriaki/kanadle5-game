@@ -24,21 +24,30 @@ Project is in the initial planning and setup phase. The project brief has been e
 - **Status**: Complete
 - **Notes**: Word list has been obtained and imported into project files
 
-## Features In Progress
+## Completed Features
+
+### Feature 1: Project Brief and Requirements
+
+- **Description**: Complete definition of project goals, features, and technical stack
+- **Completion Date**: 2025-05-02
+- **Status**: Complete
+- **Notes**: This includes requirements documentation, project scope, and planning
+
+### Feature 2: Word List Acquisition
+
+- **Description**: Import and validation of 5-character hiragana word list
+- **Completion Date**: 2025-05-02
+- **Status**: Complete
+- **Notes**: Word list has been obtained and imported into project files
 
 ### Feature 3: Project Setup and Structure
 
-- **Description**: Setting up Next.js project with TypeScript and Tailwind CSS
-- **Target Completion**: Week 1
-- **Status**: Not started
-- **Progress**: 0%
-- **Remaining Tasks**:
-  - Initialize Next.js project with TypeScript
-  - Add Tailwind CSS configuration
-  - Set up project directory structure
-  - Configure ESLint and Prettier
-  - Set up Git repository
-- **Notes**: Development environment preparation
+- **Description**: Setting up Next.js project with TypeScript and Tailwind CSS, configuring linters/formatters, and establishing directory structure.
+- **Completion Date**: 2025-05-02
+- **Status**: Complete
+- **Notes**: Includes Next.js initialization, Tailwind CSS, directory structure creation, ESLint/Prettier setup, dependency installation (LIFF SDK, Vercel KV), and .env example.
+
+## Features In Progress
 
 ### Feature 4: Core Game Logic Implementation
 

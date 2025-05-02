@@ -4,32 +4,35 @@
 
 ## Current Focus
 
-Initial project setup and planning phase, focusing on defining the architecture and preparing the development environment for the Kanadle Game, a Japanese hiragana version of Wordle as a LINE Mini App.
+Project setup phase is complete. The focus is now shifting towards implementing the core game logic and building the initial UI components for the Kanadle Game.
 
 ### Active Development Tasks
 
 - **Task 1**: Project structure setup and Next.js installation
-  - Status: Ready to start
+  - Status: **Complete**
   - Priority: High
-  - Notes: Need to configure for TypeScript and Tailwind CSS
+  - Notes: Next.js initialized with TypeScript, Tailwind CSS. Directory structure created. ESLint, Prettier configured. Dependencies added.
 
 - **Task 2**: Define initial component architecture
-  - Status: Ready to start
+  - Status: **Ready to start**
   - Priority: High
-  - Notes: Create core game components, state management, and layouts
+  - Notes: Create core game components (GameBoard, Keyboard), state management hooks, and basic layout.
 
 - **Task 3**: Implement basic game logic
-  - Status: Not started
+  - Status: **Ready to start**
   - Priority: High
-  - Notes: Focus on core word matching and feedback mechanisms
+  - Notes: Focus on core word matching, feedback mechanisms (correct/present/absent), and dictionary validation.
 
 ## Recent Changes
 
 ### Code Changes
 
-- 2025-05-02: Project brief added to memory files
-- 2025-05-02: Technical stack defined
-- 2025-05-02: Word list imported for game dictionary
+- 2025-05-02: **Commit `b69b441`**: Initialized Next.js project with TypeScript and Tailwind CSS. Restored backup files and merged .gitignore.
+- 2025-05-02: **Commit `30458a2`**: Set up project directory structure (components, lib, hooks, types) with index files.
+- 2025-05-02: **Commit `2eff38b`**: Configured ESLint, Prettier. Added dependencies (LIFF SDK, Vercel KV). Created .env.local.example.
+- 2025-05-02: Project brief added to memory files.
+- 2025-05-02: Technical stack defined.
+- 2025-05-02: Word list imported for game dictionary.
 
 ### Architecture Decisions
 
@@ -45,11 +48,10 @@ Initial project setup and planning phase, focusing on defining the architecture 
 
 ### Immediate Next Tasks
 
-1. Initialize Next.js project with TypeScript and Tailwind CSS
-2. Set up project repository structure and code organization
-3. Create initial game board component and layout
-4. Implement hiragana keyboard component
-5. Develop core game logic module
+1. Create initial game board component (`src/components/GameBoard.tsx`) and layout adjustments in `src/app/page.tsx`.
+2. Implement hiragana keyboard component (`src/components/Keyboard.tsx`).
+3. Develop core game logic module (`src/lib/gameLogic.ts`) including word validation and guess evaluation.
+4. Set up basic game state management using hooks (`src/hooks/useGameState.ts`).
 
 ### Upcoming Milestones
 
@@ -93,9 +95,9 @@ Initial project setup and planning phase, focusing on defining the architecture 
 
 ### Current Branch
 
-- Branch: main (initial setup)
-- Based on: N/A (new project)
-- Status: Ready for initial commit
+- Branch: feature/project-setup
+- Based on: main
+- Status: Project setup complete, ready for core feature development.
 
 ### Test Environment
 
