@@ -3,6 +3,9 @@
  * Export all type definitions from this file
  */
 
+// Import and re-export types from words.ts
+export * from './words';
+
 // Example: export type GameState = {
 //   currentGuess: string;
 //   guesses: string[];
