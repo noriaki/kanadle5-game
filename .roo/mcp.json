@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "git": {
+      "type": "stdio",
+      "command": "/home/noriaki/.local/bin/uvx",
+      "args": [
+        "mcp-server-git",
+        "--repository",
+        "/home/noriaki/workspace/ai-programming/kanadle-game"
+      ]
+    }
+  }
+}
