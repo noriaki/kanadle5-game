@@ -14,7 +14,7 @@ Project setup phase is complete. The focus is now shifting towards implementing 
   - Notes: Next.js initialized with TypeScript, Tailwind CSS. Directory structure created. ESLint, Prettier configured. Dependencies added.
 
 - **Task 2**: Define initial component architecture
-  - Status: **Ready to start**
+  - Status: **In Progress**
   - Priority: High
   - Notes: Create core game components (GameBoard, Keyboard), state management hooks, and basic layout.
 
@@ -27,6 +27,7 @@ Project setup phase is complete. The focus is now shifting towards implementing 
 
 ### Code Changes
 
+- 2025-05-02: **Commit `eea3a41` on `feature/implement-gameboard`**: Implemented initial game board component and layout.
 - 2025-05-02: **Commit `b69b441`**: Initialized Next.js project with TypeScript and Tailwind CSS. Restored backup files and merged .gitignore.
 - 2025-05-02: **Commit `30458a2`**: Set up project directory structure (components, lib, hooks, types) with index files.
 - 2025-05-02: **Commit `2eff38b`**: Configured ESLint, Prettier. Added dependencies (LIFF SDK, Vercel KV). Created .env.local.example.
@@ -50,7 +51,7 @@ Project setup phase is complete. The focus is now shifting towards implementing 
 
 ### Immediate Next Tasks
 
-1. Create initial game board component (`src/components/GameBoard.tsx`) and layout adjustments in `src/app/page.tsx`.
+1. Create initial game board component (`src/components/GameBoard.tsx`) and layout adjustments in `src/app/page.tsx`. (Status: In Progress on feature/implement-gameboard)
 2. Implement hiragana keyboard component (`src/components/Keyboard.tsx`).
 3. Develop core game logic module (`src/lib/gameLogic.ts`) including word validation and guess evaluation.
 4. Set up basic game state management using hooks (`src/hooks/useGameState.ts`).
@@ -97,9 +98,9 @@ Project setup phase is complete. The focus is now shifting towards implementing 
 
 ### Current Branch
 
-- Branch: main
+- Branch: feature/implement-gameboard
 - Based on: -
-- Status: Project setup and initial type definitions complete. Ready for core feature development.
+- Status: Initial game board component implemented. Ready for keyboard component.
 
 ### Test Environment
 
