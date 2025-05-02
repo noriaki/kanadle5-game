@@ -96,10 +96,10 @@ Kanadle Game follows a modern frontend-focused architecture built with Next.js, 
 ]
 ```
 
-- **Description**: Collection of valid 5-character hiragana words with their meanings
-- **Validation Rules**: Must be exactly 5 characters, basic hiragana only
-- **Storage**: JSON file in codebase, with copy in database
-- **Usage**: For daily word selection and validating user guesses
+- **Description**: Collection of valid 5-character hiragana words with their meanings. The structure is defined by the `WordEntry` and `WordList` types in `src/types/words.ts`.
+- **Validation Rules**: Must be exactly 5 characters, basic hiragana only. Structure enforced by TypeScript types.
+- **Storage**: JSON file (`src/data/words.json`) in codebase, potentially cached or copied to database.
+- **Usage**: For daily word selection and validating user guesses against the dictionary.
 
 ### Data Model 2: Game State
 

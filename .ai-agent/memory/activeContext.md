@@ -30,6 +30,8 @@ Project setup phase is complete. The focus is now shifting towards implementing 
 - 2025-05-02: **Commit `b69b441`**: Initialized Next.js project with TypeScript and Tailwind CSS. Restored backup files and merged .gitignore.
 - 2025-05-02: **Commit `30458a2`**: Set up project directory structure (components, lib, hooks, types) with index files.
 - 2025-05-02: **Commit `2eff38b`**: Configured ESLint, Prettier. Added dependencies (LIFF SDK, Vercel KV). Created .env.local.example.
+- 2025-05-02: **Commit `6f81821`**: Added type definitions for word list file (`src/types/words.ts`).
+- 2025-05-02: **Commit `9100356`**: Merged PR #2 (word type definitions).
 - 2025-05-02: Project brief added to memory files.
 - 2025-05-02: Technical stack defined.
 - 2025-05-02: Word list imported for game dictionary.
@@ -95,9 +97,9 @@ Project setup phase is complete. The focus is now shifting towards implementing 
 
 ### Current Branch
 
-- Branch: feature/project-setup
-- Based on: main
-- Status: Project setup complete, ready for core feature development.
+- Branch: main
+- Based on: -
+- Status: Project setup and initial type definitions complete. Ready for core feature development.
 
 ### Test Environment
 

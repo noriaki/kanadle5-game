@@ -24,32 +24,16 @@ Project is in the initial planning and setup phase. The project brief has been e
 - **Status**: Complete
 - **Notes**: Word list has been obtained and imported into project files
 
-## Completed Features
+### Feature 4: Word List Type Definitions
 
-### Feature 1: Project Brief and Requirements
-
-- **Description**: Complete definition of project goals, features, and technical stack
+- **Description**: Added TypeScript type definitions (`WordEntry`, `WordList`) for the word list data.
 - **Completion Date**: 2025-05-02
 - **Status**: Complete
-- **Notes**: This includes requirements documentation, project scope, and planning
-
-### Feature 2: Word List Acquisition
-
-- **Description**: Import and validation of 5-character hiragana word list
-- **Completion Date**: 2025-05-02
-- **Status**: Complete
-- **Notes**: Word list has been obtained and imported into project files
-
-### Feature 3: Project Setup and Structure
-
-- **Description**: Setting up Next.js project with TypeScript and Tailwind CSS, configuring linters/formatters, and establishing directory structure.
-- **Completion Date**: 2025-05-02
-- **Status**: Complete
-- **Notes**: Includes Next.js initialization, Tailwind CSS, directory structure creation, ESLint/Prettier setup, dependency installation (LIFF SDK, Vercel KV), and .env example.
+- **Notes**: Types defined in `src/types/words.ts` and exported from `src/types/index.ts`.
 
 ## Features In Progress
 
-### Feature 4: Core Game Logic Implementation
+### Feature 5: Core Game Logic Implementation
 
 - **Description**: Development of the basic word-guessing gameplay functionality
 - **Target Completion**: Week 1
@@ -65,7 +49,7 @@ Project is in the initial planning and setup phase. The project brief has been e
 
 ## Pending Features
 
-### Feature 5: LINE LIFF Integration
+### Feature 6: LINE LIFF Integration
 
 - **Description**: Integration with LINE platform for authentication and sharing
 - **Target Start**: Week 2
@@ -74,7 +58,7 @@ Project is in the initial planning and setup phase. The project brief has been e
   - LIFF ID and channel registration
 - **Notes**: Will require testing with LINE debugging tools
 
-### Feature 6: User Data Storage
+### Feature 7: User Data Storage
 
 - **Description**: Persistence of user game history and statistics
 - **Target Start**: Week 2
@@ -83,7 +67,7 @@ Project is in the initial planning and setup phase. The project brief has been e
   - Game functionality completion
 - **Notes**: Will use Vercel KV for data storage
 
-### Feature 7: Results Sharing
+### Feature 8: Results Sharing
 
 - **Description**: Ability to share game results via LINE messaging
 - **Target Start**: Week 3
@@ -92,7 +76,7 @@ Project is in the initial planning and setup phase. The project brief has been e
   - LINE Integration
 - **Notes**: Will use emoji-based sharing format similar to Wordle
 
-### Feature 8: UI Components and Styling
+### Feature 9: UI Components and Styling
 
 - **Description**: Complete styling and responsive design of game interface
 - **Target Start**: Week 1-2
