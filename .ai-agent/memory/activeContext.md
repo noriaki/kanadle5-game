@@ -1,10 +1,10 @@
-# Active Context - Kanadle Game
+# Active Context - Kanadle5 Game
 
 *Last Updated: 2025-05-02*
 
 ## Current Focus
 
-Project setup phase is complete. The focus is now shifting towards implementing the core game logic and building the initial UI components for the Kanadle Game.
+Project setup phase is complete. The focus is now shifting towards implementing the core game logic and building the initial UI components for the Kanadle5 Game.
 
 ### Active Development Tasks
 

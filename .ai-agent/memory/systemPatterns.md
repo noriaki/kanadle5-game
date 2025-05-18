@@ -1,8 +1,8 @@
-# System Patterns - Kanadle Game
+# System Patterns - Kanadle5 Game
 
 ## Architecture Overview
 
-Kanadle Game follows a modern frontend-focused architecture built with Next.js, leveraging server-side and client-side rendering as appropriate. The application integrates with LINE's LIFF platform for authentication and sharing, while using Vercel KV as a lightweight data store.
+Kanadle5 Game follows a modern frontend-focused architecture built with Next.js, leveraging server-side and client-side rendering as appropriate. The application integrates with LINE's LIFF platform for authentication and sharing, while using Vercel KV as a lightweight data store.
 
 ```
 ┌─────────────────────────────────────────┐

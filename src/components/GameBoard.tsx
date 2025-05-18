@@ -1,12 +1,12 @@
 import React from 'react';
 
 /**
- * GameBoard component for Kanadle game
- * Displays a 6x5 grid for the word guessing game
+ * GameBoard component for Kanadle5 game
+ * Displays a 8x5 grid for the word guessing game
  */
 const GameBoard: React.FC = () => {
   // 6行 x 5列のグリッド構造を作成
-  const rows = 6;
+  const rows = 8;
   const cols = 5;
 
   // 空のグリッドを生成
@@ -25,7 +25,7 @@ const GameBoard: React.FC = () => {
 
   return (
     <div className="flex flex-col items-center">
-      <h2 className="text-2xl font-bold mb-6">Kanadle</h2>
+      <h2 className="text-2xl font-bold mb-6">Kanadle5</h2>
       <div className="game-board">
         {grid}
       </div>

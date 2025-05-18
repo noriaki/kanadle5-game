@@ -1,8 +1,8 @@
-# Project Brief - Kanadle Game
+# Project Brief - Kanadle5 Game
 
 ## Project Overview
 
-Kanadle Game is a Japanese (hiragana) version of the popular word-guessing game Wordle. The purpose is to develop and publish a LINE Mini App that allows Japanese users to easily enjoy a daily word puzzle game that leverages their vocabulary skills in short, engaging sessions.
+Kanadle5 Game is a Japanese (hiragana) version of the popular word-guessing game Wordle. The purpose is to develop and publish a LINE Mini App that allows Japanese users to easily enjoy a daily word puzzle game that leverages their vocabulary skills in short, engaging sessions.
 
 ## Core Requirements
 
@@ -94,7 +94,7 @@ Kanadle Game is a Japanese (hiragana) version of the popular word-guessing game 
 
 ## References
 
-- [Project Word List](/words.json) - List of valid 5-character hiragana words for the game
+- [Project Word List](/src/data/words.json) - List of valid 5-character hiragana words for the game
 - [LINE LIFF Documentation](https://developers.line.biz/en/docs/liff/)
 - [Vercel KV Documentation](https://vercel.com/docs/storage/vercel-kv)
 - [Next.js App Router Documentation](https://nextjs.org/docs/app)

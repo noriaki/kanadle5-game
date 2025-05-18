@@ -2,7 +2,7 @@
  * Type definitions for the word list file
  *
  * This file provides type definitions for the 5-character hiragana word list
- * used in the Kanadle Game (Kanadoru).
+ * used in the Kanadle5 Game (Kanadoru5).
  *
  * @see System Patterns Data Model 1: Word Dictionary
  */
