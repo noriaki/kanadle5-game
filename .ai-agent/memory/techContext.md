@@ -121,12 +121,12 @@ DAILY_WORD_REFRESH_TIME=00:00:00 # Japan time
   - Access: Development team only
 
 - **Staging**:
-  - URL: [kanadle-staging.vercel.app]
+  - URL: [kanadle5-staging.vercel.app]
   - Deployment Process: Automatic deployment from main branch
   - Access: Development team and testers
 
 - **Production**:
-  - URL: [kanadle.vercel.app]
+  - URL: [kanadle5.vercel.app]
   - Deployment Process: Manual promotion from staging
   - Access: Public via LINE
 

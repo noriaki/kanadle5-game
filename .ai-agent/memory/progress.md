@@ -1,4 +1,4 @@
-# Progress Status - Kanadle Game
+# Progress Status - Kanadle5 Game
 
 *Last Updated: 2025-05-02*
 
@@ -14,7 +14,7 @@
 
 **Overall Status**: Initializing
 
-Project is in the initial planning and setup phase. The project brief has been established, and we're preparing to begin development of the Kanadle Game, a Japanese hiragana version of Wordle for the LINE platform. So far, we have defined the architecture, technical stack, and game requirements. The word list for the game dictionary has been provided.
+Project is in the initial planning and setup phase. The project brief has been established, and we're preparing to begin development of the Kanadle5 Game, a Japanese hiragana version of Wordle for the LINE platform. So far, we have defined the architecture, technical stack, and game requirements. The word list for the game dictionary has been provided.
 
 ## Completed Features
 
