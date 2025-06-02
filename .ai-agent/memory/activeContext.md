@@ -4,7 +4,7 @@
 
 ## Current Focus
 
-Project setup phase is complete. The focus is now shifting towards implementing the core game logic and building the initial UI components for the Kanadle5 Game.
+Project setup and internal design phases are complete. The focus is now on implementing the core game logic and building the initial UI components for the Kanadle5 Game based on the finalized internal design specifications.
 
 ### Active Development Tasks
 
@@ -13,15 +13,20 @@ Project setup phase is complete. The focus is now shifting towards implementing 
   - Priority: High
   - Notes: Next.js initialized with TypeScript, Tailwind CSS. Directory structure created. ESLint, Prettier configured. Dependencies added.
 
-- **Task 2**: Define initial component architecture
+- **Task 2**: Internal function design and architecture
+  - Status: **Complete**
+  - Priority: High
+  - Notes: Core functions defined with client-server separation for security. Function execution flow mapped. Open questions documented for future implementation.
+
+- **Task 3**: Define initial component architecture
   - Status: **In Progress**
   - Priority: High
   - Notes: Create core game components (GameBoard, Keyboard), state management hooks, and basic layout.
 
-- **Task 3**: Implement basic game logic
+- **Task 4**: Implement basic game logic
   - Status: **Ready to start**
   - Priority: High
-  - Notes: Focus on core word matching, feedback mechanisms (correct/present/absent), and dictionary validation.
+  - Notes: Focus on core word matching, feedback mechanisms (correct/present/absent), and dictionary validation based on internal design specifications.
 
 ## Recent Changes
 
@@ -76,6 +81,17 @@ Project setup phase is complete. The focus is now shifting towards implementing 
 - **Daily Word Selection**: What algorithm to use for consistent word selection across all users?
 - **Dictionary Validation**: How to efficiently validate user inputs against dictionary?
 - **LINE LIFF Testing**: What's the most efficient way to test LINE integration during development?
+
+### Design Questions for Implementation
+
+These questions from the internal design phase need resolution during implementation:
+
+- **Error Handling**: Processing flow for invalid word input, network errors, date change timing
+- **Synchronization Issues**: Game switching at midnight, multiple tabs, offline-online transitions
+- **API Idempotency**: Handling duplicate submissions and network retry scenarios  
+- **Game Logic Details**: Character duplicate rules, win/loss determination timing
+
+See `systemPatterns.md#Open Questions for Future Implementation` for detailed specifications.
 
 ### Risks and Mitigations
 

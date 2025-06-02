@@ -39,13 +39,16 @@ Kanadle5 Game follows a modern frontend-focused architecture built with Next.js,
 
 - **Purpose**: Manage core gameplay logic and user interactions
 - **Responsibilities**: 
-  - Process user inputs and validate against game rules
-  - Track game state and update UI accordingly
-  - Calculate results and maintain game history
+  - Process user inputs and validate against game rules (SERVER-SIDE)
+  - Track game state and update UI accordingly (CLIENT-SIDE)
+  - Calculate results and maintain game history (SPLIT)
 - **Interfaces**:
   - Provides: Game state, validation functions, hiragana input handling
   - Consumes: Word dictionary, daily word selection
-- **Technical Details**: Implemented using React hooks and context for state management
+- **Technical Details**: 
+  - Client: React hooks and context for UI state
+  - Server: Next.js API routes for game logic
+  - Security: Target word never exposed to client
 
 ### Component 2: LINE Integration
 
@@ -101,23 +104,53 @@ Kanadle5 Game follows a modern frontend-focused architecture built with Next.js,
 - **Storage**: JSON file (`src/data/words.json`) in codebase, potentially cached or copied to database.
 - **Usage**: For daily word selection and validating user guesses against the dictionary.
 
-### Data Model 2: Game State
+### Data Model 2: Client Game State
 
 ```typescript
-interface GameState {
-  currentWord: string;            // Daily target word
-  attempts: string[];             // User's previous guesses
-  currentAttempt: string;         // Current in-progress guess
-  gameStatus: 'active'|'won'|'lost'; // Current game status
-  letterStatus: Record<string, 'correct'|'present'|'absent'|'unused'>; // Status of each hiragana
-  date: string;                   // Date of this game (YYYY-MM-DD)
+type GuessResult = ('correct' | 'present' | 'absent')[];
+
+type ClientGameState = {
+  // UI状態
+  currentInput: string;           // 入力中の文字列
+  currentAttempt: number;         // 現在の試行回数 (0-7)
+  gameStatus: 'playing' | 'won' | 'lost';
+  
+  // 表示用履歴（正解は含まない）
+  guesses: string[];              // 確定した推測履歴
+  guessResults: GuessResult[];    // 各推測の評価結果
+  
+  // UI制御
+  isLoading: boolean;             // API通信中フラグ
+  error: string | null;           // エラーメッセージ
 }
 ```
 
-- **Description**: Represents the current state of an active game
-- **Validation Rules**: Attempts must be valid dictionary words, status values must be valid
-- **Storage**: React state during play, Vercel KV for persistence
-- **Usage**: Core game logic and UI rendering
+- **Description**: Client-side game state for UI rendering and user interaction
+- **Security**: Does not contain target word to prevent cheating
+- **Storage**: React state (not persisted)
+- **Usage**: UI rendering and user input handling
+
+### Data Model 3: Server Game State
+
+```typescript
+type ServerGameState = {
+  // セキュア情報
+  targetWord: string;             // 正解単語（絶対秘匿）
+  gameDate: string;              // 'YYYY-MM-DD'
+  
+  // 永続化データ
+  userId?: string;               // LINE user ID
+  attempts: string[];            // 推測履歴
+  completedAt?: Date;           // ゲーム完了時刻
+  isCompleted: boolean;         // 完了フラグ
+  attemptCount: number;         // 試行回数
+}
+```
+
+- **Description**: Server-side game state for game logic and persistence
+- **Security**: Contains sensitive target word, never exposed to client
+- **Storage**: Vercel KV for persistence
+- **Usage**: Game validation and progress tracking
 
 ### Data Model 3: User Profile
 
@@ -177,11 +210,24 @@ interface UserStatistics {
    - `GET /api/user/statistics` - Get user statistics
 
 2. **Game API**
-   - `GET /api/game/daily` - Get today's game
-   - `POST /api/game/result` - Submit game result
+   - `GET /api/game/daily` - Get today's game state (without target word)
+   - `POST /api/game/guess` - Submit a guess and get evaluation
 
-3. **Dictionary API**
-   - `POST /api/dictionary/validate` - Validate a word
+3. **Guess API Request/Response**
+   ```typescript
+   // POST /api/game/guess
+   type GuessRequest = {
+     guess: string;
+     gameDate: string;
+   }
+   
+   type GuessResponse = {
+     result: GuessResult;           // 評価結果のみ
+     gameStatus: 'playing' | 'won' | 'lost';
+     attemptCount: number;
+     // targetWordは絶対に含まない
+   }
+   ```
 
 ## Design Patterns
 
@@ -251,6 +297,120 @@ interface UserStatistics {
 - **Data Protection**: No sensitive data stored, minimal personal info
 - **Input Validation**: Server-side validation of all inputs
 - **Rate Limiting**: Protect against abuse of API endpoints
+
+## Internal Function Design
+
+### Function Execution Flow in User Interaction
+
+```
+1. [Page Access]
+   ↓
+   📱 Next.js page.tsx initialization
+   ↓
+   🔧 getDailyWord(new Date(), wordList) ← Get today's target word (SERVER)
+   ↓
+   📱 GameBoard component display
+
+2. [Character Input Start]
+   ↓
+   📱 Hiragana input via Keyboard component
+   ↓
+   🔧 Per character input: Basic hiragana character validation (CLIENT)
+
+3. [5 Characters Complete & Submit Button Press]
+   ↓
+   🔧 validateWord(inputWord, dictionary) ← Dictionary check (SERVER)
+   ↓
+   ❌ false → Error display, continue input
+   ✅ true → Proceed
+
+4. [Guess Evaluation Execution]
+   ↓
+   🔧 evaluateGuess(inputWord, dailyWord) ← Comparison with target (SERVER)
+   ↓
+   🔧 updateGameState(currentState, inputWord, dailyWord) ← State update (CLIENT/SERVER)
+   ↓
+   📱 GameBoard re-render (colored feedback display)
+
+5. [Game Continue/End Decision]
+   ↓
+   🔧 Completion check within updateGameState
+   ↓
+   Complete → Result screen display
+   Continue → Wait for next input (return to step 2)
+```
+
+### Core Function Specifications
+
+#### 1. validateWord (Server-side)
+```typescript
+function validateWord(word: string, dictionary: string[]): boolean
+```
+- **Input**: 5-character string, dictionary array
+- **Output**: Boolean indicating validity
+- **Responsibility**: Hiragana character restriction, dictionary existence check
+- **Location**: Server-side (Next.js API route)
+- **Security**: Prevents dictionary content exposure to client
+
+#### 2. evaluateGuess (Server-side)
+```typescript
+function evaluateGuess(guess: string, target: string): GuessResult
+```
+- **Input**: Guess string, target string
+- **Output**: Array of character status (correct/present/absent)
+- **Responsibility**: Character position and existence determination
+- **Location**: Server-side (Next.js API route)
+- **Security**: Prevents target word exposure to client
+
+#### 3. getDailyWord (Server-side)
+```typescript
+function getDailyWord(date: Date, wordList: string[]): string
+```
+- **Input**: Date, word list
+- **Output**: Word for that day
+- **Responsibility**: Date-based unique selection
+- **Location**: Server-side (Next.js API route)
+- **Security**: Prevents target word exposure to client
+
+#### 4. updateGameState (Client-side & Server-side)
+```typescript
+// Client-side
+function updateClientGameState(
+  currentState: ClientGameState, 
+  guess: string, 
+  result: GuessResult
+): ClientGameState
+
+// Server-side
+function updateServerGameState(
+  currentState: ServerGameState, 
+  guess: string, 
+  target: string
+): ServerGameState
+```
+- **Input**: Current state, guess, evaluation result/target
+- **Output**: Updated state
+- **Responsibility**: Attempt count, completion determination
+- **Location**: Both (separated by respective responsibilities)
+
+### Security Considerations for Client-Server Separation
+
+- **Client side**: UI state, input processing, display control
+- **Server side**: Game logic, target word, dictionary validation
+- **API communication**: Submit guess → Receive evaluation result (target word is absolutely never exposed)
+
+### Function Placement Strategy
+- `validateWord()` → **Server-side** (dictionary confidentiality)
+- `evaluateGuess()` → **Server-side** (requires target word)
+- `getDailyWord()` → **Server-side** (target confidentiality)
+- `updateGameState()` → **Client/Server both** (respective state updates)
+
+### Open Questions for Future Implementation
+
+1. **Error Handling**: Processing flow for invalid word input, network errors, date change timing
+2. **Synchronization Issues**: Game switching at midnight, multiple tabs, offline-online transitions
+3. **API Idempotency**: Handling duplicate submissions and network retry scenarios
+4. **Game Logic Details**: Character duplicate rules, win/loss determination timing
 
 ## Testing Strategy
 

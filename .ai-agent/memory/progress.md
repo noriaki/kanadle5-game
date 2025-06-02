@@ -96,6 +96,15 @@ Project is in the initial planning and setup phase. The project brief has been e
 
 No known issues at this time, as development has not yet started.
 
+## Design Questions for Implementation
+
+The following design questions need to be addressed during implementation phases. See `systemPatterns.md#Open Questions for Future Implementation` for full details.
+
+1. **Error Handling**: Processing flow for invalid word input, network errors, date change timing
+2. **Synchronization Issues**: Game switching at midnight, multiple tabs, offline-online transitions  
+3. **API Idempotency**: Handling duplicate submissions and network retry scenarios
+4. **Game Logic Details**: Character duplicate rules, win/loss determination timing
+
 ## Technical Debt
 
 No technical debt items recorded yet, as development has not yet started.
