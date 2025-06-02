@@ -122,10 +122,10 @@ describe('validateWord', () => {
 
     it('should handle null or undefined inputs gracefully', () => {
       // TypeScript will enforce types, but good to test runtime behavior
-      expect(validateWord(null as any, validDictionary)).toBe(false);
-      expect(validateWord(undefined as any, validDictionary)).toBe(false);
-      expect(validateWord('あいうえお', null as any)).toBe(false);
-      expect(validateWord('あいうえお', undefined as any)).toBe(false);
+      expect(validateWord(null as unknown as string, validDictionary)).toBe(false);
+      expect(validateWord(undefined as unknown as string, validDictionary)).toBe(false);
+      expect(validateWord('あいうえお', null as unknown as WordEntry[])).toBe(false);
+      expect(validateWord('あいうえお', undefined as unknown as WordEntry[])).toBe(false);
     });
   });
 
