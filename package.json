@@ -7,6 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "lint:md": "markdownlint **/*.md",
+    "format:md": "markdownlint **/*.md --fix",
     "prepare": "husky"
   },
   "dependencies": {
@@ -29,6 +31,7 @@
     "eslint-plugin-react-hooks": "^5.2.0",
     "husky": "^9.1.7",
     "lint-staged": "^16.1.0",
+    "markdownlint-cli": "^0.45.0",
     "prettier": "^3.5.3",
     "tailwindcss": "^4",
     "typescript": "^5"
@@ -38,7 +41,11 @@
       "eslint --fix",
       "prettier --write"
     ],
-    "*.{json,md}": [
+    "*.md": [
+      "markdownlint --fix",
+      "prettier --write"
+    ],
+    "*.json": [
       "prettier --write"
     ]
   }
