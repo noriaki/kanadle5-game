@@ -1,6 +1,6 @@
 # Active Context - Kanadle5 Game
 
-*Last Updated: 2025-05-02*
+*Last Updated: 2025-06-02*
 
 ## Current Focus
 
@@ -24,14 +24,17 @@ Project setup and internal design phases are complete. The focus is now on imple
   - Notes: Create core game components (GameBoard, Keyboard), state management hooks, and basic layout.
 
 - **Task 4**: Implement basic game logic
-  - Status: **Ready to start**
+  - Status: **In Progress**
   - Priority: High
-  - Notes: Focus on core word matching, feedback mechanisms (correct/present/absent), and dictionary validation based on internal design specifications.
+  - Notes: TDD approach - writing tests first for core functions (validateWord, evaluateGuess, getDailyWord, updateGameState).
 
 ## Recent Changes
 
 ### Code Changes
 
+- 2025-06-02: Implemented `validateWord` function with tests - handles basic hiragana validation, excludes 'を' character
+- 2025-06-02: Set up Jest testing framework for TDD approach
+- 2025-06-02: Created game type definitions (`src/types/game.ts`) using `type` instead of `interface`
 - 2025-05-02: **Commit `eea3a41` on `feature/implement-gameboard`**: Implemented initial game board component and layout.
 - 2025-05-02: **Commit `b69b441`**: Initialized Next.js project with TypeScript and Tailwind CSS. Restored backup files and merged .gitignore.
 - 2025-05-02: **Commit `30458a2`**: Set up project directory structure (components, lib, hooks, types) with index files.
@@ -44,22 +47,27 @@ Project setup and internal design phases are complete. The focus is now on imple
 
 ### Architecture Decisions
 
+- 2025-06-02: TypeScript policy - use `type` instead of `interface` to prevent implicit declaration merging
 - 2025-05-02: Next.js App Router architecture selected for frontend
 - 2025-05-02: Vercel KV chosen as primary database for its simplicity and integration
 - 2025-05-02: Mobile-first UI approach confirmed with Tailwind CSS
 
 ### Requirement Changes
 
-- No changes yet - initial requirements documented
+- 2025-06-02: Game rule update - 'を' (wo) character excluded from valid game characters
 
 ## Next Steps
 
 ### Immediate Next Tasks
 
-1. Create initial game board component (`src/components/GameBoard.tsx`) and layout adjustments in `src/app/page.tsx`. (Status: In Progress on feature/implement-gameboard)
-2. Implement hiragana keyboard component (`src/components/Keyboard.tsx`).
-3. Develop core game logic module (`src/lib/gameLogic.ts`) including word validation and guess evaluation.
-4. Set up basic game state management using hooks (`src/hooks/useGameState.ts`).
+1. Complete TDD implementation of core game functions:
+   - ✅ `validateWord` function (completed)
+   - ⏳ `evaluateGuess` function (in progress)
+   - 📋 `getDailyWord` function
+   - 📋 `updateGameState` functions
+2. Update hiragana keyboard component to exclude 'を' character
+3. Verify word dictionary doesn't contain words with 'を'
+4. Set up basic game state management using hooks (`src/hooks/useGameState.ts`)
 
 ### Upcoming Milestones
 
@@ -75,6 +83,8 @@ Project setup and internal design phases are complete. The focus is now on imple
 - **Frontend-First Development**: Focus on getting the game UI and mechanics working before backend integration
 - **Dictionary Implementation**: Use provided word list as JSON file with server-side daily word selection
 - **State Management**: Use React Context API for global state instead of more complex solutions
+- **TypeScript Type Definitions**: Exclusively use `type` instead of `interface` to prevent implicit declaration merging bugs
+- **Character Exclusion**: 'を' (wo) character is excluded from valid game characters
 
 ### Open Questions
 

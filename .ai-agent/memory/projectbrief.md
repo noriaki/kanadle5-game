@@ -85,9 +85,10 @@ Kanadle5 Game is a Japanese (hiragana) version of the popular word-guessing game
 ## Game Rules Details
 
 - Guess a 5-character hiragana word in 8 attempts
-- Only basic 46 hiragana characters allowed
+- Only basic hiragana characters allowed (excluding 'を')
 - No voiced sounds (濁音), semi-voiced sounds (半濁音), contracted sounds (拗音), double consonants (促音), or long vowels (長音)
 - No small characters (ぁぃぅぇぉゃゅょゎ)
+- Excluded characters: を (wo) - not used in game words
 - Feedback: Green (correct character & position), Yellow (correct character, wrong position), Gray (not in word)
 - Dictionary validation of entered words
 - Daily reset at 00:00 Japan time

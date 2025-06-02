@@ -1,8 +1,15 @@
 # Progress Status - Kanadle5 Game
 
-*Last Updated: 2025-05-02*
+*Last Updated: 2025-06-02*
 
 ## Progress Log
+
+- **2025-06-02**:
+  - Set up Jest testing framework for TDD approach
+  - Implemented `validateWord` function with comprehensive tests
+  - Created game type definitions using `type` instead of `interface`
+  - Updated game rules to exclude 'を' character
+  - Updated memory files to use English in all non-specification contexts
 
 - **2025-05-02**:
   - Created `feature/implement-gameboard` branch.
@@ -12,9 +19,9 @@
 
 ## Project Status Summary
 
-**Overall Status**: Initializing
+**Overall Status**: In Development
 
-Project is in the initial planning and setup phase. The project brief has been established, and we're preparing to begin development of the Kanadle5 Game, a Japanese hiragana version of Wordle for the LINE platform. So far, we have defined the architecture, technical stack, and game requirements. The word list for the game dictionary has been provided.
+Project has moved from planning to active development phase. Core game logic functions are being implemented using TDD approach. The `validateWord` function is complete with tests, and work continues on other essential functions like `evaluateGuess`, `getDailyWord`, and `updateGameState`.
 
 ## Completed Features
 
@@ -39,21 +46,35 @@ Project is in the initial planning and setup phase. The project brief has been e
 - **Status**: Complete
 - **Notes**: Types defined in `src/types/words.ts` and exported from `src/types/index.ts`.
 
+### Feature 5: Testing Framework Setup
+
+- **Description**: Configured Jest with TypeScript support for TDD approach
+- **Completion Date**: 2025-06-02
+- **Status**: Complete
+- **Notes**: Added test scripts to package.json, created jest.config.js and jest.setup.js
+
+### Feature 6: validateWord Function
+
+- **Description**: Implemented word validation with hiragana character checking and dictionary lookup
+- **Completion Date**: 2025-06-02
+- **Status**: Complete
+- **Notes**: Includes exclusion of 'を' character as per updated game rules
+
 ## Features In Progress
 
-### Feature 5: Core Game Logic Implementation
+### Feature 7: Core Game Logic Implementation
 
 - **Description**: Development of the basic word-guessing gameplay functionality
 - **Target Completion**: Week 1
-- **Status**: Not started
-- **Progress**: 0%
+- **Status**: In Progress
+- **Progress**: 20%
 - **Remaining Tasks**:
-  - Create game state management
-  - Implement word matching algorithm
-  - Develop feedback mechanism (correct/present/absent letters)
-  - Build validation against dictionary
-  - Create daily word selection system
-- **Notes**: Focus on client-side gameplay first
+  - ✅ Implement validateWord function
+  - ⏳ Implement evaluateGuess function (tests written)
+  - 📋 Implement getDailyWord function
+  - 📋 Implement updateGameState functions
+  - 📋 Create game state management hooks
+- **Notes**: Using TDD approach - writing tests before implementation
 
 ## Pending Features
 

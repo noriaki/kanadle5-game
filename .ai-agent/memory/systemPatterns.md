@@ -110,18 +110,18 @@ Kanadle5 Game follows a modern frontend-focused architecture built with Next.js,
 type GuessResult = ('correct' | 'present' | 'absent')[];
 
 type ClientGameState = {
-  // UI状態
-  currentInput: string;           // 入力中の文字列
-  currentAttempt: number;         // 現在の試行回数 (0-7)
+  // UI state
+  currentInput: string;           // Current input string
+  currentAttempt: number;         // Current attempt number (0-7)
   gameStatus: 'playing' | 'won' | 'lost';
   
-  // 表示用履歴（正解は含まない）
-  guesses: string[];              // 確定した推測履歴
-  guessResults: GuessResult[];    // 各推測の評価結果
+  // Display history (without correct answer)
+  guesses: string[];              // Confirmed guess history
+  guessResults: GuessResult[];    // Evaluation results for each guess
   
-  // UI制御
-  isLoading: boolean;             // API通信中フラグ
-  error: string | null;           // エラーメッセージ
+  // UI control
+  isLoading: boolean;             // API communication flag
+  error: string | null;           // Error message
 }
 ```
 
@@ -134,16 +134,16 @@ type ClientGameState = {
 
 ```typescript
 type ServerGameState = {
-  // セキュア情報
-  targetWord: string;             // 正解単語（絶対秘匿）
+  // Secure information
+  targetWord: string;             // Target word (absolutely secret)
   gameDate: string;              // 'YYYY-MM-DD'
   
-  // 永続化データ
+  // Persistent data
   userId?: string;               // LINE user ID
-  attempts: string[];            // 推測履歴
-  completedAt?: Date;           // ゲーム完了時刻
-  isCompleted: boolean;         // 完了フラグ
-  attemptCount: number;         // 試行回数
+  attempts: string[];            // Guess history
+  completedAt?: Date;           // Game completion time
+  isCompleted: boolean;         // Completion flag
+  attemptCount: number;         // Attempt count
 }
 ```
 
@@ -155,7 +155,7 @@ type ServerGameState = {
 ### Data Model 3: User Profile
 
 ```typescript
-interface UserProfile {
+type UserProfile = {
   userId: string;           // LINE user ID
   displayName: string;      // User's name from LINE
   pictureUrl?: string;      // User's profile picture URL
@@ -172,7 +172,7 @@ interface UserProfile {
 ### Data Model 4: User Statistics
 
 ```typescript
-interface UserStatistics {
+type UserStatistics = {
   userId: string;           // LINE user ID
   gamesPlayed: number;      // Total games played
   gamesWon: number;         // Games successfully completed
@@ -222,10 +222,10 @@ interface UserStatistics {
    }
    
    type GuessResponse = {
-     result: GuessResult;           // 評価結果のみ
+     result: GuessResult;           // Evaluation result only
      gameStatus: 'playing' | 'won' | 'lost';
      attemptCount: number;
-     // targetWordは絶対に含まない
+     // targetWord is never included
    }
    ```
 
@@ -280,6 +280,18 @@ interface UserStatistics {
   - Input validation
   - Rate limiting
   - Authentication via LINE LIFF
+
+### TypeScript Patterns
+
+- **Type Definitions**: 
+  - Use `type` aliases instead of `interface` to prevent implicit declaration merging
+  - Explicit type definitions for all function parameters and return values
+  - Strict mode enabled for better type safety
+
+- **Type vs Interface Policy**:
+  - Exclusively use `type` for object type definitions
+  - Rationale: Prevent hard-to-find bugs caused by implicit interface merging
+  - Benefit: More predictable and explicit type behavior
 
 ## Performance Considerations
 
