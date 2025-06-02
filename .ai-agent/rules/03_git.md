@@ -8,6 +8,7 @@
 - **Hotfix Branches**: `hotfix/[issue-id]` - For urgent fixes
 
 **Important Rules**:
+
 - No direct commits or merges to the `main` branch
 - All changes must be made through GitHub Pull Requests
 - Pull Requests must be reviewed and approved by the user before merging
@@ -16,7 +17,7 @@
 
 ### Commit Message Format
 
-```
+```text
 [type]: [concise description]
 
 [detailed description (optional)]
