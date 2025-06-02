@@ -1,6 +1,6 @@
 # Active Context - Kanadle5 Game
 
-*Last Updated: 2025-06-02*
+*Last Updated: 2025-06-03*
 
 ## Current Focus
 
@@ -19,19 +19,20 @@ Project setup and internal design phases are complete. The focus is now on imple
   - Notes: Core functions defined with client-server separation for security. Function execution flow mapped. Open questions documented for future implementation.
 
 - **Task 3**: Define initial component architecture
-  - Status: **In Progress**
+  - Status: **Complete**
   - Priority: High
-  - Notes: Create core game components (GameBoard, Keyboard), state management hooks, and basic layout.
+  - Notes: Core game components (GameBoard) implemented. State management hooks and keyboard component pending.
 
 - **Task 4**: Implement basic game logic
   - Status: **In Progress**
   - Priority: High
-  - Notes: TDD approach - writing tests first for core functions (validateWord, evaluateGuess, getDailyWord, updateGameState).
+  - Notes: TDD approach - validateWord completed with tests. Next: evaluateGuess function.
 
 ## Recent Changes
 
 ### Code Changes
 
+- 2025-06-03: Created GitHub Actions CI workflow for automated testing on Node.js 22.x and 24.x
 - 2025-06-02: Implemented `validateWord` function with tests - handles basic hiragana validation, excludes 'を' character
 - 2025-06-02: Set up Jest testing framework for TDD approach
 - 2025-06-02: Created game type definitions (`src/types/game.ts`) using `type` instead of `interface`
@@ -124,13 +125,13 @@ See `systemPatterns.md#Open Questions for Future Implementation` for detailed sp
 
 ### Current Branch
 
-- Branch: feature/implement-gameboard
-- Based on: -
-- Status: Initial game board component implemented. Ready for keyboard component.
+- Branch: main
+- Status: All code changes merged. CI/CD pipeline operational (PR #6 merged).
 
 ### Test Environment
 
-- Local development environment only at this stage
+- Local development environment active
+- GitHub Actions CI pipeline operational (testing on Node.js 22.x and 24.x)
 - LINE LIFF debugging tools to be configured
 
 ## Communication Notes
