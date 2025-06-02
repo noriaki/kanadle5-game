@@ -8,7 +8,7 @@
 - **State Management**: React Context API / React Hooks
 - **UI Components**: Custom components with React
 - **Styling**: Tailwind CSS
-- **Testing**: Jest for unit tests, React Testing Library for component tests
+- **Testing**: Jest with TypeScript support, React Testing Library for component tests, @testing-library/jest-dom for DOM matchers
 - **Build Tools**: Next.js built-in build system
 
 ### Backend
@@ -24,7 +24,7 @@
 ### Infrastructure
 
 - **Hosting**: Vercel
-- **CI/CD**: Vercel GitHub integration
+- **CI/CD**: GitHub Actions for testing, Vercel GitHub integration for deployment
 - **Monitoring**: Vercel Analytics
 - **Containerization**: N/A (Serverless deployment)
 - **Orchestration**: N/A (Managed by Vercel)
@@ -34,22 +34,23 @@
 
 ### Prerequisites
 
-- Node.js LTS (v18+)
-- npm or yarn
+- Node.js LTS (v22+ or v24+)
+- pnpm (package manager)
 - Git
-- LINE Developer account
+- LINE Developer account (for LIFF integration)
 - Vercel account (for deployment)
 
 ### Setup Instructions
 
 1. Clone the repository
-2. Install dependencies with `npm install` or `yarn`
-3. Set up environment variables for local development
-4. Run the development server with `npm run dev` or `yarn dev`
+2. Install dependencies with `pnpm install`
+3. Set up environment variables for local development (copy `.env.local.example` to `.env.local`)
+4. Run the development server with `pnpm dev`
+5. Run tests with `pnpm test` or `pnpm test:watch` for watch mode
 
 ### Environment Configuration
 
-```
+```env
 # LINE LIFF Configuration
 NEXT_PUBLIC_LIFF_ID=your-liff-id
 LIFF_CHANNEL_ID=your-channel-id
@@ -77,14 +78,14 @@ DAILY_WORD_REFRESH_TIME=00:00:00 # Japan time
 
 - **LINE LIFF API**:
   - Purpose: Integration with LINE for mini app functionality
-  - Documentation: https://developers.line.biz/en/docs/liff/
+  - Documentation: <https://developers.line.biz/en/docs/liff/>
   - Authentication: LIFF ID, Channel ID, Channel Secret
   - Rate Limits: Standard LINE API rate limits
   - Environment Variables: NEXT_PUBLIC_LIFF_ID, LIFF_CHANNEL_ID, LIFF_CHANNEL_SECRET
 
 - **LINE Login API**:
   - Purpose: User authentication
-  - Documentation: https://developers.line.biz/en/docs/line-login/
+  - Documentation: <https://developers.line.biz/en/docs/line-login/>
   - Authentication: Same as LIFF
   - Rate Limits: Standard LINE API rate limits
   - Environment Variables: Same as LIFF
@@ -93,13 +94,13 @@ DAILY_WORD_REFRESH_TIME=00:00:00 # Japan time
 
 - **@line/liff**:
   - Purpose: LINE Front-end Framework SDK
-  - Documentation: https://developers.line.biz/en/reference/liff-api/
+  - Documentation: <https://developers.line.biz/en/reference/liff-api/>
   - Version: Latest stable
   - Notes: Required for LINE Mini App functionality
 
 - **@vercel/kv**:
   - Purpose: Redis-compatible key-value database
-  - Documentation: https://vercel.com/docs/storage/vercel-kv
+  - Documentation: <https://vercel.com/docs/storage/vercel-kv>
   - Version: Latest stable
   - Notes: Used for storing game state, user data, and daily words
 
@@ -110,6 +111,7 @@ DAILY_WORD_REFRESH_TIME=00:00:00 # Japan time
 - Maximum response time for API calls should be under 1 second
 - Must support all browsers compatible with LINE LIFF
 - Resource usage must stay within Vercel free/paid plan limitations
+- TypeScript strict mode enabled - use `type` aliases instead of `interface` to prevent implicit declaration merging
 
 ## Deployment Process
 
@@ -167,7 +169,7 @@ DAILY_WORD_REFRESH_TIME=00:00:00 # Japan time
 
 - Custom on-screen keyboard for hiragana input
 - Color-coding of keyboard keys based on guess results
-- Input validation to ensure only basic hiragana characters
+- Input validation to ensure only basic hiragana characters (excluding 'を')
 
 ### Game State Management
 

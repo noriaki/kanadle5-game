@@ -1,8 +1,13 @@
 # Progress Status - Kanadle5 Game
 
-*Last Updated: 2025-06-02*
+*Last Updated: 2025-06-03*
 
 ## Progress Log
+
+- **2025-06-03**:
+  - Set up GitHub Actions CI workflow for automated testing
+  - Configured CI to test on Node.js 22.x and 24.x
+  - Included ESLint, Markdown lint, TypeScript check, and Jest tests in CI pipeline
 
 - **2025-06-02**:
   - Set up Jest testing framework for TDD approach
@@ -60,17 +65,24 @@ Project has moved from planning to active development phase. Core game logic fun
 - **Status**: Complete
 - **Notes**: Includes exclusion of 'を' character as per updated game rules
 
+### Feature 7: CI/CD Pipeline Setup
+
+- **Description**: GitHub Actions workflow for automated testing
+- **Completion Date**: 2025-06-03
+- **Status**: Complete
+- **Notes**: Tests run on Node.js 22.x and 24.x, includes linting and test coverage
+
 ## Features In Progress
 
-### Feature 7: Core Game Logic Implementation
+### Feature 8: Core Game Logic Implementation
 
 - **Description**: Development of the basic word-guessing gameplay functionality
 - **Target Completion**: Week 1
 - **Status**: In Progress
-- **Progress**: 20%
+- **Progress**: 25%
 - **Remaining Tasks**:
   - ✅ Implement validateWord function
-  - ⏳ Implement evaluateGuess function (tests written)
+  - ⏳ Implement evaluateGuess function (next task)
   - 📋 Implement getDailyWord function
   - 📋 Implement updateGameState functions
   - 📋 Create game state management hooks
@@ -78,7 +90,7 @@ Project has moved from planning to active development phase. Core game logic fun
 
 ## Pending Features
 
-### Feature 6: LINE LIFF Integration
+### Feature 9: LINE LIFF Integration
 
 - **Description**: Integration with LINE platform for authentication and sharing
 - **Target Start**: Week 2
@@ -87,7 +99,7 @@ Project has moved from planning to active development phase. Core game logic fun
   - LIFF ID and channel registration
 - **Notes**: Will require testing with LINE debugging tools
 
-### Feature 7: User Data Storage
+### Feature 10: User Data Storage
 
 - **Description**: Persistence of user game history and statistics
 - **Target Start**: Week 2
@@ -96,7 +108,7 @@ Project has moved from planning to active development phase. Core game logic fun
   - Game functionality completion
 - **Notes**: Will use Vercel KV for data storage
 
-### Feature 8: Results Sharing
+### Feature 11: Results Sharing
 
 - **Description**: Ability to share game results via LINE messaging
 - **Target Start**: Week 3
@@ -105,7 +117,7 @@ Project has moved from planning to active development phase. Core game logic fun
   - LINE Integration
 - **Notes**: Will use emoji-based sharing format similar to Wordle
 
-### Feature 9: UI Components and Styling
+### Feature 12: UI Components and Styling
 
 - **Description**: Complete styling and responsive design of game interface
 - **Target Start**: Week 1-2
@@ -115,7 +127,10 @@ Project has moved from planning to active development phase. Core game logic fun
 
 ## Known Issues
 
-No known issues at this time, as development has not yet started.
+- **Issue 1**: Word dictionary needs to be verified to exclude words containing 'を' character
+  - Severity: Low
+  - Impact: Game rules consistency
+  - Status: Pending verification
 
 ## Design Questions for Implementation
 
@@ -132,11 +147,12 @@ No technical debt items recorded yet, as development has not yet started.
 
 ## Testing Status
 
-- **Unit Tests**: Not started
+- **Unit Tests**: In Progress (validateWord tests completed and passing)
 - **Integration Tests**: Not started
 - **End-to-End Tests**: Not started
 - **Performance Tests**: Not started
 - **Manual Testing**: Not started
+- **CI/CD Tests**: Active (ESLint, TypeScript check, Jest tests)
 
 ## Documentation Status
 
