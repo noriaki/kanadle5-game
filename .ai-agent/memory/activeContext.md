@@ -26,12 +26,13 @@ Project setup and internal design phases are complete. The focus is now on imple
 - **Task 4**: Implement basic game logic
   - Status: **In Progress**
   - Priority: High
-  - Notes: TDD approach - validateWord completed with tests. Next: evaluateGuess function.
+  - Notes: TDD approach - validateWord and evaluateGuess completed with tests. Next: getDailyWord function.
 
 ## Recent Changes
 
 ### Code Changes
 
+- 2025-06-03: Implemented `evaluateGuess` function with tests - two-pass algorithm for character evaluation with duplicate handling
 - 2025-06-03: Created GitHub Actions CI workflow for automated testing on Node.js 22.x and 24.x
 - 2025-06-02: Implemented `validateWord` function with tests - handles basic hiragana validation, excludes 'を' character
 - 2025-06-02: Set up Jest testing framework for TDD approach
@@ -63,8 +64,8 @@ Project setup and internal design phases are complete. The focus is now on imple
 
 1. Complete TDD implementation of core game functions:
    - ✅ `validateWord` function (completed)
-   - ⏳ `evaluateGuess` function (in progress)
-   - 📋 `getDailyWord` function
+   - ✅ `evaluateGuess` function (completed)
+   - ⏳ `getDailyWord` function (next priority)
    - 📋 `updateGameState` functions
 2. Update hiragana keyboard component to exclude 'を' character
 3. Verify word dictionary doesn't contain words with 'を'
@@ -125,8 +126,8 @@ See `systemPatterns.md#Open Questions for Future Implementation` for detailed sp
 
 ### Current Branch
 
-- Branch: main
-- Status: All code changes merged. CI/CD pipeline operational (PR #6 merged).
+- Branch: feature/implement-evaluate-guess
+- Status: Implementing evaluateGuess function with TDD approach.
 
 ### Test Environment
 
