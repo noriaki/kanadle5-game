@@ -94,7 +94,7 @@ Project has moved from planning to active development phase. Core game logic fun
 
 - **Description**: Integration with LINE platform for authentication and sharing
 - **Target Start**: Week 2
-- **Dependencies**: 
+- **Dependencies**:
   - Core game functionality completion
   - LIFF ID and channel registration
 - **Notes**: Will require testing with LINE debugging tools
