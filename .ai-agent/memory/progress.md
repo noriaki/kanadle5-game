@@ -1,8 +1,15 @@
 # Progress Status - Kanadle5 Game
 
-*Last Updated: 2025-06-03*
+*Last Updated: 2025-06-04*
 
 ## Progress Log
+
+- **2025-06-04**:
+  - Implemented mock `getDailyWord` function that always returns "つきあかり"
+  - Created comprehensive implementation plan for full getDailyWord functionality
+  - Designed word list persistence architecture using Vercel KV
+  - Defined data models for word list storage and daily word caching
+  - Added tests for mock getDailyWord function
 
 - **2025-06-03**:
   - Implemented `evaluateGuess` function with comprehensive tests
@@ -75,25 +82,40 @@ Project has moved from planning to active development phase. Core game logic fun
 - **Status**: Complete
 - **Notes**: Tests run on Node.js 22.x and 24.x, includes linting and test coverage
 
+### Feature 8: evaluateGuess Function
+
+- **Description**: Implemented guess evaluation with two-pass algorithm for character matching
+- **Completion Date**: 2025-06-03
+- **Status**: Complete
+- **Notes**: Handles duplicate characters with proper priority, comprehensive test coverage
+
+### Feature 9: getDailyWord Mock Function
+
+- **Description**: Mock implementation of getDailyWord that returns fixed word for testing
+- **Completion Date**: 2025-06-04
+- **Status**: Complete
+- **Notes**: Returns "つきあかり", includes TODO for full implementation
+
 ## Features In Progress
 
-### Feature 8: Core Game Logic Implementation
+### Feature 10: Core Game Logic Implementation
 
 - **Description**: Development of the basic word-guessing gameplay functionality
 - **Target Completion**: Week 1
 - **Status**: In Progress
-- **Progress**: 40%
+- **Progress**: 60%
 - **Remaining Tasks**:
   - ✅ Implement validateWord function
   - ✅ Implement evaluateGuess function
-  - ⏳ Implement getDailyWord function (next task)
+  - ✅ Implement getDailyWord function (mock completed)
+  - 📋 Implement full getDailyWord with persistence
   - 📋 Implement updateGameState functions
   - 📋 Create game state management hooks
 - **Notes**: Using TDD approach - writing tests before implementation
 
 ## Pending Features
 
-### Feature 9: LINE LIFF Integration
+### Feature 11: LINE LIFF Integration
 
 - **Description**: Integration with LINE platform for authentication and sharing
 - **Target Start**: Week 2
@@ -102,7 +124,7 @@ Project has moved from planning to active development phase. Core game logic fun
   - LIFF ID and channel registration
 - **Notes**: Will require testing with LINE debugging tools
 
-### Feature 10: User Data Storage
+### Feature 12: User Data Storage
 
 - **Description**: Persistence of user game history and statistics
 - **Target Start**: Week 2
@@ -111,7 +133,7 @@ Project has moved from planning to active development phase. Core game logic fun
   - Game functionality completion
 - **Notes**: Will use Vercel KV for data storage
 
-### Feature 11: Results Sharing
+### Feature 13: Results Sharing
 
 - **Description**: Ability to share game results via LINE messaging
 - **Target Start**: Week 3
@@ -120,7 +142,7 @@ Project has moved from planning to active development phase. Core game logic fun
   - LINE Integration
 - **Notes**: Will use emoji-based sharing format similar to Wordle
 
-### Feature 12: UI Components and Styling
+### Feature 14: UI Components and Styling
 
 - **Description**: Complete styling and responsive design of game interface
 - **Target Start**: Week 1-2

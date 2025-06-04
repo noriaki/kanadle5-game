@@ -5,3 +5,4 @@
 
 export { validateWord } from './validateWord';
 export { evaluateGuess } from './evaluateGuess';
+export { getDailyWord } from './getDailyWord';

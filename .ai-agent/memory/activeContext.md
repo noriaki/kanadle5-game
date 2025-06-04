@@ -1,6 +1,6 @@
 # Active Context - Kanadle5 Game
 
-Last Updated: 2025-06-03
+Last Updated: 2025-06-04
 
 ## Current Focus
 
@@ -29,12 +29,14 @@ Project setup and internal design phases are complete. The focus is now on imple
 - **Task 4**: Implement basic game logic
   - Status: **In Progress**
   - Priority: High
-  - Notes: TDD approach - validateWord and evaluateGuess completed with tests. Next: getDailyWord function.
+  - Notes: TDD approach - validateWord and evaluateGuess completed with tests. getDailyWord mock implementation completed.
 
 ## Recent Changes
 
 ### Code Changes
 
+- 2025-06-04: Implemented mock `getDailyWord` function - always returns "つきあかり" for testing purposes
+- 2025-06-04: Created comprehensive implementation plan for full getDailyWord functionality with word list persistence
 - 2025-06-03: Implemented `evaluateGuess` function with tests - two-pass algorithm for character evaluation with duplicate handling
 - 2025-06-03: Created GitHub Actions CI workflow for automated testing on Node.js 22.x and 24.x
 - 2025-06-02: Implemented `validateWord` function with tests - handles basic hiragana validation, excludes 'を' character
@@ -52,6 +54,7 @@ Project setup and internal design phases are complete. The focus is now on imple
 
 ### Architecture Decisions
 
+- 2025-06-04: getDailyWord implementation - mock first, full implementation with word list persistence planned
 - 2025-06-02: TypeScript policy - use `type` instead of `interface` to prevent implicit declaration merging
 - 2025-05-02: Next.js App Router architecture selected for frontend
 - 2025-05-02: Vercel KV chosen as primary database for its simplicity and integration
@@ -68,8 +71,9 @@ Project setup and internal design phases are complete. The focus is now on imple
 1. Complete TDD implementation of core game functions:
    - ✅ `validateWord` function (completed)
    - ✅ `evaluateGuess` function (completed)
-   - ⏳ `getDailyWord` function (next priority)
+   - ✅ `getDailyWord` function (mock implementation completed)
    - 📋 `updateGameState` functions
+   - 📋 Full `getDailyWord` implementation with word list persistence
 2. Update hiragana keyboard component to exclude 'を' character
 3. Verify word dictionary doesn't contain words with 'を'
 4. Set up basic game state management using hooks (`src/hooks/useGameState.ts`)
@@ -131,8 +135,8 @@ See `systemPatterns.md#Open Questions for Future Implementation` for detailed sp
 
 ### Current Branch
 
-- Branch: main
-- Status: All code changes merged. evaluateGuess function completed (PR #8 merged).
+- Branch: feature/implement-get-daily-word-mock
+- Status: Mock getDailyWord function implemented with tests. Ready for PR.
 
 ### Test Environment
 
