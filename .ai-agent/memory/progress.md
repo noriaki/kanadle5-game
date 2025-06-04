@@ -5,6 +5,12 @@
 ## Progress Log
 
 - **2025-06-04**:
+  - Implemented HiraganaKeyboard component with mobile-optimized 5-row layout
+  - Added color feedback system for character states (correct/present/absent)
+  - Integrated keyboard with main page including interactive input handling
+  - Created comprehensive test suite for HiraganaKeyboard (15 test cases)
+  - Added accessibility features (ARIA labels, keyboard navigation, touch optimization)
+  - Implemented demo features for testing keyboard functionality
   - Implemented mock `getDailyWord` function that always returns "つきあかり"
   - Created comprehensive implementation plan for full getDailyWord functionality
   - Designed word list persistence architecture using Vercel KV
@@ -96,18 +102,26 @@ Project has moved from planning to active development phase. Core game logic fun
 - **Status**: Complete
 - **Notes**: Returns "つきあかり", includes TODO for full implementation
 
+### Feature 10: HiraganaKeyboard Component
+
+- **Description**: On-screen hiragana keyboard with visual feedback and mobile optimization
+- **Completion Date**: 2025-06-04
+- **Status**: Complete
+- **Notes**: Mobile-optimized 5-row layout, color feedback system, accessibility features, comprehensive test coverage (15 test cases)
+
 ## Features In Progress
 
-### Feature 10: Core Game Logic Implementation
+### Feature 11: Core Game Logic Implementation
 
 - **Description**: Development of the basic word-guessing gameplay functionality
 - **Target Completion**: Week 1
 - **Status**: In Progress
-- **Progress**: 60%
+- **Progress**: 75%
 - **Remaining Tasks**:
   - ✅ Implement validateWord function
   - ✅ Implement evaluateGuess function
   - ✅ Implement getDailyWord function (mock completed)
+  - ✅ Implement HiraganaKeyboard component
   - 📋 Implement full getDailyWord with persistence
   - 📋 Implement updateGameState functions
   - 📋 Create game state management hooks
@@ -115,7 +129,7 @@ Project has moved from planning to active development phase. Core game logic fun
 
 ## Pending Features
 
-### Feature 11: LINE LIFF Integration
+### Feature 12: LINE LIFF Integration
 
 - **Description**: Integration with LINE platform for authentication and sharing
 - **Target Start**: Week 2
