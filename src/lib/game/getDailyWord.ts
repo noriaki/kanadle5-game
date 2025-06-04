@@ -8,7 +8,8 @@
  * @param date - The date to get the word for (ignored in mock)
  * @returns Always returns "つきあかり"
  */
-export async function getDailyWord(date: Date): Promise<string> {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export async function getDailyWord(_date: Date): Promise<string> {
   // Mock implementation - always return the same word
   return 'つきあかり';
 }
