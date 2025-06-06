@@ -14,12 +14,13 @@
 ### Backend
 
 - **Language**: TypeScript/JavaScript (Node.js runtime)
-- **Framework**: Next.js API Routes
-- **API**: REST API
-- **Database**: Vercel KV (Redis-compatible) or Supabase
-- **Caching**: Vercel KV for caching
-- **Authentication**: LINE Login (LIFF)
-- **Testing**: Jest for API testing
+- **Framework**: Next.js API Routes ✅
+- **API**: REST API ✅ (game endpoints implemented)
+- **Database**: Vercel KV (Redis-compatible) 📋 (pending integration)
+- **Caching**: Vercel KV for caching 📋 (pending integration)
+- **Authentication**: LINE Login (LIFF) 📋 (pending implementation)
+- **Testing**: Jest for API testing ✅ (complete coverage)
+- **Business Logic**: Service layer separation ✅ (gameService implemented)
 
 ### Infrastructure
 
@@ -160,22 +161,25 @@ DAILY_WORD_REFRESH_TIME=00:00:00 # Japan time
 
 ### Word List Implementation
 
-- Word list stored as JSON in the codebase, with additional copy in database
-- Daily word selection algorithm uses date as seed for consistent selection
-- System ensures same word is provided to all users on a given day
-- Word validation against dictionary for player submissions
+- ✅ Word list stored as JSON in the codebase with TypeScript type definitions (WordEntry[])
+- ✅ Word validation against dictionary implemented for player submissions
+- 📋 Daily word selection algorithm uses date as seed for consistent selection (mock implementation active)
+- 📋 Additional copy in database for persistence (pending Vercel KV integration)
 
 ### Hiragana Input System
 
-- Custom on-screen keyboard for hiragana input
-- Color-coding of keyboard keys based on guess results
-- Input validation to ensure only basic hiragana characters (excluding 'を')
+- ✅ Custom on-screen keyboard for hiragana input (HiraganaKeyboard component)
+- ✅ Color-coding of keyboard keys based on guess results with comprehensive feedback
+- ✅ Input validation to ensure only basic hiragana characters (excluding 'を')
+- ✅ Mobile-optimized 5-row layout with accessibility features
 
 ### Game State Management
 
-- Game state stored in React Context/hooks for client-side gameplay
-- Persistent storage in database for logged-in users
-- Daily reset mechanism triggered at midnight Japan time
+- ✅ Game state managed with custom useGameState React hook for client-side gameplay
+- ✅ Complete state management including input, attempts, game status, and error handling
+- ✅ Client-server state separation with updateClientGameState and updateServerGameState functions
+- 📋 Persistent storage in database for logged-in users (pending LINE LIFF integration)
+- 📋 Daily reset mechanism triggered at midnight Japan time (pending full getDailyWord implementation)
 
 ### Sharing Functionality
 

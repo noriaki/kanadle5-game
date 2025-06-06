@@ -6,3 +6,4 @@
 export { validateWord } from './validateWord';
 export { evaluateGuess } from './evaluateGuess';
 export { getDailyWord } from './getDailyWord';
+export { updateClientGameState, updateServerGameState } from './updateGameState';
