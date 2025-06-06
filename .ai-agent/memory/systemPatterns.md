@@ -205,13 +205,13 @@ type UserStatistics = {
 
 ### API Endpoints
 
-1. **User API**
+1. **User API** (Planned)
    - `GET /api/user` - Get current user profile
    - `GET /api/user/statistics` - Get user statistics
 
-2. **Game API**
-   - `GET /api/game/daily` - Get today's game state (without target word)
-   - `POST /api/game/guess` - Submit a guess and get evaluation
+2. **Game API** (✅ Implemented)
+   - `GET /api/game/daily` - Get today's game state (without target word) ✅
+   - `POST /api/game/guess` - Submit a guess and get evaluation ✅
 
 3. **Guess API Request/Response**
    ```typescript
@@ -354,37 +354,40 @@ type UserStatistics = {
 
 ### Core Function Specifications
 
-#### 1. validateWord (Server-side)
+#### 1. validateWord (Server-side) ✅ Implemented
 ```typescript
-function validateWord(word: string, dictionary: string[]): boolean
+function validateWord(word: string, dictionary: WordEntry[]): boolean
 ```
-- **Input**: 5-character string, dictionary array
+- **Input**: 5-character string, dictionary array of WordEntry objects
 - **Output**: Boolean indicating validity
 - **Responsibility**: Hiragana character restriction, dictionary existence check
-- **Location**: Server-side (Next.js API route)
+- **Location**: Server-side (used by gameService layer)
 - **Security**: Prevents dictionary content exposure to client
+- **Status**: Complete with comprehensive test coverage
 
-#### 2. evaluateGuess (Server-side)
+#### 2. evaluateGuess (Server-side) ✅ Implemented
 ```typescript
 function evaluateGuess(guess: string, target: string): GuessResult
 ```
 - **Input**: Guess string, target string
 - **Output**: Array of character status (correct/present/absent)
-- **Responsibility**: Character position and existence determination
-- **Location**: Server-side (Next.js API route)
+- **Responsibility**: Character position and existence determination with two-pass algorithm
+- **Location**: Server-side (used by gameService layer)
 - **Security**: Prevents target word exposure to client
+- **Status**: Complete with comprehensive test coverage including duplicate character handling
 
-#### 3. getDailyWord (Server-side)
+#### 3. getDailyWord (Server-side) ✅ Mock Implemented
 ```typescript
-function getDailyWord(date: Date, wordList: string[]): string
+async function getDailyWord(date: Date): Promise<string>
 ```
-- **Input**: Date, word list
+- **Input**: Date
 - **Output**: Word for that day
-- **Responsibility**: Date-based unique selection
-- **Location**: Server-side (Next.js API route)
+- **Responsibility**: Date-based unique selection (currently returns "つきあかり")
+- **Location**: Server-side (used by gameService layer)
 - **Security**: Prevents target word exposure to client
+- **Status**: Mock implementation complete, full persistence implementation pending
 
-#### 4. updateGameState (Client-side & Server-side)
+#### 4. updateGameState (Client-side & Server-side) ✅ Implemented
 ```typescript
 // Client-side
 function updateClientGameState(
@@ -402,8 +405,40 @@ function updateServerGameState(
 ```
 - **Input**: Current state, guess, evaluation result/target
 - **Output**: Updated state
-- **Responsibility**: Attempt count, completion determination
+- **Responsibility**: Attempt count, completion determination, win/loss detection
 - **Location**: Both (separated by respective responsibilities)
+- **Status**: Complete with comprehensive test coverage
+
+#### 5. useGameState Hook (Client-side) ✅ Implemented
+```typescript
+function useGameState(): {
+  gameState: ClientGameState;
+  updateInput: (input: string) => void;
+  clearInput: () => void;
+  addGuess: (guess: string, result: GuessResult) => void;
+  updateGameStatus: (status: GameStatus) => void;
+  setLoading: (loading: boolean) => void;
+  setError: (error: string) => void;
+  clearError: () => void;
+  resetGame: () => void;
+}
+```
+- **Input**: None
+- **Output**: Game state and state management functions
+- **Responsibility**: Client-side game state management with React hooks
+- **Location**: Client-side React hook
+- **Status**: Complete with comprehensive test coverage
+
+#### 6. Game Service Layer ✅ Implemented
+```typescript
+async function submitGuess(guess: string, gameDate: string, wordList: WordEntry[]): Promise<GuessResult>
+async function getDailyGameState(gameDate: string): Promise<DailyGameState>
+```
+- **Input**: Game parameters and word list
+- **Output**: Business logic results
+- **Responsibility**: Business logic separation, error handling, API integration
+- **Location**: Server-side service layer
+- **Status**: Complete with comprehensive test coverage and mocked dependencies
 
 ### Security Considerations for Client-Server Separation
 
@@ -426,27 +461,28 @@ function updateServerGameState(
 
 ## Testing Strategy
 
-- **Unit Testing**: 
-  - Core game logic
-  - Utility functions
-  - Component rendering
+- **Unit Testing**: ✅ Complete (74 tests passing)
+  - Core game logic (validateWord, evaluateGuess, getDailyWord)
+  - Utility functions (updateGameState, gameService layer)
+  - Component rendering (GameBoard, HiraganaKeyboard)
+  - React hooks (useGameState)
 
-- **Integration Testing**: 
-  - API endpoints
-  - User flows
-  - State management
+- **Integration Testing**: ✅ Complete
+  - API endpoints (/api/game/guess, /api/game/daily)
+  - Component integration (GameBoard + HiraganaKeyboard)
+  - State management integration
 
-- **End-to-End Testing**: 
+- **End-to-End Testing**: 📋 Pending
   - Complete game flows
   - Authentication process
   - Result sharing
 
-- **Performance Testing**: 
+- **Performance Testing**: 📋 Pending
   - Load time benchmarks
   - Interaction responsiveness
   - API response times
 
-- **Security Testing**: 
-  - Authentication flow verification
-  - Input validation
-  - Safe data handling practices
+- **Security Testing**: ✅ Partial
+  - Input validation (implemented)
+  - Safe data handling practices (implemented)
+  - Authentication flow verification (pending LINE LIFF)
