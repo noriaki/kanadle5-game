@@ -3,5 +3,4 @@
  * Export all custom hooks from this file
  */
 
-// Example: export { useGameState } from './useGameState';
-// Example: export { useKeyboard } from './useKeyboard';
+export { useGameState } from './useGameState';

@@ -6,9 +6,9 @@ This document serves as the main entry point for Claude Code to access project m
 
 These files define how you should approach this project, your behavior patterns, and operational guidelines:
 
-- [Basic Behavior and Principles](.ai-agent/rules/01_basic.md)
-- [Memory Usage Guidelines](.ai-agent/rules/02_memory.md)
-- [Git and Version Control Guidelines](.ai-agent/rules/03_git.md)
+- [Basic Behavior and Principles](.ai-agent/rules/01_basic.md) - @.ai-agent/rules/01_basic.md
+- [Memory Usage Guidelines](.ai-agent/rules/02_memory.md) - @.ai-agent/rules/02_memory.md
+- [Git and Version Control Guidelines](.ai-agent/rules/03_git.md) - @.ai-agent/rules/03_git.md
 
 ## Project Memory and Context
 
