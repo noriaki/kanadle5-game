@@ -1,6 +1,6 @@
 # Active Context - Kanadle5 Game
 
-Last Updated: 2025-06-06
+Last Updated: 2025-06-08
 
 ## Current Focus
 
@@ -115,6 +115,15 @@ Last Updated: 2025-06-06
    - Verify word dictionary doesn't contain words with 'を'
    - Add game completion screen with statistics
    - Implement result sharing functionality
+   - Fix dark mode contrast issue with input form text color
+   - Add tutorial/onboarding for first-time users with skippable sample game
+
+4. **Dictionary Enhancement**:
+   - Enrich 5-character word dictionary
+   - Consider extracting 5-character hiragana proper nouns from morphological analysis dictionaries
+
+5. **Future Enhancement** (After core features complete):
+   - Friend battle mode: Asynchronous competitive mode showing other players' previous results (color feedback only) revealed step-by-step
 
 ### Upcoming Milestones
 

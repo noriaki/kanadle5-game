@@ -1,6 +1,6 @@
 # Progress Status - Kanadle5 Game
 
-*Last Updated: 2025-06-06*
+*Last Updated: 2025-06-08*
 
 ## Progress Log
 
@@ -216,12 +216,40 @@ Project has successfully completed the first major milestone with all core game 
   - Basic component structure
 - **Notes**: Mobile-first approach with Tailwind CSS
 
+### Feature 19: Friend Battle Mode
+
+- **Description**: Asynchronous competitive mode where players can compete against friends' previous results
+- **Target Start**: After core features completion
+- **Dependencies**: 
+  - Complete game functionality
+  - User authentication and data storage
+  - Social features infrastructure
+- **Notes**: Shows other players' results (color feedback only) revealed step-by-step in sync with player's own input. Winner is determined by who reached the correct answer faster.
+
 ## Known Issues
 
 - **Issue 1**: Word dictionary needs to be verified to exclude words containing 'を' character
   - Severity: Low
   - Impact: Game rules consistency
   - Status: Pending verification
+
+- **Issue 2**: Dark mode text visibility issue in input form
+  - Severity: Medium
+  - Impact: User experience in dark mode
+  - Status: Open
+  - Description: Text color in input form has low contrast with background in dark mode, affecting readability
+
+- **Issue 3**: Limited 5-character word dictionary
+  - Severity: Medium
+  - Impact: Game variety and replayability
+  - Status: Open
+  - Description: Current dictionary needs enrichment. Consider extracting 5-character hiragana proper nouns from morphological analysis dictionaries
+
+- **Issue 4**: No tutorial for first-time users
+  - Severity: Medium
+  - Impact: User onboarding experience
+  - Status: Open
+  - Description: Need to implement tutorial/onboarding flow with skippable sample game demonstrating controls and color-coded feedback system
 
 ## Design Questions for Implementation
 
