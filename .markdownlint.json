@@ -4,9 +4,11 @@
   "MD033": {
     "allowed_elements": ["antml:function_calls", "antml:invoke", "antml:parameter"]
   },
+  "MD036": false,
+  "MD040": true,
   "MD041": false,
   "MD029": {
-    "style": "ordered"
+    "style": "one_or_ordered"
   },
   "MD024": false
 }

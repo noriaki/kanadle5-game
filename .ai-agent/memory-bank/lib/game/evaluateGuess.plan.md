@@ -23,7 +23,7 @@ export function evaluateGuess(guess: string, targetWord: string): GuessResult;
 
 ### 1. Preprocessing
 
-```
+```typescript
 1. Count occurrences of each character in target word
    Example: "ねこねこる" → {ね:2, こ:2, る:1}
 2. Initialize result array (5 elements, all undefined)
@@ -31,7 +31,7 @@ export function evaluateGuess(guess: string, targetWord: string): GuessResult;
 
 ### 2. First Pass: Correct Evaluation
 
-```
+```typescript
 FOR i = 0 TO 4:
   IF guess[i] == target[i]:
     result[i] = "correct"
@@ -40,7 +40,7 @@ FOR i = 0 TO 4:
 
 ### 3. Second Pass: Present/Absent Evaluation
 
-```
+```typescript
 FOR i = 0 TO 4:  // Process from left to right
   IF result[i] == undefined:
     IF targetCharCount[guess[i]] > 0:
@@ -98,7 +98,7 @@ FOR i = 0 TO 4:  // Process from left to right
 
 ### Basic Cases
 
-```
+```typescript
 1. No duplicates
 Input: あいうえお
 Target: あいえかき

@@ -1,6 +1,8 @@
 # Progress Status - Kanadle5 Game
 
-_Last Updated: 2025-06-10_
+## Last Updated
+
+2025-06-10
 
 ## Progress Log
 
