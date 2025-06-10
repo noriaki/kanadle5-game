@@ -1,23 +1,28 @@
 # evaluateGuess Function Implementation Plan
 
 ## Overview
+
 The `evaluateGuess` function compares a 5-character guess word with a target word and determines the state of each character:
+
 - **correct**: Character and position both match
 - **present**: Character exists in target but at different position
 - **absent**: Character does not exist in target
 
 ## Function Signature
+
 ```typescript
-export function evaluateGuess(guess: string, targetWord: string): GuessResult
+export function evaluateGuess(guess: string, targetWord: string): GuessResult;
 ```
 
 ## Evaluation Timing
+
 - Evaluation is performed after all 5 characters are input
 - Results for all 5 characters are returned simultaneously
 
 ## Detailed Evaluation Algorithm
 
 ### 1. Preprocessing
+
 ```
 1. Count occurrences of each character in target word
    Example: "ねこねこる" → {ね:2, こ:2, る:1}
@@ -25,6 +30,7 @@ export function evaluateGuess(guess: string, targetWord: string): GuessResult
 ```
 
 ### 2. First Pass: Correct Evaluation
+
 ```
 FOR i = 0 TO 4:
   IF guess[i] == target[i]:
@@ -33,6 +39,7 @@ FOR i = 0 TO 4:
 ```
 
 ### 3. Second Pass: Present/Absent Evaluation
+
 ```
 FOR i = 0 TO 4:  // Process from left to right
   IF result[i] == undefined:
@@ -46,36 +53,43 @@ FOR i = 0 TO 4:  // Process from left to right
 ## Processing Example: "ここあねこ" vs "ねこねこる"
 
 ### Initial State
+
 - Guess: `[こ,こ,あ,ね,こ]`
 - Target: `[ね,こ,ね,こ,る]`
 - Target char count: `{ね:2, こ:2, る:1}`
 
 ### After First Pass
+
 - Position 1: こ==こ → correct
 - Result: `[undefined, correct, undefined, undefined, undefined]`
 - Target char count: `{ね:2, こ:1, る:1}`
 
 ### Second Pass Processing
+
 1. Position 0: "こ", count 1 → **present**, count 0
 2. Position 2: "あ", count 0 → **absent**
 3. Position 3: "ね", count 2 → **present**, count 1
 4. Position 4: "こ", count 0 → **absent**
 
 ### Final Result
+
 `[present, correct, absent, present, absent]`
 
 ## Edge Case Specifications
 
 ### Multiple Same Characters
+
 - Correct matches consume count first
 - Remaining positions assigned present from left to right
 - Positions exceeding available count become absent
 
 ### All Same Characters
+
 - Input "aaaaa", Target "aaaaa" → All correct
 - Input "aaaaa", Target "aabbb" → First 2 correct, rest absent
 
 ## Evaluation Priority Principles
+
 1. **Exact position matches (correct) have highest priority**
 2. **Left-side characters have priority for present status**
 3. **Duplicates exceeding target count are marked absent**
@@ -83,6 +97,7 @@ FOR i = 0 TO 4:  // Process from left to right
 ## Test Cases to Implement
 
 ### Basic Cases
+
 ```
 1. No duplicates
 Input: あいうえお
@@ -126,12 +141,14 @@ Result: present, present, present, present, present
 ```
 
 ### Invalid Input Tests
+
 - Non-hiragana characters
 - Including 'を' character
 - Null/undefined inputs
 - Different length strings
 
 ## Example Test
+
 ```typescript
 test('evaluates exact match correctly', () => {
   const result: GuessResult = evaluateGuess('こんにちは', 'こんにちは');
@@ -140,11 +157,13 @@ test('evaluates exact match correctly', () => {
 ```
 
 ## Implementation Notes
+
 - Target character count is dynamically updated during evaluation
 - Each pass processes all positions independently
 - Character normalization (case, width) is outside scope of this specification
 
 ## Next Actions
+
 1. Create test file with all specified test cases
 2. Implement function following the two-pass algorithm
 3. Ensure left-to-right priority for present assignment

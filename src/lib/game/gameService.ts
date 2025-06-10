@@ -16,8 +16,7 @@ export async function submitGuess(
   gameDate: string,
   wordList: WordEntry[]
 ): Promise<
-  | { success: true; result: GuessResult; isWin: boolean }
-  | { success: false; error: string }
+  { success: true; result: GuessResult; isWin: boolean } | { success: false; error: string }
 > {
   try {
     // Validate the word
@@ -31,13 +30,13 @@ export async function submitGuess(
 
     // Get the daily word
     const targetWord = await getDailyWord(new Date(gameDate));
-    
+
     // Evaluate the guess
     const result = evaluateGuess(guess, targetWord);
-    
+
     // Check win condition
     const isWin = result.every(r => r === 'correct');
-    
+
     return {
       success: true,
       result,
@@ -57,9 +56,7 @@ export async function submitGuess(
  * @param gameDate The game date (YYYY-MM-DD format)
  * @returns Daily game state
  */
-export async function getDailyGameState(
-  gameDate: string
-): Promise<{
+export async function getDailyGameState(gameDate: string): Promise<{
   gameDate: string;
   isActive: boolean;
   currentAttempt: number;
@@ -67,7 +64,7 @@ export async function getDailyGameState(
 }> {
   // Verify that we can get a daily word (throws if not)
   await getDailyWord(new Date(gameDate));
-  
+
   return {
     gameDate,
     isActive: true,

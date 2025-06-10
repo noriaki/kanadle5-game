@@ -25,7 +25,7 @@ const HIRAGANA_LAYOUT = [
   ['い', 'き', 'し', 'ち', 'に', 'ひ', 'み', '', 'り', ''],
   ['う', 'く', 'す', 'つ', 'ぬ', 'ふ', 'む', 'ゆ', 'る', ''],
   ['え', 'け', 'せ', 'て', 'ね', 'へ', 'め', '', 'れ', ''],
-  ['お', 'こ', 'そ', 'と', 'の', 'ほ', 'も', 'よ', 'ろ', 'ん']
+  ['お', 'こ', 'そ', 'と', 'の', 'ほ', 'も', 'よ', 'ろ', 'ん'],
 ];
 
 /**
@@ -35,7 +35,7 @@ const HIRAGANA_LAYOUT = [
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const SPECIAL_KEYS = {
   BACKSPACE: 'BACKSPACE',
-  ENTER: 'ENTER'
+  ENTER: 'ENTER',
 } as const;
 
 /**
@@ -56,7 +56,7 @@ const getKeyColorClass = (state: CharacterState): string => {
 
 /**
  * HiraganaKeyboard Component
- * 
+ *
  * Provides an on-screen hiragana keyboard with visual feedback for the Kanadle5 game.
  * Features touch-optimized keys with color-coded feedback based on character usage.
  */
@@ -65,7 +65,7 @@ const HiraganaKeyboard: React.FC<HiraganaKeyboardProps> = ({
   onBackspace,
   onEnter,
   characterStates,
-  disabled = false
+  disabled = false,
 }) => {
   /**
    * Handle character key press
@@ -96,12 +96,7 @@ const HiraganaKeyboard: React.FC<HiraganaKeyboardProps> = ({
    */
   const renderCharacterKey = (character: string, rowIndex: number, colIndex: number) => {
     if (!character) {
-      return (
-        <div
-          key={`empty-${rowIndex}-${colIndex}`}
-          className="w-8 h-10"
-        />
-      );
+      return <div key={`empty-${rowIndex}-${colIndex}`} className="w-8 h-10" />;
     }
 
     const state = characterStates[character] || 'default';
@@ -138,9 +133,10 @@ const HiraganaKeyboard: React.FC<HiraganaKeyboardProps> = ({
       px-4 h-10 rounded border-2 text-sm font-medium
       transition-colors duration-150 ease-in-out
       touch-manipulation select-none
-      ${disabled 
-        ? 'bg-gray-300 text-gray-500 border-gray-400 opacity-50 cursor-not-allowed'
-        : 'bg-gray-600 text-white border-gray-700 hover:bg-gray-700 active:bg-gray-800 cursor-pointer'
+      ${
+        disabled
+          ? 'bg-gray-300 text-gray-500 border-gray-400 opacity-50 cursor-not-allowed'
+          : 'bg-gray-600 text-white border-gray-700 hover:bg-gray-700 active:bg-gray-800 cursor-pointer'
       }
     `;
 
@@ -177,13 +173,8 @@ const HiraganaKeyboard: React.FC<HiraganaKeyboardProps> = ({
       {/* Character keys grid */}
       <div className="grid gap-1 mb-2">
         {HIRAGANA_LAYOUT.map((row, rowIndex) => (
-          <div
-            key={`row-${rowIndex}`}
-            className="flex justify-center gap-1"
-          >
-            {row.map((character, colIndex) =>
-              renderCharacterKey(character, rowIndex, colIndex)
-            )}
+          <div key={`row-${rowIndex}`} className="flex justify-center gap-1">
+            {row.map((character, colIndex) => renderCharacterKey(character, rowIndex, colIndex))}
           </div>
         ))}
       </div>

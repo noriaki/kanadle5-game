@@ -22,15 +22,15 @@ export function updateClientGameState(
   const newGuesses = [...currentState.guesses, guess];
   const newGuessResults = [...currentState.guessResults, result];
   const newAttempt = currentState.currentAttempt + 1;
-  
+
   // Check win condition
   const isWin = result.every(r => r === 'correct');
-  
+
   // Check lose condition
   const isLose = newAttempt >= MAX_ATTEMPTS && !isWin;
-  
+
   const newGameStatus = isWin ? 'won' : isLose ? 'lost' : 'playing';
-  
+
   return {
     ...currentState,
     currentInput: '',
@@ -61,13 +61,13 @@ export function updateServerGameState(
 
   const newAttempts = [...currentState.attempts, guess];
   const newAttemptCount = currentState.attemptCount + 1;
-  
+
   // Check win condition
   const isWin = guess === targetWord;
-  
+
   // Check completion condition (win or max attempts reached)
   const isCompleted = isWin || newAttemptCount >= MAX_ATTEMPTS;
-  
+
   return {
     ...currentState,
     attempts: newAttempts,

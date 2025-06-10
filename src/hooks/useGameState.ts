@@ -36,15 +36,15 @@ export function useGameState() {
       const newGuesses = [...prev.guesses, guess];
       const newGuessResults = [...prev.guessResults, result];
       const newAttempt = prev.currentAttempt + 1;
-      
+
       // Check win condition
       const isWin = result.every(r => r === 'correct');
-      
+
       // Check lose condition
       const isLose = newAttempt >= MAX_ATTEMPTS && !isWin;
-      
+
       const newGameStatus: GameStatus = isWin ? 'won' : isLose ? 'lost' : 'playing';
-      
+
       return {
         ...prev,
         guesses: newGuesses,

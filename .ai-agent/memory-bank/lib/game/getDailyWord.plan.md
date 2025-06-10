@@ -28,17 +28,17 @@ The `getDailyWord` function selects the daily word deterministically based on th
 ```typescript
 // Data structure stored in Vercel KV
 type StoredWordList = {
-  version: number;          // List version number
-  updatedAt: string;        // Last update timestamp
-  words: string[];          // Array of 5-character hiragana words
-}
+  version: number; // List version number
+  updatedAt: string; // Last update timestamp
+  words: string[]; // Array of 5-character hiragana words
+};
 
 // Daily word cache (to handle word list changes)
 type DailyWordCache = {
-  date: string;             // YYYY-MM-DD (JST)
-  word: string;             // Word for that day
-  listVersion: number;      // Version of word list used
-}
+  date: string; // YYYY-MM-DD (JST)
+  word: string; // Word for that day
+  listVersion: number; // Version of word list used
+};
 ```
 
 #### Word List Manager Interface
@@ -48,13 +48,13 @@ type DailyWordCache = {
 interface WordListManager {
   // Initialize from words.json
   initialize(): Promise<void>;
-  
+
   // Get current word list
   getWordList(): Promise<string[]>;
-  
+
   // Update word list (admin function)
   updateWordList(words: string[]): Promise<void>;
-  
+
   // Get version information
   getVersion(): Promise<number>;
 }
@@ -66,7 +66,7 @@ interface WordListManager {
 
 ```typescript
 // src/lib/game/getDailyWord.ts
-async function getDailyWord(date: Date): Promise<string>
+async function getDailyWord(date: Date): Promise<string>;
 ```
 
 #### Implementation Strategy
