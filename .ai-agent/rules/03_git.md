@@ -81,24 +81,31 @@
 
 ### Starting New Work
 
+Use MCP Git tools:
+
 ```bash
-git checkout main
-git pull
-git checkout -b feature/[feature-name]
+mcp__git__git_checkout main
+mcp__git__git_pull
+mcp__git__git_create_branch feature/[feature-name]
+mcp__git__git_checkout feature/[feature-name]
 ```
 
 ### Regular Commits
 
+Use MCP Git tools:
+
 ```bash
-git add [files]
-git commit -m "type: descriptive message"
+mcp__git__git_add [files]
+mcp__git__git_commit "type: descriptive message"
 ```
 
 ### Creating Pull Request
 
+Use MCP tools:
+
 ```bash
-git push -u origin feature/[feature-name]
-# Then create PR on GitHub from feature/[feature-name] to main
+git push -u origin feature/[feature-name]  # Standard push
+mcp__github__create_pull_request          # Create PR via MCP
 ```
 
 ### Responding to PR Feedback
@@ -110,11 +117,13 @@ git push -u origin feature/[feature-name]
 
 ### After PR is Merged by User
 
+Use MCP Git tools:
+
 ```bash
-git checkout main
-git pull
-git branch -d feature/[feature-name]         # Delete local branch
-git push origin --delete feature/[feature-name]  # Delete remote branch
+mcp__git__git_checkout main
+mcp__git__git_pull
+mcp__git__git_branch -d feature/[feature-name]
+mcp__github__delete_branch feature/[feature-name]
 ```
 
 ## Development Phase Management
@@ -146,10 +155,7 @@ Update project memory files to reflect current status:
 
 #### 3. Git Operations
 
-- Verify current branch: `git branch`
-- Commit changes with appropriate granularity (feature-based, TDD cycle-based)
-- Use proper commit message format (see Commit Guidelines above)
-- Push to remote: `git push -u origin [branch-name]`
+Use MCP Git tools following GitHub Flow Workflow (see above sections)
 
 #### 4. Pull Request Creation and Review
 
@@ -159,11 +165,7 @@ Update project memory files to reflect current status:
   - Test results
   - Any relevant context
 - Request user review
-- Wait for approval and merge
-- Clean up branches after merge:
-  - Update local main branch
-  - Delete local feature branch
-  - Delete remote feature branch
+- Wait for approval and merge (see "After PR is Merged" section for cleanup)
 
 ### Package Management with pnpm
 
@@ -185,10 +187,5 @@ This project uses pnpm for package management. Always use pnpm commands:
 ## MCP Server Integration
 
 - **Primary Tools**: Always use `mcp__git` and `mcp__github` tools for Git and GitHub operations
-- **Tool Verification**: Prior to performing Git/GitHub operations, verify MCP server availability
 - **Fallback Approach**: Only use standard Git commands when MCP tools are unavailable or return errors
-- **Example Operations**:
-  - Use `mcp__git__git_status` instead of `git status`
-  - Use `mcp__github__create_pull_request` instead of manual PR creation
-  - Use `mcp__git__git_commit` instead of `git commit`
 - **Error Handling**: If MCP tools return errors, document the issue and fall back to shell commands
