@@ -31,13 +31,13 @@ describe('Redis Connection', () => {
       // Set up mock before triggering initialization
       const mockInstance = {
         ping: jest.fn().mockResolvedValue('PONG'),
-      } as any;
+      } as jest.Mocked<Partial<Redis>>;
       mockRedisConstructor.mockImplementation(() => mockInstance);
-      
+
       // Trigger lazy initialization by accessing a Redis method
       const pingMethod = redis.ping;
       expect(pingMethod).toBeDefined();
-      
+
       expect(mockRedisConstructor).toHaveBeenCalledWith({
         url: 'https://test-endpoint.upstash.io',
         token: 'test-token',
@@ -50,7 +50,8 @@ describe('Redis Connection', () => {
 
       expect(() => {
         // Trigger lazy initialization to check environment variables
-        const pingMethod = redis.ping;
+        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+        redis.ping;
       }).toThrow('Redis environment variables are not set');
     });
 
@@ -59,7 +60,8 @@ describe('Redis Connection', () => {
 
       expect(() => {
         // Trigger lazy initialization to check environment variables
-        const pingMethod = redis.ping;
+        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+        redis.ping;
       }).toThrow('Redis environment variables are not set');
     });
 
@@ -68,7 +70,8 @@ describe('Redis Connection', () => {
 
       expect(() => {
         // Trigger lazy initialization to check environment variables
-        const pingMethod = redis.ping;
+        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+        redis.ping;
       }).toThrow('Redis environment variables are not set');
     });
   });
@@ -125,7 +128,7 @@ describe('Redis Connection', () => {
         get: jest.fn(),
         del: jest.fn(),
         ping: jest.fn(),
-      } as any;
+      } as jest.Mocked<Redis>;
 
       mockRedisConstructor.mockImplementation(() => mockRedisInstance);
       resetRedisClient(); // Ensure fresh client for each test

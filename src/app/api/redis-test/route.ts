@@ -8,28 +8,16 @@ export async function GET() {
     const testValue = 'Redis connection test';
 
     // Test SET operation
-    await safeRedisOperation(
-      async () => redis.set(testKey, testValue),
-      null
-    );
+    await safeRedisOperation(async () => redis.set(testKey, testValue), null);
 
     // Test GET operation
-    const retrievedValue = await safeRedisOperation(
-      async () => redis.get(testKey),
-      null
-    );
+    const retrievedValue = await safeRedisOperation(async () => redis.get(testKey), null);
 
     // Test DELETE operation
-    await safeRedisOperation(
-      async () => redis.del(testKey),
-      null
-    );
+    await safeRedisOperation(async () => redis.del(testKey), null);
 
     // Test PING operation
-    const pingResult = await safeRedisOperation(
-      async () => redis.ping(),
-      'FAILED'
-    );
+    const pingResult = await safeRedisOperation(async () => redis.ping(), 'FAILED');
 
     return NextResponse.json({
       status: 'success',
@@ -37,14 +25,13 @@ export async function GET() {
       tests: {
         ping: pingResult,
         setGet: retrievedValue === testValue,
-        operations: 'All basic operations working'
+        operations: 'All basic operations working',
       },
       timestamp: new Date().toISOString(),
     });
-
   } catch (error) {
     console.error('Redis connection test failed:', error);
-    
+
     return NextResponse.json(
       {
         status: 'error',
