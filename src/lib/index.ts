@@ -3,5 +3,6 @@
  * Export all utility functions and game logic from this file
  */
 
-// Example: export { generateDailyWord } from './wordGenerator';
-// Example: export { validateGuess } from './gameLogic';
+export * from './game';
+export * from './redis';
+export * from './wordId';
