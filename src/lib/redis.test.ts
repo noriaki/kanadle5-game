@@ -31,7 +31,7 @@ describe('Redis Connection', () => {
       // Set up mock before triggering initialization
       const mockInstance = {
         ping: jest.fn().mockResolvedValue('PONG'),
-      } as jest.Mocked<Partial<Redis>>;
+      } as unknown as Redis;
       mockRedisConstructor.mockImplementation(() => mockInstance);
 
       // Trigger lazy initialization by accessing a Redis method
@@ -128,7 +128,7 @@ describe('Redis Connection', () => {
         get: jest.fn(),
         del: jest.fn(),
         ping: jest.fn(),
-      } as jest.Mocked<Redis>;
+      } as unknown as jest.Mocked<Redis>;
 
       mockRedisConstructor.mockImplementation(() => mockRedisInstance);
       resetRedisClient(); // Ensure fresh client for each test
