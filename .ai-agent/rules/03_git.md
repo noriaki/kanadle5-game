@@ -117,6 +117,64 @@ git branch -d feature/[feature-name]         # Delete local branch
 git push origin --delete feature/[feature-name]  # Delete remote branch
 ```
 
+## Development Phase Management
+
+### End of Phase Tasks
+
+At the end of each development phase, the following tasks must be completed in order:
+
+#### 1. Quality Assurance
+
+Execute all quality checks using pnpm:
+
+```bash
+pnpm run typecheck
+pnpm run lint
+pnpm run format
+pnpm test
+```
+
+All checks must pass before proceeding to the next steps.
+
+#### 2. Memory File Updates
+
+Update project memory files to reflect current status:
+
+- `.ai-agent/memory/activeContext.md` - Current project focus and status
+- `.ai-agent/memory/progress.md` - Progress tracking and milestone updates
+- Other memory files as needed based on the phase content
+
+#### 3. Git Operations
+
+- Verify current branch: `git branch`
+- Commit changes with appropriate granularity (feature-based, TDD cycle-based)
+- Use proper commit message format (see Commit Guidelines above)
+- Push to remote: `git push -u origin [branch-name]`
+
+#### 4. Pull Request Creation and Review
+
+- Create PR using `mcp__github__create_pull_request`
+- Include comprehensive description with:
+  - Summary of changes
+  - Test results
+  - Any relevant context
+- Request user review
+- Wait for approval and merge
+- Clean up branches after merge:
+  - Update local main branch
+  - Delete local feature branch
+  - Delete remote feature branch
+
+### Package Management with pnpm
+
+This project uses pnpm for package management. Always use pnpm commands:
+
+- **Install dependencies**: `pnpm install`
+- **Add package**: `pnpm add [package]`
+- **Add dev dependency**: `pnpm add -D [package]`
+- **Remove package**: `pnpm remove [package]`
+- **Run scripts**: `pnpm run [script-name]`
+
 ## GitHub Integration
 
 - Link commits to issues using keywords (Fixes #123, Closes #456)

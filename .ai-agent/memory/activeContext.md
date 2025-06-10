@@ -45,6 +45,15 @@ Last Updated: 2025-06-08
 
 ### Code Changes
 
+- 2025-06-09: **SYSTEM ARCHITECTURE**: Completed comprehensive analysis and design for daily word system
+  - Analyzed current implementation status: Core game 100% complete (74 tests passing)
+  - Identified missing components: Daily word system, LINE LIFF integration, user data persistence
+  - Created detailed implementation plan for Redis-based daily word system using nanoid 8-character IDs
+  - Designed month-ahead word assignment strategy to ensure consistent daily puzzles
+  - Documented complete data structure for word master database with words.json independence
+  - Saved comprehensive implementation plan to `.ai-agent/memory-bank/lib/game/dailyWordSystem.plan.md`
+  - Next priority: Implement Redis connection and daily word system core functionality
+
 - 2025-06-06: **MAJOR MILESTONE**: Implemented complete game state management and API integration
   - Created useGameState hook for client-side state management with comprehensive test coverage
   - Implemented updateClientGameState and updateServerGameState functions for state transitions
@@ -97,17 +106,23 @@ Last Updated: 2025-06-08
 
 **✅ MILESTONE 1 ACHIEVED**: Basic game functionality working locally!
 
-**Next Priority**: LINE LIFF Integration (Milestone 2)
+**Current Priority**: Daily Word System Implementation (Milestone 2A)
 
-1. **LINE LIFF Setup and Integration**:
+1. **Daily Word System Implementation** (PRIORITY 1):
+   - Set up Redis (Upstash) connection configuration
+   - Implement word master database with nanoid ID generation
+   - Create monthly word assignment logic with JST timezone handling
+   - Replace mock getDailyWord with Redis-based implementation
+   - Test month-ahead word generation and retrieval
+
+2. **LINE LIFF Setup and Integration** (PRIORITY 2):
    - Set up LINE Developer Console and LIFF app
    - Implement LINE Login authentication
    - Integrate user profile retrieval
    - Test LIFF functionality in LINE environment
 
-2. **Data Persistence Implementation**:
-   - Implement full `getDailyWord` with Vercel KV persistence
-   - Add user game history storage
+3. **User Data Persistence Implementation** (PRIORITY 3):
+   - Add user game history storage using Redis
    - Implement user statistics tracking
    - Add session-based game state persistence
 
@@ -128,14 +143,19 @@ Last Updated: 2025-06-08
 ### Upcoming Milestones
 
 - **✅ Milestone 1**: Basic game functionality working locally (COMPLETE)
-- **📋 Milestone 2**: LINE LIFF integration and authentication (In Progress)
-- **📋 Milestone 3**: Data persistence and user statistics (Next)
+- **📋 Milestone 2A**: Daily word system with Redis implementation (In Progress)
+- **📋 Milestone 2B**: LINE LIFF integration and authentication (Next)
+- **📋 Milestone 3**: User data persistence and statistics (Future)
 - **📋 Milestone 4**: Deployment and testing (Final)
 
 ## Current Decisions and Considerations
 
 ### Recent Decisions
 
+- **Daily Word System Architecture**: Redis-based system with month-ahead pre-assignment strategy using nanoid 8-character IDs
+- **Data Independence**: Word master database independent of words.json structure changes for operational flexibility
+- **Redis Usage Strategy**: Upstash Redis free tier optimization with efficient key structures and minimal command usage
+- **ID Generation**: nanoid with custom alphabet (0-9a-zA-Z) for 8-character word IDs ensuring uniqueness and readability
 - **Game Architecture Completion**: Successfully implemented full game architecture with proper client-server separation
 - **API Design Pattern**: RESTful API endpoints with service layer separation for maintainable code
 - **Testing Strategy**: Comprehensive TDD approach with 74 tests ensuring reliability
@@ -147,8 +167,8 @@ Last Updated: 2025-06-08
 
 ### Open Questions
 
-- **Daily Word Selection**: What algorithm to use for consistent word selection across all users?
-- **Dictionary Validation**: How to efficiently validate user inputs against dictionary?
+- **Redis Connection Setup**: How to properly configure environment variables for Upstash Redis in development and production?
+- **Monthly Maintenance Automation**: Should word assignment be fully automated or require manual trigger for quality control?
 - **LINE LIFF Testing**: What's the most efficient way to test LINE integration during development?
 
 ### Design Questions for Implementation
