@@ -5,3 +5,4 @@
 
 export * from './words';
 export * from './game';
+export * from './wordEntity';
