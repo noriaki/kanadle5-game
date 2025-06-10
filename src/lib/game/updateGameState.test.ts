@@ -15,9 +15,9 @@ describe('updateClientGameState', () => {
   it('should add guess and result to state', () => {
     const guess = 'さくらもち';
     const result: GuessResult = ['absent', 'correct', 'absent', 'present', 'correct'];
-    
+
     const newState = updateClientGameState(initialClientState, guess, result);
-    
+
     expect(newState.guesses).toEqual([guess]);
     expect(newState.guessResults).toEqual([result]);
     expect(newState.currentAttempt).toBe(1);
@@ -27,24 +27,24 @@ describe('updateClientGameState', () => {
   it('should detect win condition', () => {
     const guess = 'せいかい！';
     const result: GuessResult = ['correct', 'correct', 'correct', 'correct', 'correct'];
-    
+
     const newState = updateClientGameState(initialClientState, guess, result);
-    
+
     expect(newState.gameStatus).toBe('won');
   });
 
   it('should detect lose condition after 8 attempts', () => {
     let state = initialClientState;
     const failedResult: GuessResult = ['absent', 'absent', 'absent', 'absent', 'absent'];
-    
+
     // Make 7 failed attempts
     for (let i = 0; i < 7; i++) {
       state = updateClientGameState(state, `guess${i}`, failedResult);
     }
-    
+
     // 8th failed attempt should trigger loss
     const finalState = updateClientGameState(state, 'finalguess', failedResult);
-    
+
     expect(finalState.currentAttempt).toBe(8);
     expect(finalState.gameStatus).toBe('lost');
   });
@@ -55,13 +55,15 @@ describe('updateClientGameState', () => {
       currentInput: 'input',
       error: 'Some error',
     };
-    
-    const newState = updateClientGameState(
-      stateWithError,
-      'さくらもち',
-      ['absent', 'correct', 'absent', 'present', 'correct']
-    );
-    
+
+    const newState = updateClientGameState(stateWithError, 'さくらもち', [
+      'absent',
+      'correct',
+      'absent',
+      'present',
+      'correct',
+    ]);
+
     expect(newState.currentInput).toBe('');
     expect(newState.error).toBeNull();
   });
@@ -72,13 +74,15 @@ describe('updateClientGameState', () => {
       gameStatus: 'won',
       currentAttempt: 3,
     };
-    
-    const newState = updateClientGameState(
-      wonState,
-      'newguess',
-      ['absent', 'absent', 'absent', 'absent', 'absent']
-    );
-    
+
+    const newState = updateClientGameState(wonState, 'newguess', [
+      'absent',
+      'absent',
+      'absent',
+      'absent',
+      'absent',
+    ]);
+
     // State should remain unchanged
     expect(newState).toEqual(wonState);
   });
@@ -95,33 +99,33 @@ describe('updateServerGameState', () => {
 
   it('should add attempt to server state', () => {
     const guess = 'さくらもち';
-    
+
     const newState = updateServerGameState(initialServerState, guess, 'つきあかり');
-    
+
     expect(newState.attempts).toEqual([guess]);
     expect(newState.attemptCount).toBe(1);
   });
 
   it('should mark as completed on correct guess', () => {
     const correctGuess = 'つきあかり';
-    
+
     const newState = updateServerGameState(initialServerState, correctGuess, 'つきあかり');
-    
+
     expect(newState.isCompleted).toBe(true);
     expect(newState.completedAt).toBeDefined();
   });
 
   it('should mark as completed after 8 failed attempts', () => {
     let state = initialServerState;
-    
+
     // Make 7 failed attempts
     for (let i = 0; i < 7; i++) {
       state = updateServerGameState(state, `guess${i}`, 'つきあかり');
     }
-    
+
     // 8th attempt
     const finalState = updateServerGameState(state, 'finalguess', 'つきあかり');
-    
+
     expect(finalState.attemptCount).toBe(8);
     expect(finalState.isCompleted).toBe(true);
     expect(finalState.completedAt).toBeDefined();
@@ -134,9 +138,9 @@ describe('updateServerGameState', () => {
       attemptCount: 3,
       completedAt: new Date(),
     };
-    
+
     const newState = updateServerGameState(completedState, 'newguess', 'つきあかり');
-    
+
     // State should remain unchanged
     expect(newState).toEqual(completedState);
   });
@@ -146,9 +150,9 @@ describe('updateServerGameState', () => {
       ...initialServerState,
       userId: 'LINE_USER_123',
     };
-    
+
     const newState = updateServerGameState(stateWithUser, 'さくらもち', 'つきあかり');
-    
+
     expect(newState.userId).toBe('LINE_USER_123');
   });
 });

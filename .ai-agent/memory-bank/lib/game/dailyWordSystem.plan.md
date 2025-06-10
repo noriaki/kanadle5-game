@@ -93,11 +93,11 @@ monthly:2025-01 = {
 ```typescript
 // Pool statistics
 pool_stats = {
-  "total_words": 12345,
-  "active_words": 12000,
-  "used_words": 365,
-  "last_sync": "2025-01-09T00:00:00Z"
-}
+  total_words: 12345,
+  active_words: 12000,
+  used_words: 365,
+  last_sync: '2025-01-09T00:00:00Z',
+};
 ```
 
 ## Implementation Details
@@ -110,7 +110,7 @@ Monthly synchronization process to update word master from words.json:
 async function syncWordMaster(): Promise<SyncResult> {
   const currentWords = await loadWordsJson();
   const pipeline = redis.pipeline();
-  
+
   let added = 0;
   let reactivated = 0;
   let deleted = 0;
@@ -118,23 +118,25 @@ async function syncWordMaster(): Promise<SyncResult> {
   // Add new words
   for (const word of currentWords) {
     const existingId = await redis.get(`kana_index:${word.kana}`);
-    
+
     if (!existingId) {
       // Create new word entry
       const newId = generateWordId();
-      
-      pipeline.set(`word:${newId}`, JSON.stringify({
-        id: newId,
-        kana: word.kana,
-        display: word.word,
-        created_at: new Date().toISOString(),
-        status: 'active'
-      }));
-      
+
+      pipeline.set(
+        `word:${newId}`,
+        JSON.stringify({
+          id: newId,
+          kana: word.kana,
+          display: word.word,
+          created_at: new Date().toISOString(),
+          status: 'active',
+        })
+      );
+
       pipeline.sadd('active_words', newId);
       pipeline.set(`kana_index:${word.kana}`, newId);
       added++;
-      
     } else {
       // Check if word was previously deleted
       const wordData = await redis.get(`word:${existingId}`);
@@ -142,11 +144,14 @@ async function syncWordMaster(): Promise<SyncResult> {
         const word = JSON.parse(wordData);
         if (word.status === 'deleted') {
           // Reactivate deleted word
-          pipeline.set(`word:${existingId}`, JSON.stringify({
-            ...word,
-            status: 'active',
-            reactivated_at: new Date().toISOString()
-          }));
+          pipeline.set(
+            `word:${existingId}`,
+            JSON.stringify({
+              ...word,
+              status: 'active',
+              reactivated_at: new Date().toISOString(),
+            })
+          );
           pipeline.sadd('active_words', existingId);
           reactivated++;
         }
@@ -161,14 +166,17 @@ async function syncWordMaster(): Promise<SyncResult> {
     if (wordData) {
       const word = JSON.parse(wordData);
       const stillExists = currentWords.some(w => w.kana === word.kana);
-      
+
       if (!stillExists && word.status === 'active') {
         // Logical deletion (preserve history)
-        pipeline.set(`word:${id}`, JSON.stringify({
-          ...word,
-          status: 'deleted',
-          deleted_at: new Date().toISOString()
-        }));
+        pipeline.set(
+          `word:${id}`,
+          JSON.stringify({
+            ...word,
+            status: 'deleted',
+            deleted_at: new Date().toISOString(),
+          })
+        );
         pipeline.srem('active_words', id);
         deleted++;
       }
@@ -176,14 +184,17 @@ async function syncWordMaster(): Promise<SyncResult> {
   }
 
   // Update statistics
-  pipeline.set('pool_stats', JSON.stringify({
-    total_words: currentWords.length,
-    active_words: currentWords.length,
-    last_sync: new Date().toISOString()
-  }));
+  pipeline.set(
+    'pool_stats',
+    JSON.stringify({
+      total_words: currentWords.length,
+      active_words: currentWords.length,
+      last_sync: new Date().toISOString(),
+    })
+  );
 
   await pipeline.exec();
-  
+
   return { added, reactivated, deleted };
 }
 ```
@@ -193,68 +204,68 @@ async function syncWordMaster(): Promise<SyncResult> {
 Pre-assign words for each day of the month:
 
 ```typescript
-async function assignMonthlyWords(
-  year: number, 
-  month: number
-): Promise<AssignmentResult> {
+async function assignMonthlyWords(year: number, month: number): Promise<AssignmentResult> {
   const daysInMonth = getDaysInMonth(year, month);
-  
+
   // Get available words
   const activeWordIds = await redis.smembers('active_words');
-  
+
   // Get recently used words (to avoid)
-  const cutoffTime = Date.now() / 1000 - (365 * 24 * 60 * 60); // 1 year ago
+  const cutoffTime = Date.now() / 1000 - 365 * 24 * 60 * 60; // 1 year ago
   const recentlyUsed = await redis.zrevrangebyscore(
     'used_words',
     '+inf',
     cutoffTime,
-    'LIMIT', 0, 365
+    'LIMIT',
+    0,
+    365
   );
-  
+
   // Filter available words
   const availableIds = activeWordIds.filter(id => !recentlyUsed.includes(id));
-  
+
   if (availableIds.length < daysInMonth) {
-    throw new Error(
-      `Insufficient words: need ${daysInMonth}, have ${availableIds.length}`
-    );
+    throw new Error(`Insufficient words: need ${daysInMonth}, have ${availableIds.length}`);
   }
-  
+
   // Random selection
   const selectedIds = shuffle(availableIds).slice(0, daysInMonth);
-  
+
   // Assign words to dates
   const assignments: Record<string, string> = {};
   const pipeline = redis.pipeline();
-  
+
   selectedIds.forEach((wordId, index) => {
     const day = index + 1;
     const date = formatDate(year, month, day); // YYYY-MM-DD
-    
+
     assignments[date] = wordId;
-    
+
     // Set daily mapping
     pipeline.set(`daily:${date}`, wordId);
-    
+
     // Add to usage history
     const timestamp = new Date(date).getTime() / 1000;
     pipeline.zadd('used_words', timestamp, wordId);
   });
-  
+
   // Save monthly record
   const monthKey = `${year}-${String(month).padStart(2, '0')}`;
-  pipeline.set(`monthly:${monthKey}`, JSON.stringify({
-    generated_at: new Date().toISOString(),
-    assignments
-  }));
-  
+  pipeline.set(
+    `monthly:${monthKey}`,
+    JSON.stringify({
+      generated_at: new Date().toISOString(),
+      assignments,
+    })
+  );
+
   await pipeline.exec();
-  
+
   return {
     month: monthKey,
     assignedDays: daysInMonth,
     firstDay: Object.keys(assignments)[0],
-    lastDay: Object.keys(assignments)[daysInMonth - 1]
+    lastDay: Object.keys(assignments)[daysInMonth - 1],
   };
 }
 ```
@@ -266,36 +277,34 @@ Get the word for a specific date:
 ```typescript
 async function getDailyWord(date: Date): Promise<DailyWord> {
   const dateKey = formatDateKey(date); // YYYY-MM-DD
-  
+
   // Get word ID for the date
   const wordId = await redis.get(`daily:${dateKey}`);
-  
+
   if (!wordId) {
     throw new Error(`No word assigned for date: ${dateKey}`);
   }
-  
+
   // Get word details
   const wordData = await redis.get(`word:${wordId}`);
-  
+
   if (!wordData) {
     throw new Error(`Word not found: ${wordId}`);
   }
-  
+
   const word = JSON.parse(wordData);
-  
+
   // Handle deleted words gracefully
   if (word.status === 'deleted') {
-    console.error(
-      `Warning: Deleted word ${wordId} is assigned to ${dateKey}`
-    );
+    console.error(`Warning: Deleted word ${wordId} is assigned to ${dateKey}`);
     // Could implement fallback logic here
   }
-  
+
   return {
     date: dateKey,
     wordId: word.id,
-    answer: word.kana,      // For game logic
-    display: word.display   // For UI display
+    answer: word.kana, // For game logic
+    display: word.display, // For UI display
   };
 }
 ```
@@ -335,24 +344,21 @@ function shuffle<T>(array: T[]): T[] {
 ```typescript
 async function initialSetup(): Promise<void> {
   console.log('Starting initial setup...');
-  
+
   // 1. Sync word master from words.json
   const syncResult = await syncWordMaster();
   console.log('Word sync completed:', syncResult);
-  
+
   // 2. Generate first 3 months
   const now = new Date();
   for (let i = 0; i < 3; i++) {
     const targetDate = new Date(now);
     targetDate.setMonth(targetDate.getMonth() + i);
-    
-    const result = await assignMonthlyWords(
-      targetDate.getFullYear(),
-      targetDate.getMonth() + 1
-    );
+
+    const result = await assignMonthlyWords(targetDate.getFullYear(), targetDate.getMonth() + 1);
     console.log('Monthly assignment completed:', result);
   }
-  
+
   console.log('Initial setup completed successfully');
 }
 ```
@@ -365,17 +371,14 @@ async function monthlyMaintenance(): Promise<void> {
   console.log('Updating word master...');
   const syncResult = await syncWordMaster();
   console.log('Sync completed:', syncResult);
-  
+
   // 2. Generate assignments for next month
   const nextMonth = new Date();
   nextMonth.setMonth(nextMonth.getMonth() + 2); // 2 months ahead
-  
-  const result = await assignMonthlyWords(
-    nextMonth.getFullYear(),
-    nextMonth.getMonth() + 1
-  );
+
+  const result = await assignMonthlyWords(nextMonth.getFullYear(), nextMonth.getMonth() + 1);
   console.log('Assignment completed:', result);
-  
+
   // 3. Clean up old usage history (optional)
   await cleanupOldHistory();
 }
@@ -384,36 +387,33 @@ async function monthlyMaintenance(): Promise<void> {
 ### Word Replacement (Emergency Operation)
 
 ```typescript
-async function replaceWord(
-  date: string, 
-  newWordId: string
-): Promise<void> {
+async function replaceWord(date: string, newWordId: string): Promise<void> {
   const oldWordId = await redis.get(`daily:${date}`);
-  
+
   if (!oldWordId) {
     throw new Error(`No word assigned for date: ${date}`);
   }
-  
+
   // Update daily mapping
   await redis.set(`daily:${date}`, newWordId);
-  
+
   // Update usage history
   const timestamp = new Date(date).getTime() / 1000;
   await redis.zrem('used_words', oldWordId);
   await redis.zadd('used_words', timestamp, newWordId);
-  
+
   // Update monthly record
   const [year, month] = date.split('-');
   const monthKey = `${year}-${month}`;
   const monthlyData = await redis.get(`monthly:${monthKey}`);
-  
+
   if (monthlyData) {
     const monthly = JSON.parse(monthlyData);
     monthly.assignments[date] = newWordId;
     monthly.replaced_at = new Date().toISOString();
     await redis.set(`monthly:${monthKey}`, JSON.stringify(monthly));
   }
-  
+
   console.log(`Replaced word for ${date}: ${oldWordId} -> ${newWordId}`);
 }
 ```
@@ -430,43 +430,43 @@ import type { DailyWord } from '@/types/game';
 export async function getDailyWord(): Promise<DailyWord> {
   const today = new Date();
   const dateKey = today.toISOString().split('T')[0];
-  
+
   try {
     // Get word ID for today
     const wordId = await redis.get(`daily:${dateKey}`);
-    
+
     if (!wordId) {
       throw new Error('No word assigned for today');
     }
-    
+
     // Get word details
     const wordData = await redis.get(`word:${wordId}`);
-    
+
     if (!wordData) {
       throw new Error('Word data not found');
     }
-    
+
     const word = JSON.parse(wordData as string);
-    
+
     return {
       date: dateKey,
       wordId: word.id,
       answer: word.kana,
-      display: word.display
+      display: word.display,
     };
   } catch (error) {
     console.error('Failed to get daily word:', error);
-    
+
     // Fallback to mock data for development
     if (process.env.NODE_ENV === 'development') {
       return {
         date: dateKey,
         wordId: 'mock',
         answer: 'つきあかり',
-        display: '月明かり'
+        display: '月明かり',
       };
     }
-    
+
     throw error;
   }
 }
@@ -507,12 +507,12 @@ describe('getDailyWord', () => {
     expect(word).toHaveProperty('answer');
     expect(word.answer).toMatch(/^[ぁ-ん]{5}$/);
   });
-  
+
   it('should handle missing word gracefully', async () => {
     // Test with future date
     const futureDate = new Date();
     futureDate.setFullYear(futureDate.getFullYear() + 1);
-    
+
     await expect(getDailyWord(futureDate)).rejects.toThrow();
   });
 });

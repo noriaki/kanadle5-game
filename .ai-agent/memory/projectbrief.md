@@ -56,15 +56,15 @@ Kanadle5 Game is a Japanese (hiragana) version of the popular word-guessing game
 
 ## Priority Matrix
 
-| Feature/Requirement | Priority (1-5) | Complexity (1-5) | Notes |
-|---------------------|---------------|-----------------|-------|
-| Basic gameplay | 5 | 4 | Core game mechanics |
-| Daily word system | 5 | 3 | Word selection and refresh |
-| LINE login | 4 | 3 | For user identification and progress tracking |
-| Game result storage | 4 | 3 | For history and statistics |
-| Sharing functionality | 3 | 2 | For social engagement |
-| Keyboard implementation | 5 | 4 | With hiragana support and color feedback |
-| Performance optimization | 3 | 4 | For smooth mobile experience |
+| Feature/Requirement      | Priority (1-5) | Complexity (1-5) | Notes                                         |
+| ------------------------ | -------------- | ---------------- | --------------------------------------------- |
+| Basic gameplay           | 5              | 4                | Core game mechanics                           |
+| Daily word system        | 5              | 3                | Word selection and refresh                    |
+| LINE login               | 4              | 3                | For user identification and progress tracking |
+| Game result storage      | 4              | 3                | For history and statistics                    |
+| Sharing functionality    | 3              | 2                | For social engagement                         |
+| Keyboard implementation  | 5              | 4                | With hiragana support and color feedback      |
+| Performance optimization | 3              | 4                | For smooth mobile experience                  |
 
 ## Out of Scope
 

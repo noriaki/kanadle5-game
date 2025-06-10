@@ -2,12 +2,12 @@ import type { WordEntry } from '@/types/words';
 
 /**
  * Validates if a word is valid for the game
- * 
+ *
  * Rules:
  * 1. Must be exactly 5 characters
  * 2. Must contain only basic hiragana characters (あ-ん)
  * 3. Must exist in the dictionary
- * 
+ *
  * @param word - The word to validate
  * @param dictionary - Array of valid word entries
  * @returns true if the word is valid, false otherwise
@@ -31,7 +31,7 @@ export function validateWord(word: string, dictionary: WordEntry[]): boolean {
   if (!isBasicHiragana) {
     return false;
   }
-  
+
   // Additional check to exclude 'を'
   if (word.includes('を')) {
     return false;

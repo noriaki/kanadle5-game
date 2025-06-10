@@ -3,6 +3,7 @@
 ## Purpose of Memory Files
 
 The memory files in this project serve to:
+
 - Provide context and continuity across development sessions
 - Establish consistent guidelines and patterns
 - Track progress and decision history
@@ -11,22 +12,27 @@ The memory files in this project serve to:
 ## Memory File Structure
 
 ### Rules Directory (`.ai-agent/rules/`)
+
 Contains operational guidelines that govern your behavior and approach to the project.
 
 ### Memory Directory (`.ai-agent/memory/`)
+
 Stores project-specific information, current status, and technical context.
 
 ### Memory Bank (`.ai-agent/memory-bank/`)
+
 Holds detailed documentation and reference information about complex features, APIs, and technologies.
 
 ## Memory Usage Workflow
 
 1. **Start of Session**:
+
    - Review Active Context file first
    - Check Project Brief and Product Context for requirements
    - Examine Progress file to understand current status
 
 2. **During Development**:
+
    - Refer to System Patterns and Technical Context
    - Follow guidelines in Rules files
    - Consult Memory Bank for specialized knowledge

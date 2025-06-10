@@ -9,9 +9,10 @@ The current Japanese market lacks engaging, quick-to-play word games that are op
 ### Target Users
 
 - **Primary Users**: Japanese LINE users aged 10-60
+
   - Demographics: Primarily Japanese natives or Japanese-language speakers, diverse age range
   - Technical proficiency: Moderate; familiar with LINE and mobile apps
-  - Key needs: 
+  - Key needs:
     - Quick entertainment during short breaks
     - Mental stimulation through language games
     - Social sharing capabilities
@@ -20,19 +21,21 @@ The current Japanese market lacks engaging, quick-to-play word games that are op
 - **Secondary Users**: Japanese language learners
   - Demographics: Non-native Japanese speakers, typically 15-40 years old
   - Technical proficiency: Moderate to high
-  - Key needs: 
+  - Key needs:
     - Practice with Japanese vocabulary
     - Engagement with hiragana characters
     - Game that rewards language progress
 
 ### User Scenarios
 
-1. **Daily Commuter**: 
+1. **Daily Commuter**:
+
    - User context: Playing during train commutes (15-60 minutes)
    - User goals: Fill time with engaging mental challenge
    - Current pain points: Limited options for quick, Japanese-optimized word games
 
 2. **Office Worker on Break**:
+
    - User context: Short 5-10 minute breaks between tasks
    - User goals: Mental refresh through quick word puzzle
    - Current pain points: Need for games that don't require significant time investment
@@ -47,11 +50,13 @@ The current Japanese market lacks engaging, quick-to-play word games that are op
 ### Direct Competitors
 
 - **Wordle (English version)**:
+
   - Strengths: Established format, huge popularity
   - Weaknesses: Not optimized for Japanese language, not integrated with LINE
   - Differentiators: Our solution is specifically designed for hiragana and LINE platform
 
 - **Native Japanese Word Games**:
+
   - Strengths: Language-appropriate, culturally relevant
   - Weaknesses: Often complex rules, less social sharing
   - Differentiators: Simpler gameplay, modern UI, better social integration
@@ -97,20 +102,17 @@ The current Japanese market lacks engaging, quick-to-play word games that are op
 
 ### Visual Identity
 
-- **Color Palette**: 
+- **Color Palette**:
   - Primary: Soft blue (#4B7BEC) - LINE's brand color family
   - Secondary: Light gray (#F5F6FA), White (#FFFFFF)
   - Accents: Green (#26DE81), Yellow (#FFC312), Gray (#95A5A6)
-  
-- **Typography**: 
+- **Typography**:
   - Primary: LINE Seed JP font
   - Secondary: Sans-serif system fonts
-  
-- **Imagery**: 
+- **Imagery**:
   - Clean, minimal UI elements
   - Hiragana characters featured prominently
-  
-- **UI Components**: 
+- **UI Components**:
   - Mobile-optimized touch targets
   - Keyboard layout following standard Japanese input
   - Grid display matching Wordle concept but with hiragana
@@ -136,13 +138,15 @@ MVP development with core gameplay functionality, LINE login, and basic result s
 
 ## Success Metrics
 
-- **User Metrics**: 
+- **User Metrics**:
+
   - Daily active users
   - Retention rate (7-day, 30-day)
   - Completion rate of daily puzzles
   - Social shares per user
 
-- **Engagement Metrics**: 
+- **Engagement Metrics**:
+
   - Average session time
   - Number of daily puzzle attempts
   - Return frequency

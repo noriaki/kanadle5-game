@@ -41,10 +41,10 @@ interface HiraganaKeyboardProps {
 
 ```text
 Row 1: あ か さ た な は ま や ら わ
-Row 2: い き し ち に ひ み   り  
+Row 2: い き し ち に ひ み   り
 Row 3: う く す つ ぬ ふ む ゆ る
-Row 4: え け せ て ね へ め   れ  
-Row 5: お こ そ と の ほ も よ ろ ん  
+Row 4: え け せ て ね へ め   れ
+Row 5: お こ そ と の ほ も よ ろ ん
 Row 6: [Backspace] [Enter]
 ```
 
@@ -95,12 +95,12 @@ const HIRAGANA_LAYOUT = [
   ['い', 'き', 'し', 'ち', 'に', 'ひ', 'み', '', 'り', ''],
   ['う', 'く', 'す', 'つ', 'ぬ', 'ふ', 'む', 'ゆ', 'る', ''],
   ['え', 'け', 'せ', 'て', 'ね', 'へ', 'め', '', 'れ', ''],
-  ['お', 'こ', 'そ', 'と', 'の', 'ほ', 'も', 'よ', 'ろ', 'ん']
+  ['お', 'こ', 'そ', 'と', 'の', 'ほ', 'も', 'よ', 'ろ', 'ん'],
 ];
 
 const SPECIAL_KEYS = {
   BACKSPACE: 'BACKSPACE',
-  ENTER: 'ENTER'
+  ENTER: 'ENTER',
 } as const;
 ```
 
@@ -125,10 +125,14 @@ const SPECIAL_KEYS = {
 ```typescript
 const getKeyColorClass = (state: CharacterState): string => {
   switch (state) {
-    case 'correct': return 'bg-green-500 text-white border-green-600';
-    case 'present': return 'bg-yellow-500 text-white border-yellow-600';
-    case 'absent': return 'bg-gray-600 text-white border-gray-700';
-    default: return 'bg-gray-200 text-gray-800 border-gray-300 hover:bg-gray-300';
+    case 'correct':
+      return 'bg-green-500 text-white border-green-600';
+    case 'present':
+      return 'bg-yellow-500 text-white border-yellow-600';
+    case 'absent':
+      return 'bg-gray-600 text-white border-gray-700';
+    default:
+      return 'bg-gray-200 text-gray-800 border-gray-300 hover:bg-gray-300';
   }
 };
 ```

@@ -29,7 +29,7 @@ describe('validateWord', () => {
         { kana: 'いきしちに', word: 'イキシチニ' },
         { kana: 'ひみりをん', word: 'ヒミリヲン' },
       ];
-      
+
       expect(validateWord('あかさたな', comprehensiveDictionary)).toBe(true);
       expect(validateWord('はまやらわ', comprehensiveDictionary)).toBe(true);
     });
@@ -49,10 +49,8 @@ describe('validateWord', () => {
     });
 
     it('should return false for words with dakuten (濁音)', () => {
-      const dictionaryWithoutDakuten: WordEntry[] = [
-        { kana: 'かきくけこ', word: 'カキクケコ' },
-      ];
-      
+      const dictionaryWithoutDakuten: WordEntry[] = [{ kana: 'かきくけこ', word: 'カキクケコ' }];
+
       expect(validateWord('がぎぐげご', dictionaryWithoutDakuten)).toBe(false);
       expect(validateWord('ざじずぜぞ', dictionaryWithoutDakuten)).toBe(false);
       expect(validateWord('だぢづでど', dictionaryWithoutDakuten)).toBe(false);
@@ -90,10 +88,8 @@ describe('validateWord', () => {
     });
 
     it('should be case-sensitive for exact match', () => {
-      const strictDictionary: WordEntry[] = [
-        { kana: 'あいうえお', word: 'アイウエオ' },
-      ];
-      
+      const strictDictionary: WordEntry[] = [{ kana: 'あいうえお', word: 'アイウエオ' }];
+
       expect(validateWord('あいうえお', strictDictionary)).toBe(true);
       // Different word should not match
       expect(validateWord('あいうえを', strictDictionary)).toBe(false);
@@ -105,7 +101,7 @@ describe('validateWord', () => {
         { kana: 'あいうえお', word: 'アイウエオ' },
         { kana: 'わいんああ', word: 'ワインアア' }, // ん is valid
       ];
-      
+
       expect(validateWord('あいうえお', basicHiraganaDictionary)).toBe(true);
       expect(validateWord('わいんああ', basicHiraganaDictionary)).toBe(true);
     });
@@ -114,7 +110,7 @@ describe('validateWord', () => {
       const dictionaryWithWo: WordEntry[] = [
         { kana: 'わをんああ', word: 'ワヲンアア' }, // Dictionary may contain を but validation should reject
       ];
-      
+
       expect(validateWord('わをんああ', dictionaryWithWo)).toBe(false);
       expect(validateWord('をあいうえ', dictionaryWithWo)).toBe(false);
       expect(validateWord('あいうえを', dictionaryWithWo)).toBe(false);
@@ -128,5 +124,4 @@ describe('validateWord', () => {
       expect(validateWord('あいうえお', undefined as unknown as WordEntry[])).toBe(false);
     });
   });
-
 });

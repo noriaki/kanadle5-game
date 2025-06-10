@@ -21,7 +21,7 @@ describe('gameService', () => {
     { kana: 'ほしぞら', word: '星空' },
     { kana: 'あさひかり', word: '朝日' },
   ];
-  
+
   beforeEach(() => {
     jest.clearAllMocks();
   });
@@ -29,9 +29,9 @@ describe('gameService', () => {
   describe('submitGuess', () => {
     it('should return error for invalid word', async () => {
       mockValidateWord.mockReturnValue(false);
-      
+
       const result = await submitGuess('invalid', '2025-06-06', mockWordList);
-      
+
       expect(result).toEqual({
         success: false,
         error: '辞書に存在しない単語です',
@@ -42,10 +42,16 @@ describe('gameService', () => {
     it('should return evaluation result for valid word', async () => {
       mockValidateWord.mockReturnValue(true);
       mockGetDailyWord.mockResolvedValue('つきあかり');
-      mockEvaluateGuess.mockReturnValue(['absent', 'correct', 'absent', 'present', 'correct'] as GuessResult);
-      
+      mockEvaluateGuess.mockReturnValue([
+        'absent',
+        'correct',
+        'absent',
+        'present',
+        'correct',
+      ] as GuessResult);
+
       const result = await submitGuess('さくらもち', '2025-06-06', mockWordList);
-      
+
       expect(result).toEqual({
         success: true,
         result: ['absent', 'correct', 'absent', 'present', 'correct'],
@@ -59,10 +65,16 @@ describe('gameService', () => {
     it('should detect win condition', async () => {
       mockValidateWord.mockReturnValue(true);
       mockGetDailyWord.mockResolvedValue('つきあかり');
-      mockEvaluateGuess.mockReturnValue(['correct', 'correct', 'correct', 'correct', 'correct'] as GuessResult);
-      
+      mockEvaluateGuess.mockReturnValue([
+        'correct',
+        'correct',
+        'correct',
+        'correct',
+        'correct',
+      ] as GuessResult);
+
       const result = await submitGuess('つきあかり', '2025-06-06', mockWordList);
-      
+
       expect(result).toEqual({
         success: true,
         result: ['correct', 'correct', 'correct', 'correct', 'correct'],
@@ -74,9 +86,9 @@ describe('gameService', () => {
       mockValidateWord.mockImplementation(() => {
         throw new Error('Validation error');
       });
-      
+
       const result = await submitGuess('error', '2025-06-06', mockWordList);
-      
+
       expect(result).toEqual({
         success: false,
         error: 'エラーが発生しました',
@@ -87,9 +99,9 @@ describe('gameService', () => {
   describe('getDailyGameState', () => {
     it('should return initial game state for new game', async () => {
       mockGetDailyWord.mockResolvedValue('つきあかり');
-      
+
       const result = await getDailyGameState('2025-06-06');
-      
+
       expect(result).toEqual({
         gameDate: '2025-06-06',
         isActive: true,
@@ -101,7 +113,7 @@ describe('gameService', () => {
 
     it('should handle word selection error', async () => {
       mockGetDailyWord.mockRejectedValue(new Error('Word selection error'));
-      
+
       await expect(getDailyGameState('2025-06-06')).rejects.toThrow('Word selection error');
     });
   });

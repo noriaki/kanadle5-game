@@ -14,10 +14,7 @@ export async function GET(request: NextRequest) {
     // Validate date format (YYYY-MM-DD)
     const datePattern = /^\d{4}-\d{2}-\d{2}$/;
     if (!datePattern.test(gameDate)) {
-      return NextResponse.json(
-        { error: '無効な日付形式です' },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: '無効な日付形式です' }, { status: 400 });
     }
 
     // Get daily game state
@@ -26,9 +23,6 @@ export async function GET(request: NextRequest) {
     return NextResponse.json(gameState);
   } catch (error) {
     console.error('Error in /api/game/daily:', error);
-    return NextResponse.json(
-      { error: 'サーバーエラーが発生しました' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'サーバーエラーが発生しました' }, { status: 500 });
   }
 }

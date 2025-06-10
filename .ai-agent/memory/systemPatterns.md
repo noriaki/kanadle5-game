@@ -38,14 +38,14 @@ Kanadle5 Game follows a modern frontend-focused architecture built with Next.js,
 ### Component 1: Game Core
 
 - **Purpose**: Manage core gameplay logic and user interactions
-- **Responsibilities**: 
+- **Responsibilities**:
   - Process user inputs and validate against game rules (SERVER-SIDE)
   - Track game state and update UI accordingly (CLIENT-SIDE)
   - Calculate results and maintain game history (SPLIT)
 - **Interfaces**:
   - Provides: Game state, validation functions, hiragana input handling
   - Consumes: Word dictionary, daily word selection
-- **Technical Details**: 
+- **Technical Details**:
   - Client: React hooks and context for UI state
   - Server: Next.js API routes for game logic
   - Security: Target word never exposed to client
@@ -53,7 +53,7 @@ Kanadle5 Game follows a modern frontend-focused architecture built with Next.js,
 ### Component 2: LINE Integration
 
 - **Purpose**: Handle all LINE platform interactions
-- **Responsibilities**: 
+- **Responsibilities**:
   - Authenticate users via LINE Login
   - Retrieve user profile information
   - Enable result sharing to LINE
@@ -65,7 +65,7 @@ Kanadle5 Game follows a modern frontend-focused architecture built with Next.js,
 ### Component 3: Data Persistence
 
 - **Purpose**: Store and retrieve game data
-- **Responsibilities**: 
+- **Responsibilities**:
   - Save user game history and statistics
   - Retrieve daily word challenges
   - Persist user preferences
@@ -77,7 +77,7 @@ Kanadle5 Game follows a modern frontend-focused architecture built with Next.js,
 ### Component 4: UI System
 
 - **Purpose**: Present game interface and visual feedback
-- **Responsibilities**: 
+- **Responsibilities**:
   - Display game board and keyboard
   - Provide visual feedback on game progress
   - Adapt to different screen sizes
@@ -93,8 +93,8 @@ Kanadle5 Game follows a modern frontend-focused architecture built with Next.js,
 ```json
 [
   {
-    "kana": "あいうえお",  // 5-character hiragana word
-    "word": "アイウエオ"   // Kanji/katakana equivalent for display
+    "kana": "あいうえお", // 5-character hiragana word
+    "word": "アイウエオ" // Kanji/katakana equivalent for display
   }
 ]
 ```
@@ -111,18 +111,18 @@ type GuessResult = ('correct' | 'present' | 'absent')[];
 
 type ClientGameState = {
   // UI state
-  currentInput: string;           // Current input string
-  currentAttempt: number;         // Current attempt number (0-7)
+  currentInput: string; // Current input string
+  currentAttempt: number; // Current attempt number (0-7)
   gameStatus: 'playing' | 'won' | 'lost';
-  
+
   // Display history (without correct answer)
-  guesses: string[];              // Confirmed guess history
-  guessResults: GuessResult[];    // Evaluation results for each guess
-  
+  guesses: string[]; // Confirmed guess history
+  guessResults: GuessResult[]; // Evaluation results for each guess
+
   // UI control
-  isLoading: boolean;             // API communication flag
-  error: string | null;           // Error message
-}
+  isLoading: boolean; // API communication flag
+  error: string | null; // Error message
+};
 ```
 
 - **Description**: Client-side game state for UI rendering and user interaction
@@ -135,16 +135,16 @@ type ClientGameState = {
 ```typescript
 type ServerGameState = {
   // Secure information
-  targetWord: string;             // Target word (absolutely secret)
-  gameDate: string;              // 'YYYY-MM-DD'
-  
+  targetWord: string; // Target word (absolutely secret)
+  gameDate: string; // 'YYYY-MM-DD'
+
   // Persistent data
-  userId?: string;               // LINE user ID
-  attempts: string[];            // Guess history
-  completedAt?: Date;           // Game completion time
-  isCompleted: boolean;         // Completion flag
-  attemptCount: number;         // Attempt count
-}
+  userId?: string; // LINE user ID
+  attempts: string[]; // Guess history
+  completedAt?: Date; // Game completion time
+  isCompleted: boolean; // Completion flag
+  attemptCount: number; // Attempt count
+};
 ```
 
 - **Description**: Server-side game state for game logic and persistence
@@ -156,12 +156,12 @@ type ServerGameState = {
 
 ```typescript
 type UserProfile = {
-  userId: string;           // LINE user ID
-  displayName: string;      // User's name from LINE
-  pictureUrl?: string;      // User's profile picture URL
-  statusMessage?: string;   // User's status message
-  language?: string;        // User's language setting
-}
+  userId: string; // LINE user ID
+  displayName: string; // User's name from LINE
+  pictureUrl?: string; // User's profile picture URL
+  statusMessage?: string; // User's status message
+  language?: string; // User's language setting
+};
 ```
 
 - **Description**: User information retrieved from LINE
@@ -173,14 +173,14 @@ type UserProfile = {
 
 ```typescript
 type UserStatistics = {
-  userId: string;           // LINE user ID
-  gamesPlayed: number;      // Total games played
-  gamesWon: number;         // Games successfully completed
-  currentStreak: number;    // Current consecutive days played
-  maxStreak: number;        // Maximum consecutive days played
+  userId: string; // LINE user ID
+  gamesPlayed: number; // Total games played
+  gamesWon: number; // Games successfully completed
+  currentStreak: number; // Current consecutive days played
+  maxStreak: number; // Maximum consecutive days played
   guessDistribution: Record<number, number>; // Distribution of guesses needed to win
-  lastPlayed: string;       // Date of last completed game
-}
+  lastPlayed: string; // Date of last completed game
+};
 ```
 
 - **Description**: Tracks user's gameplay history and statistics
@@ -194,7 +194,7 @@ type UserStatistics = {
 
 - **URL Structure**: `/api/[resource]/[id]` format
 - **Resource Naming**: Plural nouns (e.g., `/api/games`)
-- **HTTP Methods**: 
+- **HTTP Methods**:
   - GET: Retrieve data
   - POST: Create new data
   - PUT: Update existing data
@@ -206,54 +206,61 @@ type UserStatistics = {
 ### API Endpoints
 
 1. **User API** (Planned)
+
    - `GET /api/user` - Get current user profile
    - `GET /api/user/statistics` - Get user statistics
 
 2. **Game API** (✅ Implemented)
+
    - `GET /api/game/daily` - Get today's game state (without target word) ✅
    - `POST /api/game/guess` - Submit a guess and get evaluation ✅
 
 3. **Guess API Request/Response**
+
    ```typescript
    // POST /api/game/guess
    type GuessRequest = {
      guess: string;
      gameDate: string;
-   }
-   
+   };
+
    type GuessResponse = {
-     result: GuessResult;           // Evaluation result only
+     result: GuessResult; // Evaluation result only
      gameStatus: 'playing' | 'won' | 'lost';
      attemptCount: number;
      // targetWord is never included
-   }
+   };
    ```
 
 ## Design Patterns
 
 ### Frontend Patterns
 
-- **Component Structure**: 
+- **Component Structure**:
+
   - Atomic design principles
   - Presentational vs. container components
   - Clear component responsibilities
 
-- **State Management**: 
+- **State Management**:
+
   - React Context for app-wide state
   - Local state for component-specific needs
   - Custom hooks for reusable logic
 
-- **Styling Approach**: 
+- **Styling Approach**:
+
   - Tailwind CSS for utility-first styling
   - Mobile-first responsive design
   - Consistent color variables
 
-- **Responsive Design**: 
+- **Responsive Design**:
+
   - Mobile-first breakpoints
   - Viewport units for appropriate sizing
   - Touch-friendly UI elements
 
-- **Accessibility**: 
+- **Accessibility**:
   - Semantic HTML
   - ARIA attributes where needed
   - Keyboard navigation support
@@ -261,29 +268,33 @@ type UserStatistics = {
 
 ### Backend Patterns
 
-- **Service Organization**: 
+- **Service Organization**:
+
   - Separation of concerns
   - Business logic isolated from API layer
   - Modular service functions
 
-- **Error Handling**: 
+- **Error Handling**:
+
   - Consistent error structure
   - Proper HTTP status codes
   - Informative but secure error messages
 
-- **Caching**: 
+- **Caching**:
+
   - Cache daily words
   - Cache dictionary validation results
   - Browser caching for static assets
 
-- **Security**: 
+- **Security**:
   - Input validation
   - Rate limiting
   - Authentication via LINE LIFF
 
 ### TypeScript Patterns
 
-- **Type Definitions**: 
+- **Type Definitions**:
+
   - Use `type` aliases instead of `interface` to prevent implicit declaration merging
   - Explicit type definitions for all function parameters and return values
   - Strict mode enabled for better type safety
@@ -355,9 +366,11 @@ type UserStatistics = {
 ### Core Function Specifications
 
 #### 1. validateWord (Server-side) ✅ Implemented
+
 ```typescript
-function validateWord(word: string, dictionary: WordEntry[]): boolean
+function validateWord(word: string, dictionary: WordEntry[]): boolean;
 ```
+
 - **Input**: 5-character string, dictionary array of WordEntry objects
 - **Output**: Boolean indicating validity
 - **Responsibility**: Hiragana character restriction, dictionary existence check
@@ -366,9 +379,11 @@ function validateWord(word: string, dictionary: WordEntry[]): boolean
 - **Status**: Complete with comprehensive test coverage
 
 #### 2. evaluateGuess (Server-side) ✅ Implemented
+
 ```typescript
-function evaluateGuess(guess: string, target: string): GuessResult
+function evaluateGuess(guess: string, target: string): GuessResult;
 ```
+
 - **Input**: Guess string, target string
 - **Output**: Array of character status (correct/present/absent)
 - **Responsibility**: Character position and existence determination with two-pass algorithm
@@ -377,9 +392,11 @@ function evaluateGuess(guess: string, target: string): GuessResult
 - **Status**: Complete with comprehensive test coverage including duplicate character handling
 
 #### 3. getDailyWord (Server-side) ✅ Mock Implemented
+
 ```typescript
-async function getDailyWord(date: Date): Promise<string>
+async function getDailyWord(date: Date): Promise<string>;
 ```
+
 - **Input**: Date
 - **Output**: Word for that day
 - **Responsibility**: Date-based unique selection (currently returns "つきあかり")
@@ -388,21 +405,23 @@ async function getDailyWord(date: Date): Promise<string>
 - **Status**: Mock implementation complete, full persistence implementation pending
 
 #### 4. updateGameState (Client-side & Server-side) ✅ Implemented
+
 ```typescript
 // Client-side
 function updateClientGameState(
-  currentState: ClientGameState, 
-  guess: string, 
+  currentState: ClientGameState,
+  guess: string,
   result: GuessResult
-): ClientGameState
+): ClientGameState;
 
 // Server-side
 function updateServerGameState(
-  currentState: ServerGameState, 
-  guess: string, 
+  currentState: ServerGameState,
+  guess: string,
   target: string
-): ServerGameState
+): ServerGameState;
 ```
+
 - **Input**: Current state, guess, evaluation result/target
 - **Output**: Updated state
 - **Responsibility**: Attempt count, completion determination, win/loss detection
@@ -410,6 +429,7 @@ function updateServerGameState(
 - **Status**: Complete with comprehensive test coverage
 
 #### 5. useGameState Hook (Client-side) ✅ Implemented
+
 ```typescript
 function useGameState(): {
   gameState: ClientGameState;
@@ -421,8 +441,9 @@ function useGameState(): {
   setError: (error: string) => void;
   clearError: () => void;
   resetGame: () => void;
-}
+};
 ```
+
 - **Input**: None
 - **Output**: Game state and state management functions
 - **Responsibility**: Client-side game state management with React hooks
@@ -430,10 +451,16 @@ function useGameState(): {
 - **Status**: Complete with comprehensive test coverage
 
 #### 6. Game Service Layer ✅ Implemented
+
 ```typescript
-async function submitGuess(guess: string, gameDate: string, wordList: WordEntry[]): Promise<GuessResult>
-async function getDailyGameState(gameDate: string): Promise<DailyGameState>
+async function submitGuess(
+  guess: string,
+  gameDate: string,
+  wordList: WordEntry[]
+): Promise<GuessResult>;
+async function getDailyGameState(gameDate: string): Promise<DailyGameState>;
 ```
+
 - **Input**: Game parameters and word list
 - **Output**: Business logic results
 - **Responsibility**: Business logic separation, error handling, API integration
@@ -447,6 +474,7 @@ async function getDailyGameState(gameDate: string): Promise<DailyGameState>
 - **API communication**: Submit guess → Receive evaluation result (target word is absolutely never exposed)
 
 ### Function Placement Strategy
+
 - `validateWord()` → **Server-side** (dictionary confidentiality)
 - `evaluateGuess()` → **Server-side** (requires target word)
 - `getDailyWord()` → **Server-side** (target confidentiality)
@@ -462,22 +490,26 @@ async function getDailyGameState(gameDate: string): Promise<DailyGameState>
 ## Testing Strategy
 
 - **Unit Testing**: ✅ Complete (74 tests passing)
+
   - Core game logic (validateWord, evaluateGuess, getDailyWord)
   - Utility functions (updateGameState, gameService layer)
   - Component rendering (GameBoard, HiraganaKeyboard)
   - React hooks (useGameState)
 
 - **Integration Testing**: ✅ Complete
+
   - API endpoints (/api/game/guess, /api/game/daily)
   - Component integration (GameBoard + HiraganaKeyboard)
   - State management integration
 
 - **End-to-End Testing**: 📋 Pending
+
   - Complete game flows
   - Authentication process
   - Result sharing
 
 - **Performance Testing**: 📋 Pending
+
   - Load time benchmarks
   - Interaction responsiveness
   - API response times
