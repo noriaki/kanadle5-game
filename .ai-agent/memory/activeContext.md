@@ -151,24 +151,38 @@ Last Updated: 2025-06-11
 
 **✅ MILESTONE 1 ACHIEVED**: Basic game functionality working locally!
 
-**Current Priority**: Daily Word System Implementation (Milestone 2A)
+**Current Priority**: Daily Word System Implementation (Milestone 2A - Phased Approach)
 
-1. **Daily Word System Implementation** (PRIORITY 1):
+1. **Phase 1: Redis Environment Setup** (PRIORITY 1 - Feature 17A):
 
-   - Set up Redis (Upstash) connection configuration
+   - Implement devcontainer Redis setup
+   - Configure GitHub Actions Redis service  
+   - Create Upstash Preview database
+   - Extend Redis connection module for environment-specific configuration
+   - Add Redis health check endpoints
+   - **Value**: Complete Redis infrastructure enabling development
+
+2. **Phase 2: Daily Word System Foundation** (PRIORITY 2 - Feature 17B):
+
    - Implement word master database with nanoid ID generation
-   - Create monthly word assignment logic with JST timezone handling
    - Replace mock getDailyWord with Redis-based implementation
-   - Test month-ahead word generation and retrieval
+   - Add word synchronization from words.json to Redis
+   - **Value**: End-to-end daily word functionality replacing mock
 
-2. **LINE LIFF Setup and Integration** (PRIORITY 2):
+3. **Phase 3: Monthly Word Assignment System** (PRIORITY 3 - Feature 17C):
+
+   - Create monthly word assignment logic with JST timezone handling
+   - Implement dynamic word selection and automated assignment
+   - **Value**: Complete automated daily word system
+
+4. **LINE LIFF Setup and Integration** (PRIORITY 4):
 
    - Set up LINE Developer Console and LIFF app
    - Implement LINE Login authentication
    - Integrate user profile retrieval
    - Test LIFF functionality in LINE environment
 
-3. **User Data Persistence Implementation** (PRIORITY 3):
+5. **User Data Persistence Implementation** (PRIORITY 5):
 
    - Add user game history storage using Redis
    - Implement user statistics tracking
@@ -193,8 +207,10 @@ Last Updated: 2025-06-11
 ### Upcoming Milestones
 
 - **✅ Milestone 1**: Basic game functionality working locally (COMPLETE)
-- **📋 Milestone 2A**: Daily word system with Redis implementation (In Progress)
-- **📋 Milestone 2B**: LINE LIFF integration and authentication (Next)
+- **📋 Milestone 2A-1**: Redis Environment Setup (Feature 17A - In Progress)  
+- **📋 Milestone 2A-2**: Daily Word System Foundation (Feature 17B - Next)
+- **📋 Milestone 2A-3**: Monthly Word Assignment System (Feature 17C - Future)
+- **📋 Milestone 2B**: LINE LIFF integration and authentication (Future)
 - **📋 Milestone 3**: User data persistence and statistics (Future)
 - **📋 Milestone 4**: Deployment and testing (Final)
 
@@ -202,6 +218,7 @@ Last Updated: 2025-06-11
 
 ### Recent Decisions
 
+- **Feature Split Strategy**: Divided Daily Word System into GitHub Flow-compliant phases (17A, 17B, 17C) ensuring each provides complete user value and maintains production readiness
 - **Redis Environment Configuration**: Complete environment isolation with devcontainer for local development/testing, GitHub Actions Redis container for CI, and separate Upstash databases for production/preview
 - **Testing Strategy Enhancement**: Dual approach using Unit Tests with mocks for speed and Integration Tests with real Redis for system validation
 - **Daily Word System Architecture**: Redis-based system with month-ahead pre-assignment strategy using nanoid 8-character IDs

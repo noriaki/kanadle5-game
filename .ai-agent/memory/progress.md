@@ -217,24 +217,54 @@ Project has successfully completed the first major milestone with all core game 
 
 ## Features In Progress
 
-### Feature 17: Daily Word System Implementation
+### Feature 17A: Redis Environment Setup (Phase 1)
 
-- **Description**: Complete Redis-based daily word system with month-ahead assignment strategy
-- **Target Completion**: Week 2
-- **Status**: Design Complete, Infrastructure Planned, Implementation Pending
-- **Progress**: 40% (Architecture, design, and infrastructure planning completed)
+- **Description**: Complete Redis infrastructure setup with basic connection and health check
+- **Target Completion**: Week 2 Phase 1
+- **Status**: Planning Complete, Implementation Pending
+- **Progress**: 80% (Planning and documentation complete)
+- **Value Delivered**: Redis connection established, development environment ready, production-ready infrastructure
 - **Remaining Tasks**:
-  - ✅ Redis environment configuration planning (COMPLETE - see `.ai-agent/memory-bank/infrastructure/redis-environment-configuration.md`)
+  - ✅ Redis environment configuration planning (COMPLETE)
   - 📋 Implement devcontainer Redis setup
   - 📋 Configure GitHub Actions Redis service
   - 📋 Create Upstash Preview database
+  - 📋 Extend Redis connection module for environment-specific configuration
+  - 📋 Add Redis health check endpoints for all environments
+  - 📋 Add comprehensive testing for Redis infrastructure (Unit + Integration)
+- **Notes**: GitHub Flow compliant - provides complete infrastructure value that enables development
+
+### Feature 17B: Daily Word System Foundation (Phase 2)
+
+- **Description**: Word master database with basic getDailyWord replacement using Redis
+- **Target Start**: After Feature 17A completion
+- **Status**: Design Complete, Implementation Pending
+- **Progress**: 30% (Architecture and design completed)
+- **Value Delivered**: Mock getDailyWord replaced with Redis-based implementation, word master database operational
+- **Dependencies**: Feature 17A (Redis Environment Setup)
+- **Planned Tasks**:
   - 📋 Implement word master database with nanoid ID generation
-  - 📋 Create monthly word assignment logic with JST timezone handling
   - 📋 Implement word synchronization from words.json to Redis
-  - 📋 Replace mock getDailyWord with Redis-based implementation
+  - 📋 Replace mock getDailyWord with Redis-based static word retrieval
+  - 📋 Add word master CRUD operations
+  - 📋 Add comprehensive testing for word master operations
+- **Notes**: GitHub Flow compliant - provides end-to-end functionality replacing current mock
+
+### Feature 17C: Monthly Word Assignment System (Phase 3)
+
+- **Description**: Dynamic daily word assignment with month-ahead strategy
+- **Target Start**: After Feature 17B completion  
+- **Status**: Design Complete, Implementation Pending
+- **Progress**: 20% (Architecture completed)
+- **Value Delivered**: True daily word variation, automated word assignment, complete daily word system
+- **Dependencies**: Feature 17B (Daily Word System Foundation)
+- **Planned Tasks**:
+  - 📋 Create monthly word assignment logic with JST timezone handling
+  - 📋 Implement dynamic word selection based on date
   - 📋 Create operational procedures for monthly maintenance
-  - 📋 Add comprehensive testing for Redis operations (Unit + Integration)
-- **Notes**: Comprehensive implementation plan saved to memory-bank. System designed to be independent of words.json structure changes. Redis environment configuration completed with full environment isolation strategy.
+  - 📋 Add assignment history and usage tracking
+  - 📋 Add comprehensive testing for assignment system
+- **Notes**: GitHub Flow compliant - completes the daily word system with full automation
 
 ## Pending Features
 
