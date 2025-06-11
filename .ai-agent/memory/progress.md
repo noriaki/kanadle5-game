@@ -219,6 +219,7 @@ Project has successfully completed the first major milestone with all core game 
 
 ### Feature 17A: Redis Environment Setup (Phase 1)
 
+- **Branch**: `feature/redis-environment-setup`
 - **Description**: Complete Redis infrastructure setup with basic connection and health check
 - **Target Completion**: Week 2 Phase 1
 - **Status**: Planning Complete, Implementation Pending
@@ -236,6 +237,7 @@ Project has successfully completed the first major milestone with all core game 
 
 ### Feature 17B: Daily Word System Foundation (Phase 2)
 
+- **Branch**: `feature/daily-word-system-foundation`
 - **Description**: Word master database with basic getDailyWord replacement using Redis
 - **Target Start**: After Feature 17A completion
 - **Status**: Design Complete, Implementation Pending
@@ -252,6 +254,7 @@ Project has successfully completed the first major milestone with all core game 
 
 ### Feature 17C: Monthly Word Assignment System (Phase 3)
 
+- **Branch**: `feature/monthly-word-assignment`
 - **Description**: Dynamic daily word assignment with month-ahead strategy
 - **Target Start**: After Feature 17B completion  
 - **Status**: Design Complete, Implementation Pending
