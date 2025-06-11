@@ -1,6 +1,6 @@
 # Active Context - Kanadle5 Game
 
-Last Updated: 2025-06-08
+Last Updated: 2025-06-11
 
 ## Current Focus
 
@@ -58,6 +58,16 @@ Last Updated: 2025-06-08
 ## Recent Changes
 
 ### Code Changes
+
+- 2025-06-11: **REDIS ENVIRONMENT CONFIGURATION**: Completed comprehensive Redis environment configuration planning
+  
+  - Designed complete environment isolation strategy for local development, testing, CI/CD, and production
+  - Planned devcontainer setup with Redis DB0 for development and DB1 for testing
+  - Configured GitHub Actions with Redis service container for automated testing
+  - Established Vercel Preview environment with separate Upstash database (kanadle5-game-preview)
+  - Created testing strategy combining Unit Tests (mocked) and Integration Tests (real Redis)
+  - Documented detailed implementation plan in `.ai-agent/memory-bank/infrastructure/redis-environment-configuration.md`
+  - Ready for implementation of Daily Word System with proper environment separation
 
 - 2025-06-10: **WORD ID & ENTITY TYPES**: Completed Phase 2 Word ID generation and Word Entity type system
 
@@ -192,6 +202,8 @@ Last Updated: 2025-06-08
 
 ### Recent Decisions
 
+- **Redis Environment Configuration**: Complete environment isolation with devcontainer for local development/testing, GitHub Actions Redis container for CI, and separate Upstash databases for production/preview
+- **Testing Strategy Enhancement**: Dual approach using Unit Tests with mocks for speed and Integration Tests with real Redis for system validation
 - **Daily Word System Architecture**: Redis-based system with month-ahead pre-assignment strategy using nanoid 8-character IDs
 - **Data Independence**: Word master database independent of words.json structure changes for operational flexibility
 - **Redis Usage Strategy**: Upstash Redis free tier optimization with efficient key structures and minimal command usage
@@ -207,7 +219,6 @@ Last Updated: 2025-06-08
 
 ### Open Questions
 
-- **Redis Connection Setup**: How to properly configure environment variables for Upstash Redis in development and production?
 - **Monthly Maintenance Automation**: Should word assignment be fully automated or require manual trigger for quality control?
 - **LINE LIFF Testing**: What's the most efficient way to test LINE integration during development?
 
