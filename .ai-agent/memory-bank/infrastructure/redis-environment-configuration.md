@@ -8,13 +8,13 @@ This document outlines the comprehensive Redis configuration strategy for the Ka
 
 ### Environment Matrix
 
-| Environment | Type | Redis Connection | Database | Purpose |
-|------------|------|------------------|----------|---------|
-| **Local Development** | devcontainer | Local Redis Container | DB0 | Feature development & debugging |
-| **Local Test** | devcontainer | Local Redis Container | DB1 | Unit & Integration testing |
-| **GitHub Actions** | CI/CD | Redis Service Container | DB0 | Automated testing |
-| **Vercel Production** | Production | Upstash `kanadle5-game` | - | Live application |
-| **Vercel Preview** | Staging | Upstash `kanadle5-game-preview` | - | PR previews & testing |
+| Environment           | Type         | Redis Connection                | Database | Purpose                         |
+| --------------------- | ------------ | ------------------------------- | -------- | ------------------------------- |
+| **Local Development** | devcontainer | Local Redis Container           | DB0      | Feature development & debugging |
+| **Local Test**        | devcontainer | Local Redis Container           | DB1      | Unit & Integration testing      |
+| **GitHub Actions**    | CI/CD        | Redis Service Container         | DB0      | Automated testing               |
+| **Vercel Production** | Production   | Upstash `kanadle5-game`         | -        | Live application                |
+| **Vercel Preview**    | Staging      | Upstash `kanadle5-game-preview` | -        | PR previews & testing           |
 
 ### Architecture Diagram
 
@@ -45,6 +45,7 @@ This document outlines the comprehensive Redis configuration strategy for the Ka
 ### 1. Local Development Environment
 
 **Configuration File**: `.env.development.local`
+
 ```bash
 # Redis Configuration for Local Development
 KV_REST_API_URL=http://localhost:6379
@@ -55,7 +56,8 @@ REDIS_DB=0
 NEXT_PUBLIC_LIFF_ID=dev-liff-id
 ```
 
-**Purpose**: 
+**Purpose**:
+
 - Feature development
 - Real-time debugging
 - Browser-based testing
@@ -63,6 +65,7 @@ NEXT_PUBLIC_LIFF_ID=dev-liff-id
 ### 2. Local Test Environment
 
 **Configuration File**: `.env.test.local`
+
 ```bash
 # Redis Configuration for Local Testing
 KV_REST_API_URL=http://localhost:6379
@@ -74,6 +77,7 @@ NODE_ENV=test
 ```
 
 **Purpose**:
+
 - Unit tests (with mocks)
 - Integration tests (with real Redis)
 - Isolated test data
@@ -81,6 +85,7 @@ NODE_ENV=test
 ### 3. GitHub Actions Environment
 
 **Configuration**: `.github/workflows/ci.yml`
+
 ```yaml
 services:
   redis:
@@ -99,6 +104,7 @@ env:
 ```
 
 **Purpose**:
+
 - Automated CI/CD testing
 - Pull request validation
 - Pre-merge checks
@@ -106,6 +112,7 @@ env:
 ### 4. Vercel Production Environment
 
 **Database**: `upstash-kv-kanadle5-game`
+
 - Already configured in Vercel Dashboard
 - Connected to Production deployments
 - Environment variables managed through Vercel
@@ -113,6 +120,7 @@ env:
 ### 5. Vercel Preview Environment
 
 **Database**: `upstash-kv-kanadle5-game-preview` (to be created)
+
 - Separate Upstash instance for preview deployments
 - Prevents test data pollution in production
 - Environment variables for Preview context only
@@ -120,18 +128,21 @@ env:
 ## Testing Strategy
 
 ### Unit Tests
+
 - **Scope**: Individual functions and components
 - **Redis**: Mocked using Jest
 - **Execution**: Every commit
 - **Example**: `validateWord.test.ts`
 
 ### Integration Tests
+
 - **Scope**: System component interactions
 - **Redis**: Real connection to Redis container
 - **Execution**: Important changes, pre-merge
 - **Example**: `getDailyWord.integration.test.ts`
 
 ### Test Organization
+
 ```
 src/
 ├── lib/
@@ -149,11 +160,13 @@ src/
 ### User Actions Required
 
 1. **Create Upstash Preview Database**
+
    - [ ] Log into Upstash Dashboard
    - [ ] Create new database: `upstash-kv-kanadle5-game-preview`
    - [ ] Copy connection credentials
 
 2. **Configure Vercel Preview Environment**
+
    - [ ] Navigate to Vercel Project Settings
    - [ ] Add Preview-only environment variables:
      - `KV_REST_API_URL`: [Preview DB URL]
@@ -166,38 +179,44 @@ src/
 ### Development Team Actions
 
 1. **devcontainer Configuration**
-   - [ ] Create `.devcontainer/docker-compose.yml` with Redis service
-   - [ ] Update `.devcontainer/devcontainer.json`
-   - [ ] Add Redis health checks
+
+   - [x] Create `.devcontainer/docker-compose.yml` with Redis service
+   - [x] Update `.devcontainer/devcontainer.json`
+   - [x] Add Redis health checks
 
 2. **Environment Files**
-   - [ ] Create `.env.development.local` template
-   - [ ] Create `.env.test.local` template
-   - [ ] Update `.env.local.example` with new structure
+
+   - [x] Create `.env.development.local` template
+   - [x] Create `.env.test.local` template
+   - [x] Update `.env.local.example` with new structure
 
 3. **Redis Connection Adapter**
-   - [ ] Extend `src/lib/redis.ts` for local Redis support
-   - [ ] Add Upstash-compatible command mapping
-   - [ ] Implement database selection logic
+
+   - [x] Extend `src/lib/redis.ts` for local Redis support
+   - [x] Add Upstash-compatible command mapping (using REST proxy)
+   - [x] Implement environment detection logic
 
 4. **CI/CD Updates**
-   - [ ] Update `.github/workflows/ci.yml` with Redis service
-   - [ ] Add integration test job
-   - [ ] Configure test splitting
+
+   - [x] Update `.github/workflows/ci.yml` with Redis service
+   - [x] Add Upstash REST proxy to CI environment
+   - [x] Configure environment variables for tests
 
 5. **Test Infrastructure**
-   - [ ] Configure Jest projects for unit/integration separation
-   - [ ] Create integration test utilities
-   - [ ] Add test data cleanup helpers
+   - [x] Configure Jest projects for unit/integration separation
+   - [x] Create integration test utilities
+   - [x] Add sample integration tests
 
 ## Security Considerations
 
 1. **Environment Variable Management**
+
    - Never commit `.env.*.local` files
    - Use different tokens for each environment
    - Implement read-only tokens where possible
 
 2. **Data Isolation**
+
    - Complete separation between environments
    - No production data in development/test
    - Regular cleanup of test data
@@ -210,11 +229,13 @@ src/
 ## Benefits
 
 1. **Development Efficiency**
+
    - Fast local Redis connection
    - No external dependencies for development
    - Quick feedback loops
 
 2. **Testing Confidence**
+
    - Both unit and integration test coverage
    - Consistent test environments
    - Isolated test data
@@ -227,6 +248,7 @@ src/
 ## Maintenance
 
 1. **Regular Tasks**
+
    - Monitor Upstash usage and limits
    - Clean up old test data
    - Update Redis versions in containers
@@ -239,6 +261,7 @@ src/
 ## Future Enhancements
 
 1. **Advanced Features**
+
    - Redis cluster support for scaling
    - Read replicas for performance
    - Automated backup strategies
