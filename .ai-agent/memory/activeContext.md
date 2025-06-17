@@ -1,6 +1,6 @@
 # Active Context - Kanadle5 Game
 
-Last Updated: 2025-06-11
+Last Updated: 2025-06-17
 
 ## Current Focus
 
@@ -58,6 +58,14 @@ Last Updated: 2025-06-11
 ## Recent Changes
 
 ### Code Changes
+
+- 2025-06-17: **REDIS ENVIRONMENT CONFIGURATION UPDATE**: Modified Redis configuration strategy for Preview environment
+  
+  - Updated Preview environment to use production database `kanadle5-game` instead of separate instance
+  - Suitable for limited-access environments where data isolation is not critical
+  - Reset all Implementation Checklist items for future re-execution
+  - Aligned documentation with simplified deployment strategy
+  - Maintains complete isolation for local development and testing environments
 
 - 2025-06-11: **REDIS ENVIRONMENT CONFIGURATION**: Completed comprehensive Redis environment configuration planning
   
@@ -218,8 +226,9 @@ Last Updated: 2025-06-11
 
 ### Recent Decisions
 
+- **Preview Environment Strategy**: Modified Redis configuration to use production database for Preview environment, simplifying deployment for limited-access scenarios
 - **Feature Split Strategy**: Divided Daily Word System into GitHub Flow-compliant phases (17A, 17B, 17C) ensuring each provides complete user value and maintains production readiness
-- **Redis Environment Configuration**: Complete environment isolation with devcontainer for local development/testing, GitHub Actions Redis container for CI, and separate Upstash databases for production/preview
+- **Redis Environment Configuration**: Complete environment isolation for local development/testing and GitHub Actions CI, with shared production database for Preview deployments
 - **Testing Strategy Enhancement**: Dual approach using Unit Tests with mocks for speed and Integration Tests with real Redis for system validation
 - **Daily Word System Architecture**: Redis-based system with month-ahead pre-assignment strategy using nanoid 8-character IDs
 - **Data Independence**: Word master database independent of words.json structure changes for operational flexibility

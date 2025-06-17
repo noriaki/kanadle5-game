@@ -2,7 +2,7 @@
 
 ## Overview
 
-This document outlines the comprehensive Redis configuration strategy for the Kanadle5 Game across all development, testing, and production environments. The configuration ensures complete environment isolation, data safety, and efficient development workflows.
+This document outlines the comprehensive Redis configuration strategy for the Kanadle5 Game across all development, testing, and production environments. The configuration ensures appropriate environment isolation while maintaining simplicity for limited-access deployments.
 
 ## Environment Architecture
 
@@ -14,7 +14,7 @@ This document outlines the comprehensive Redis configuration strategy for the Ka
 | **Local Test**        | devcontainer | Local Redis Container           | DB1      | Unit & Integration testing      |
 | **GitHub Actions**    | CI/CD        | Redis Service Container         | DB0      | Automated testing               |
 | **Vercel Production** | Production   | Upstash `kanadle5-game`         | -        | Live application                |
-| **Vercel Preview**    | Staging      | Upstash `kanadle5-game-preview` | -        | PR previews & testing           |
+| **Vercel Preview**    | Staging      | Upstash `kanadle5-game`         | -        | PR previews & testing           |
 
 ### Architecture Diagram
 
@@ -33,10 +33,9 @@ This document outlines the comprehensive Redis configuration strategy for the Ka
 │  REMOTE ENVIRONMENTS                                        │
 │  ┌──────────────────┐  ┌───────────────────────────────┐  │
 │  │  GitHub Actions  │  │  Vercel (Upstash)              │  │
-│  │  Redis Service   │  │  ├─ Production: kanadle5-game  │  │
-│  │  Container       │  │  └─ Preview: kanadle5-game-    │  │
-│  └──────────────────┘  │              preview            │  │
-│                        └───────────────────────────────┘  │
+│  │  Redis Service   │  │  └─ Production & Preview:      │  │
+│  │  Container       │  │     kanadle5-game              │  │
+│  └──────────────────┘  └───────────────────────────────┘  │
 └─────────────────────────────────────────────────────────────┘
 ```
 
@@ -119,11 +118,11 @@ env:
 
 ### 5. Vercel Preview Environment
 
-**Database**: `upstash-kv-kanadle5-game-preview` (to be created)
+**Database**: `upstash-kv-kanadle5-game` (same as production)
 
-- Separate Upstash instance for preview deployments
-- Prevents test data pollution in production
-- Environment variables for Preview context only
+- Uses the same Upstash instance as production
+- Suitable for limited-access environments
+- Environment variables inherited from production settings
 
 ## Testing Strategy
 
@@ -159,20 +158,12 @@ src/
 
 ### User Actions Required
 
-1. **Create Upstash Preview Database**
+1. **Verify Vercel Environment Configuration**
 
-   - [ ] Log into Upstash Dashboard
-   - [ ] Create new database: `upstash-kv-kanadle5-game-preview`
-   - [ ] Copy connection credentials
+   - [ ] Confirm production Upstash database is accessible from Preview deployments
+   - [ ] Verify environment variables are properly inherited in Preview context
 
-2. **Configure Vercel Preview Environment**
-
-   - [ ] Navigate to Vercel Project Settings
-   - [ ] Add Preview-only environment variables:
-     - `KV_REST_API_URL`: [Preview DB URL]
-     - `KV_REST_API_TOKEN`: [Preview DB Token]
-
-3. **Set Up GitHub Repository Secrets** (if using real Upstash for CI)
+2. **Set Up GitHub Repository Secrets** (if using real Upstash for CI)
    - [ ] Add `KV_REST_API_URL_TEST`
    - [ ] Add `KV_REST_API_TOKEN_TEST`
 
@@ -180,50 +171,50 @@ src/
 
 1. **devcontainer Configuration**
 
-   - [x] Create `.devcontainer/docker-compose.yml` with Redis service
-   - [x] Update `.devcontainer/devcontainer.json`
-   - [x] Add Redis health checks
+   - [ ] Create `.devcontainer/docker-compose.yml` with Redis service
+   - [ ] Update `.devcontainer/devcontainer.json`
+   - [ ] Add Redis health checks
 
 2. **Environment Files**
 
-   - [x] Create `.env.development.local` template
-   - [x] Create `.env.test.local` template
-   - [x] Update `.env.local.example` with new structure
+   - [ ] Create `.env.development.local` template
+   - [ ] Create `.env.test.local` template
+   - [ ] Update `.env.local.example` with new structure
 
 3. **Redis Connection Adapter**
 
-   - [x] Extend `src/lib/redis.ts` for local Redis support
-   - [x] Add Upstash-compatible command mapping (using REST proxy)
-   - [x] Implement environment detection logic
+   - [ ] Extend `src/lib/redis.ts` for local Redis support
+   - [ ] Add Upstash-compatible command mapping (using REST proxy)
+   - [ ] Implement environment detection logic
 
 4. **CI/CD Updates**
 
-   - [x] Update `.github/workflows/ci.yml` with Redis service
-   - [x] Add Upstash REST proxy to CI environment
-   - [x] Configure environment variables for tests
+   - [ ] Update `.github/workflows/ci.yml` with Redis service
+   - [ ] Add Upstash REST proxy to CI environment
+   - [ ] Configure environment variables for tests
 
 5. **Test Infrastructure**
-   - [x] Configure Jest projects for unit/integration separation
-   - [x] Create integration test utilities
-   - [x] Add sample integration tests
+   - [ ] Configure Jest projects for unit/integration separation
+   - [ ] Create integration test utilities
+   - [ ] Add sample integration tests
 
 ## Security Considerations
 
 1. **Environment Variable Management**
 
    - Never commit `.env.*.local` files
-   - Use different tokens for each environment
+   - Use secure token management for all environments
    - Implement read-only tokens where possible
 
 2. **Data Isolation**
 
-   - Complete separation between environments
-   - No production data in development/test
-   - Regular cleanup of test data
+   - Local environments completely isolated from production
+   - Development/test use separate Redis databases
+   - Preview environment shares production data (limited access only)
 
 3. **Access Control**
    - Minimal permissions principle
-   - Separate credentials per environment
+   - Restrict Preview deployment access to authorized users only
    - Audit trail for production access
 
 ## Benefits
@@ -241,9 +232,9 @@ src/
    - Isolated test data
 
 3. **Production Safety**
-   - No development impact on production
-   - Preview changes without risk
-   - Clear environment boundaries
+   - Local development completely isolated from production
+   - Preview environment uses production data with limited access control
+   - Clear environment boundaries for development/test environments
 
 ## Maintenance
 
@@ -273,4 +264,4 @@ src/
 
 ---
 
-This configuration provides a robust, scalable foundation for Redis usage across all environments while maintaining security and development efficiency.
+This configuration provides a balanced approach to Redis usage across all environments, maintaining isolation for development while simplifying Preview deployment through shared production resources for limited-access scenarios.

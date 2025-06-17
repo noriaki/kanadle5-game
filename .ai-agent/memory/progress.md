@@ -2,9 +2,19 @@
 
 ## Last Updated
 
-2025-06-11
+2025-06-17
 
 ## Progress Log
+
+- **2025-06-17**:
+
+  - **REDIS ENVIRONMENT CONFIGURATION UPDATE**: Modified Redis configuration strategy to simplify Preview environment deployment
+  - Updated Preview environment to use the same production database (`kanadle5-game`) instead of a separate instance
+  - Decision based on limited-access nature of Preview deployments, eliminating need for data isolation
+  - Reset all Implementation Checklist items in Redis configuration documentation for future task execution
+  - Maintained complete isolation for local development (DB0) and testing (DB1) environments
+  - Aligned all documentation with the simplified deployment strategy
+  - Updated memory files to reflect new architecture decisions and maintain consistency
 
 - **2025-06-11**:
 
