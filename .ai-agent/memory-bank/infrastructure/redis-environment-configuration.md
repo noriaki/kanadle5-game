@@ -8,17 +8,17 @@ This document outlines the comprehensive Redis configuration strategy for the Ka
 
 ### Environment Matrix
 
-| Environment           | Type         | Redis Connection                         | Database | Purpose                         |
-| --------------------- | ------------ | ---------------------------------------- | -------- | ------------------------------- |
+| Environment           | Type         | Redis Connection                        | Database | Purpose                         |
+| --------------------- | ------------ | --------------------------------------- | -------- | ------------------------------- |
 | **Local Development** | devcontainer | Upstash REST Server (Docker)            | -        | Feature development & debugging |
 | **Local Test**        | devcontainer | Upstash REST Server (Docker)            | -        | Unit & Integration testing      |
 | **GitHub Actions**    | CI/CD        | Upstash REST Server (Service Container) | -        | Automated testing               |
-| **Vercel Production** | Production   | Upstash Cloud `kanadle5-game`            | -        | Live application                |
-| **Vercel Preview**    | Staging      | Upstash Cloud `kanadle5-game`            | -        | PR previews & testing           |
+| **Vercel Production** | Production   | Upstash Cloud `kanadle5-game`           | -        | Live application                |
+| **Vercel Preview**    | Staging      | Upstash Cloud `kanadle5-game`           | -        | PR previews & testing           |
 
 ### Architecture Diagram
 
-```
+```text
 ┌─────────────────────────────────────────────────────────────┐
 │                     Redis Environment Setup                  │
 ├─────────────────────────────────────────────────────────────┤
@@ -67,7 +67,7 @@ DAILY_WORD_REFRESH_TIME=00:00:00
 upstash-redis:
   image: upstash/redis-rest-server:latest
   ports:
-    - "8079:8079"
+    - '8079:8079'
   environment:
     - REDIS_URL=redis://redis:6379
 ```
@@ -207,7 +207,7 @@ KV_REST_API_TOKEN=[Upstash REST Token]
 
 ### Test Organization
 
-```
+```text
 src/
 ├── lib/
 │   ├── game/
@@ -224,6 +224,7 @@ src/
 ### User Actions Required
 
 1. **Verify Upstash Cloud Configuration**
+
    - [ ] Confirm Upstash database is created and accessible
    - [ ] Obtain REST API URL and token from Upstash console
    - [ ] Configure Vercel environment variables
@@ -236,21 +237,25 @@ src/
 ### Development Team Actions
 
 1. **devcontainer Configuration**
+
    - [ ] Create `.devcontainer/docker-compose.yml` with Upstash REST server
    - [ ] Update `.devcontainer/devcontainer.json`
    - [ ] Add health check configuration
 
 2. **Environment Files**
+
    - [ ] Create `.env.development.local.example` template
    - [ ] Create `.env.test.local.example` template
    - [ ] Update `.env.local.example` with production template
 
 3. **Redis Connection Module**
+
    - [ ] Keep `src/lib/redis.ts` simple (no environment-specific logic needed)
    - [ ] Use same Upstash client for all environments
    - [ ] Add connection validation helper
 
 4. **CI/CD Updates**
+
    - [ ] Update `.github/workflows/ci.yml` with Upstash REST server
    - [ ] Configure health checks for services
    - [ ] Set environment variables for tests
@@ -263,12 +268,14 @@ src/
 ## Security Considerations
 
 1. **Environment Variable Management**
+
    - Never commit `.env.*.local` files
    - Use dummy tokens for local development
    - Secure production tokens in Vercel dashboard
    - Rotate tokens periodically
 
 2. **Data Isolation**
+
    - Local environments completely isolated from cloud
    - Test data never touches production
    - Preview environment requires access control
@@ -283,12 +290,14 @@ src/
 ## Benefits
 
 1. **Development Efficiency**
+
    - Fast local Redis operations
    - Complete offline development capability
    - Consistent API across all environments
    - Quick feedback loops
 
 2. **Testing Confidence**
+
    - Identical REST API interface everywhere
    - Fast integration test execution
    - Complete test isolation
@@ -303,6 +312,7 @@ src/
 ## Maintenance
 
 1. **Regular Tasks**
+
    - Monitor Upstash usage and billing
    - Update Upstash REST server Docker image
    - Clean up stale test data
@@ -317,6 +327,7 @@ src/
 ## Future Enhancements
 
 1. **Advanced Features**
+
    - Separate Preview environment database
    - Redis Cluster support for scaling
    - Automated backup and restore
@@ -333,21 +344,25 @@ src/
 ### Common Issues
 
 1. **Upstash REST Server Connection Failed**
+
    - Check Docker container is running: `docker ps`
    - Verify port 8079 is not in use: `lsof -i :8079`
    - Check health endpoint: `curl http://localhost:8079/health`
 
 2. **Test Data Conflicts**
+
    - Ensure test cleanup runs properly
    - Use unique key prefixes per test suite
    - Clear Redis before test runs: `redis-cli FLUSHDB`
 
 3. **Production Connection Issues**
+
    - Verify Upstash service status
    - Check environment variables in Vercel
    - Validate tokens are current
 
 4. **Docker Compose Issues**
+
    - Restart containers: `docker-compose down && docker-compose up`
    - Check logs: `docker-compose logs upstash-redis`
    - Rebuild images: `docker-compose build --no-cache`

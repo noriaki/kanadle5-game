@@ -14,6 +14,10 @@ const customJestConfig = {
     '**/__tests__/**/*.(test|spec).(ts|tsx|js|jsx)',
     '**/src/**/*.(test|spec).(ts|tsx|js|jsx)',
   ],
+  testPathIgnorePatterns: [
+    '/node_modules/',
+    '\\.integration\\.(test|spec)\\.(ts|tsx|js|jsx)$',
+  ],
 };
 
 module.exports = createJestConfig(customJestConfig);

@@ -60,7 +60,7 @@ Last Updated: 2025-06-17
 ### Code Changes
 
 - 2025-06-17: **REDIS ENVIRONMENT CONFIGURATION UPDATE**: Modified Redis configuration strategy for Preview environment
-  
+
   - Updated Preview environment to use production database `kanadle5-game` instead of separate instance
   - Suitable for limited-access environments where data isolation is not critical
   - Reset all Implementation Checklist items for future re-execution
@@ -68,7 +68,7 @@ Last Updated: 2025-06-17
   - Maintains complete isolation for local development and testing environments
 
 - 2025-06-11: **REDIS ENVIRONMENT CONFIGURATION**: Completed comprehensive Redis environment configuration planning
-  
+
   - Designed complete environment isolation strategy for local development, testing, CI/CD, and production
   - Planned devcontainer setup with Redis DB0 for development and DB1 for testing
   - Configured GitHub Actions with Redis service container for automated testing
@@ -164,7 +164,7 @@ Last Updated: 2025-06-17
 1. **Phase 1: Redis Environment Setup** (PRIORITY 1 - Feature 17A):
 
    - Implement devcontainer Redis setup
-   - Configure GitHub Actions Redis service  
+   - Configure GitHub Actions Redis service
    - Create Upstash Preview database
    - Extend Redis connection module for environment-specific configuration
    - Add Redis health check endpoints
@@ -196,7 +196,7 @@ Last Updated: 2025-06-17
    - Implement user statistics tracking
    - Add session-based game state persistence
 
-4. **Game Enhancement**:
+6. **Game Enhancement**:
 
    - Verify word dictionary doesn't contain words with 'を'
    - Add game completion screen with statistics
@@ -204,18 +204,18 @@ Last Updated: 2025-06-17
    - Fix dark mode contrast issue with input form text color
    - Add tutorial/onboarding for first-time users with skippable sample game
 
-5. **Dictionary Enhancement**:
+7. **Dictionary Enhancement**:
 
    - Enrich 5-character word dictionary
    - Consider extracting 5-character hiragana proper nouns from morphological analysis dictionaries
 
-6. **Future Enhancement** (After core features complete):
+8. **Future Enhancement** (After core features complete):
    - Friend battle mode: Asynchronous competitive mode showing other players' previous results (color feedback only) revealed step-by-step
 
 ### Upcoming Milestones
 
 - **✅ Milestone 1**: Basic game functionality working locally (COMPLETE)
-- **📋 Milestone 2A-1**: Redis Environment Setup (Feature 17A - In Progress)  
+- **📋 Milestone 2A-1**: Redis Environment Setup (Feature 17A - In Progress)
 - **📋 Milestone 2A-2**: Daily Word System Foundation (Feature 17B - Next)
 - **📋 Milestone 2A-3**: Monthly Word Assignment System (Feature 17C - Future)
 - **📋 Milestone 2B**: LINE LIFF integration and authentication (Future)

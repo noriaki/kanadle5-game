@@ -1,0 +1,61 @@
+version: '3.8'
+
+services:
+  app:
+    image: node:22-bullseye-slim
+    working_dir: /workspace
+    volumes:
+      - ../:/workspace:cached
+      - node_modules:/workspace/node_modules
+    command: sleep infinity
+    environment:
+      - NODE_ENV=development
+    depends_on:
+      - redis
+      - upstash-redis
+    networks:
+      - development
+
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    command: redis-server --appendonly yes
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - development
+
+  upstash-redis:
+    image: upstash/redis-rest-server:latest
+    restart: unless-stopped
+    ports:
+      - "8079:8079"
+    environment:
+      - REDIS_URL=redis://redis:6379
+      - PORT=8079
+    depends_on:
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8079/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+    networks:
+      - development
+
+volumes:
+  node_modules:
+  redis_data:
+
+networks:
+  development:
+    driver: bridge
