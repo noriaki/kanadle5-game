@@ -2,19 +2,19 @@
 
 ## Overview
 
-This document outlines the comprehensive Redis configuration strategy for the Kanadle5 Game across all development, testing, and production environments. The configuration ensures appropriate environment isolation while maintaining simplicity for limited-access deployments.
+This document outlines the comprehensive Redis configuration strategy for the Kanadle5 Game across all development, testing, and production environments. The strategy uses Upstash-compatible REST API interface throughout all environments, ensuring complete code consistency while maintaining appropriate environment isolation.
 
 ## Environment Architecture
 
 ### Environment Matrix
 
-| Environment           | Type         | Redis Connection                | Database | Purpose                         |
-| --------------------- | ------------ | ------------------------------- | -------- | ------------------------------- |
-| **Local Development** | devcontainer | Local Redis Container           | DB0      | Feature development & debugging |
-| **Local Test**        | devcontainer | Local Redis Container           | DB1      | Unit & Integration testing      |
-| **GitHub Actions**    | CI/CD        | Redis Service Container         | DB0      | Automated testing               |
-| **Vercel Production** | Production   | Upstash `kanadle5-game`         | -        | Live application                |
-| **Vercel Preview**    | Staging      | Upstash `kanadle5-game`         | -        | PR previews & testing           |
+| Environment           | Type         | Redis Connection                         | Database | Purpose                         |
+| --------------------- | ------------ | ---------------------------------------- | -------- | ------------------------------- |
+| **Local Development** | devcontainer | Upstash REST Server (Docker)            | -        | Feature development & debugging |
+| **Local Test**        | devcontainer | Upstash REST Server (Docker)            | -        | Unit & Integration testing      |
+| **GitHub Actions**    | CI/CD        | Upstash REST Server (Service Container) | -        | Automated testing               |
+| **Vercel Production** | Production   | Upstash Cloud `kanadle5-game`            | -        | Live application                |
+| **Vercel Preview**    | Staging      | Upstash Cloud `kanadle5-game`            | -        | PR previews & testing           |
 
 ### Architecture Diagram
 
@@ -25,17 +25,23 @@ This document outlines the comprehensive Redis configuration strategy for the Ka
 │                                                             │
 │  LOCAL ENVIRONMENTS (devcontainer)                          │
 │  ┌─────────────────────────────────────────┐               │
-│  │  Redis:7-alpine Container               │               │
-│  │  ├─ DB0: Development (.env.development.local)           │
-│  │  └─ DB1: Testing (.env.test.local)      │               │
+│  │  Upstash REST Server Container          │               │
+│  │  ├─ Development Environment              │               │
+│  │  └─ Test Environment (isolated)         │               │
 │  └─────────────────────────────────────────┘               │
 │                                                             │
-│  REMOTE ENVIRONMENTS                                        │
-│  ┌──────────────────┐  ┌───────────────────────────────┐  │
-│  │  GitHub Actions  │  │  Vercel (Upstash)              │  │
-│  │  Redis Service   │  │  └─ Production & Preview:      │  │
-│  │  Container       │  │     kanadle5-game              │  │
-│  └──────────────────┘  └───────────────────────────────┘  │
+│  CI/CD ENVIRONMENT                                          │
+│  ┌─────────────────────────────────────────┐               │
+│  │  GitHub Actions                          │               │
+│  │  └─ Upstash REST Server Service         │               │
+│  └─────────────────────────────────────────┘               │
+│                                                             │
+│  CLOUD ENVIRONMENTS                                         │
+│  ┌─────────────────────────────────────────┐               │
+│  │  Upstash Cloud                          │               │
+│  │  └─ Production & Preview:               │               │
+│  │     kanadle5-game database              │               │
+│  └─────────────────────────────────────────┘               │
 └─────────────────────────────────────────────────────────────┘
 ```
 
@@ -47,12 +53,23 @@ This document outlines the comprehensive Redis configuration strategy for the Ka
 
 ```bash
 # Redis Configuration for Local Development
-KV_REST_API_URL=http://localhost:6379
+KV_REST_API_URL=http://localhost:8079
 KV_REST_API_TOKEN=local-dev-token
-REDIS_DB=0
 
 # Other development configs
 NEXT_PUBLIC_LIFF_ID=dev-liff-id
+DAILY_WORD_REFRESH_TIME=00:00:00
+```
+
+**Docker Compose Service**:
+
+```yaml
+upstash-redis:
+  image: upstash/redis-rest-server:latest
+  ports:
+    - "8079:8079"
+  environment:
+    - REDIS_URL=redis://redis:6379
 ```
 
 **Purpose**:
@@ -60,6 +77,7 @@ NEXT_PUBLIC_LIFF_ID=dev-liff-id
 - Feature development
 - Real-time debugging
 - Browser-based testing
+- Complete offline development
 
 ### 2. Local Test Environment
 
@@ -67,19 +85,25 @@ NEXT_PUBLIC_LIFF_ID=dev-liff-id
 
 ```bash
 # Redis Configuration for Local Testing
-KV_REST_API_URL=http://localhost:6379
+KV_REST_API_URL=http://localhost:8079
 KV_REST_API_TOKEN=local-test-token
-REDIS_DB=1
 
 # Test-specific configs
 NODE_ENV=test
 ```
+
+**Test Isolation Strategy**:
+
+- Use key prefixes for test isolation (e.g., `test:*`)
+- Clear test data before/after test runs
+- Separate test instance if needed via different port
 
 **Purpose**:
 
 - Unit tests (with mocks)
 - Integration tests (with real Redis)
 - Isolated test data
+- Fast test execution
 
 ### 3. GitHub Actions Environment
 
@@ -89,16 +113,28 @@ NODE_ENV=test
 services:
   redis:
     image: redis:7-alpine
+    ports:
+      - 6379:6379
     options: >-
       --health-cmd "redis-cli ping"
       --health-interval 10s
       --health-timeout 5s
       --health-retries 5
+
+  upstash-redis:
+    image: upstash/redis-rest-server:latest
     ports:
-      - 6379:6379
+      - 8079:8079
+    env:
+      REDIS_URL: redis://redis:6379
+    options: >-
+      --health-cmd "curl -f http://localhost:8079/health || exit 1"
+      --health-interval 10s
+      --health-timeout 5s
+      --health-retries 5
 
 env:
-  KV_REST_API_URL: http://localhost:6379
+  KV_REST_API_URL: http://localhost:8079
   KV_REST_API_TOKEN: github-actions-token
 ```
 
@@ -107,22 +143,51 @@ env:
 - Automated CI/CD testing
 - Pull request validation
 - Pre-merge checks
+- Consistent test environment
 
 ### 4. Vercel Production Environment
 
-**Database**: `upstash-kv-kanadle5-game`
+**Database**: Upstash Cloud - `kanadle5-game`
 
-- Already configured in Vercel Dashboard
+**Configuration**:
+
+- Managed through Vercel Dashboard
+- Environment variables automatically injected
 - Connected to Production deployments
-- Environment variables managed through Vercel
+
+**Environment Variables** (set in Vercel):
+
+```bash
+KV_REST_API_URL=[Upstash REST URL]
+KV_REST_API_TOKEN=[Upstash REST Token]
+```
+
+**Purpose**:
+
+- Live application hosting
+- Production data persistence
+- High availability and performance
 
 ### 5. Vercel Preview Environment
 
-**Database**: `upstash-kv-kanadle5-game` (same as production)
+**Database**: Upstash Cloud - `kanadle5-game` (shared with production)
+
+**Configuration**:
 
 - Uses the same Upstash instance as production
 - Suitable for limited-access environments
 - Environment variables inherited from production settings
+
+**Data Isolation**:
+
+- Consider using key prefixes for preview deployments
+- Example: `preview:{deployment-id}:*`
+
+**Purpose**:
+
+- Pull request previews
+- Pre-production testing
+- Feature validation
 
 ## Testing Strategy
 
@@ -136,7 +201,7 @@ env:
 ### Integration Tests
 
 - **Scope**: System component interactions
-- **Redis**: Real connection to Redis container
+- **Redis**: Real connection to Upstash REST server
 - **Execution**: Important changes, pre-merge
 - **Example**: `getDailyWord.integration.test.ts`
 
@@ -158,110 +223,140 @@ src/
 
 ### User Actions Required
 
-1. **Verify Vercel Environment Configuration**
+1. **Verify Upstash Cloud Configuration**
+   - [ ] Confirm Upstash database is created and accessible
+   - [ ] Obtain REST API URL and token from Upstash console
+   - [ ] Configure Vercel environment variables
 
-   - [ ] Confirm production Upstash database is accessible from Preview deployments
-   - [ ] Verify environment variables are properly inherited in Preview context
-
-2. **Set Up GitHub Repository Secrets** (if using real Upstash for CI)
-   - [ ] Add `KV_REST_API_URL_TEST`
-   - [ ] Add `KV_REST_API_TOKEN_TEST`
+2. **Local Development Setup**
+   - [ ] Install Docker Desktop (if not already installed)
+   - [ ] Copy `.env.development.local.example` to `.env.development.local`
+   - [ ] Copy `.env.test.local.example` to `.env.test.local`
 
 ### Development Team Actions
 
 1. **devcontainer Configuration**
-
-   - [ ] Create `.devcontainer/docker-compose.yml` with Redis service
+   - [ ] Create `.devcontainer/docker-compose.yml` with Upstash REST server
    - [ ] Update `.devcontainer/devcontainer.json`
-   - [ ] Add Redis health checks
+   - [ ] Add health check configuration
 
 2. **Environment Files**
+   - [ ] Create `.env.development.local.example` template
+   - [ ] Create `.env.test.local.example` template
+   - [ ] Update `.env.local.example` with production template
 
-   - [ ] Create `.env.development.local` template
-   - [ ] Create `.env.test.local` template
-   - [ ] Update `.env.local.example` with new structure
-
-3. **Redis Connection Adapter**
-
-   - [ ] Extend `src/lib/redis.ts` for local Redis support
-   - [ ] Add Upstash-compatible command mapping (using REST proxy)
-   - [ ] Implement environment detection logic
+3. **Redis Connection Module**
+   - [ ] Keep `src/lib/redis.ts` simple (no environment-specific logic needed)
+   - [ ] Use same Upstash client for all environments
+   - [ ] Add connection validation helper
 
 4. **CI/CD Updates**
-
-   - [ ] Update `.github/workflows/ci.yml` with Redis service
-   - [ ] Add Upstash REST proxy to CI environment
-   - [ ] Configure environment variables for tests
+   - [ ] Update `.github/workflows/ci.yml` with Upstash REST server
+   - [ ] Configure health checks for services
+   - [ ] Set environment variables for tests
 
 5. **Test Infrastructure**
-   - [ ] Configure Jest projects for unit/integration separation
-   - [ ] Create integration test utilities
-   - [ ] Add sample integration tests
+   - [ ] Configure Jest for integration tests
+   - [ ] Create test data cleanup utilities
+   - [ ] Add Redis connection tests
 
 ## Security Considerations
 
 1. **Environment Variable Management**
-
    - Never commit `.env.*.local` files
-   - Use secure token management for all environments
-   - Implement read-only tokens where possible
+   - Use dummy tokens for local development
+   - Secure production tokens in Vercel dashboard
+   - Rotate tokens periodically
 
 2. **Data Isolation**
-
-   - Local environments completely isolated from production
-   - Development/test use separate Redis databases
-   - Preview environment shares production data (limited access only)
+   - Local environments completely isolated from cloud
+   - Test data never touches production
+   - Preview environment requires access control
+   - Consider key prefixes for additional isolation
 
 3. **Access Control**
-   - Minimal permissions principle
-   - Restrict Preview deployment access to authorized users only
-   - Audit trail for production access
+   - Production tokens restricted to deployment environment
+   - Local development uses non-sensitive tokens
+   - Preview deployments limited to authorized users
+   - Implement audit logging for production access
 
 ## Benefits
 
 1. **Development Efficiency**
-
-   - Fast local Redis connection
-   - No external dependencies for development
+   - Fast local Redis operations
+   - Complete offline development capability
+   - Consistent API across all environments
    - Quick feedback loops
 
 2. **Testing Confidence**
-
-   - Both unit and integration test coverage
-   - Consistent test environments
-   - Isolated test data
+   - Identical REST API interface everywhere
+   - Fast integration test execution
+   - Complete test isolation
+   - No production data contamination
 
 3. **Production Safety**
-   - Local development completely isolated from production
-   - Preview environment uses production data with limited access control
-   - Clear environment boundaries for development/test environments
+   - Zero code differences between environments
+   - Local development isolated from cloud
+   - Minimal environment-specific configuration
+   - Reduced deployment surprises
 
 ## Maintenance
 
 1. **Regular Tasks**
-
-   - Monitor Upstash usage and limits
-   - Clean up old test data
-   - Update Redis versions in containers
+   - Monitor Upstash usage and billing
+   - Update Upstash REST server Docker image
+   - Clean up stale test data
+   - Review and rotate access tokens
 
 2. **Documentation**
-   - Keep environment variables documented
-   - Update this plan with changes
-   - Maintain setup guides for new developers
+   - Keep environment setup guides current
+   - Document any API compatibility issues
+   - Maintain troubleshooting guide
+   - Update this plan with infrastructure changes
 
 ## Future Enhancements
 
 1. **Advanced Features**
-
-   - Redis cluster support for scaling
-   - Read replicas for performance
-   - Automated backup strategies
+   - Separate Preview environment database
+   - Redis Cluster support for scaling
+   - Automated backup and restore
+   - Performance monitoring dashboard
 
 2. **Developer Experience**
-   - One-command environment setup
-   - Automated environment validation
-   - Visual environment status dashboard
+   - One-command environment setup script
+   - Automated health check dashboard
+   - Local data seeding tools
+   - Development data generators
+
+## Troubleshooting Guide
+
+### Common Issues
+
+1. **Upstash REST Server Connection Failed**
+   - Check Docker container is running: `docker ps`
+   - Verify port 8079 is not in use: `lsof -i :8079`
+   - Check health endpoint: `curl http://localhost:8079/health`
+
+2. **Test Data Conflicts**
+   - Ensure test cleanup runs properly
+   - Use unique key prefixes per test suite
+   - Clear Redis before test runs: `redis-cli FLUSHDB`
+
+3. **Production Connection Issues**
+   - Verify Upstash service status
+   - Check environment variables in Vercel
+   - Validate tokens are current
+
+4. **Docker Compose Issues**
+   - Restart containers: `docker-compose down && docker-compose up`
+   - Check logs: `docker-compose logs upstash-redis`
+   - Rebuild images: `docker-compose build --no-cache`
+
+5. **CI/CD Pipeline Failures**
+   - Verify service health checks are passing
+   - Check GitHub Actions logs for service startup
+   - Ensure environment variables are set correctly
 
 ---
 
-This configuration provides a balanced approach to Redis usage across all environments, maintaining isolation for development while simplifying Preview deployment through shared production resources for limited-access scenarios.
+This configuration provides a consistent Upstash REST API interface across all environments, enabling seamless development with local performance benefits while maintaining production compatibility.
