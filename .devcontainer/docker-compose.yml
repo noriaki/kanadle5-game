@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   app:
     image: node:22-bullseye-slim
@@ -33,18 +31,19 @@ services:
       - development
 
   upstash-redis:
-    image: upstash/redis-rest-server:latest
+    image: hiett/serverless-redis-http:latest
     restart: unless-stopped
     ports:
-      - "8079:8079"
+      - "8079:80"
     environment:
-      - REDIS_URL=redis://redis:6379
-      - PORT=8079
+      - SRH_MODE=env
+      - SRH_TOKEN=local-dev-token
+      - SRH_CONNECTION_STRING=redis://redis:6379
     depends_on:
       redis:
         condition: service_healthy
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8079/health"]
+      test: ["CMD", "curl", "-f", "http://localhost:80/"]
       interval: 10s
       timeout: 5s
       retries: 5

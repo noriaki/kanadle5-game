@@ -2,19 +2,19 @@
 
 ## Overview
 
-This document outlines the comprehensive Redis configuration strategy for the Kanadle5 Game across all development, testing, and production environments. The strategy uses Upstash-compatible REST API interface throughout all environments, ensuring complete code consistency while maintaining appropriate environment isolation.
+This document outlines the comprehensive Redis configuration strategy for the Kanadle5 Game across all development, testing, and production environments. The strategy uses Serverless Redis HTTP (SRH) for local development and Upstash Cloud for production, providing Upstash-compatible REST API interface throughout all environments, ensuring complete code consistency while maintaining appropriate environment isolation.
 
 ## Environment Architecture
 
 ### Environment Matrix
 
-| Environment           | Type         | Redis Connection                        | Database | Purpose                         |
-| --------------------- | ------------ | --------------------------------------- | -------- | ------------------------------- |
-| **Local Development** | devcontainer | Upstash REST Server (Docker)            | -        | Feature development & debugging |
-| **Local Test**        | devcontainer | Upstash REST Server (Docker)            | -        | Unit & Integration testing      |
-| **GitHub Actions**    | CI/CD        | Upstash REST Server (Service Container) | -        | Automated testing               |
-| **Vercel Production** | Production   | Upstash Cloud `kanadle5-game`           | -        | Live application                |
-| **Vercel Preview**    | Staging      | Upstash Cloud `kanadle5-game`           | -        | PR previews & testing           |
+| Environment           | Type         | Redis Connection              | Database | Purpose                         |
+| --------------------- | ------------ | ----------------------------- | -------- | ------------------------------- |
+| **Local Development** | devcontainer | Serverless Redis HTTP (SRH)   | -        | Feature development & debugging |
+| **Local Test**        | devcontainer | Serverless Redis HTTP (SRH)   | -        | Unit & Integration testing      |
+| **GitHub Actions**    | CI/CD        | Serverless Redis HTTP (SRH)   | -        | Automated testing               |
+| **Vercel Production** | Production   | Upstash Cloud `kanadle5-game` | -        | Live application                |
+| **Vercel Preview**    | Staging      | Upstash Cloud `kanadle5-game` | -        | PR previews & testing           |
 
 ### Architecture Diagram
 
@@ -25,7 +25,7 @@ This document outlines the comprehensive Redis configuration strategy for the Ka
 │                                                             │
 │  LOCAL ENVIRONMENTS (devcontainer)                          │
 │  ┌─────────────────────────────────────────┐               │
-│  │  Upstash REST Server Container          │               │
+│  │  Serverless Redis HTTP (SRH)           │               │
 │  │  ├─ Development Environment              │               │
 │  │  └─ Test Environment (isolated)         │               │
 │  └─────────────────────────────────────────┘               │
@@ -33,7 +33,7 @@ This document outlines the comprehensive Redis configuration strategy for the Ka
 │  CI/CD ENVIRONMENT                                          │
 │  ┌─────────────────────────────────────────┐               │
 │  │  GitHub Actions                          │               │
-│  │  └─ Upstash REST Server Service         │               │
+│  │  └─ Serverless Redis HTTP (SRH)        │               │
 │  └─────────────────────────────────────────┘               │
 │                                                             │
 │  CLOUD ENVIRONMENTS                                         │
@@ -65,11 +65,13 @@ DAILY_WORD_REFRESH_TIME=00:00:00
 
 ```yaml
 upstash-redis:
-  image: upstash/redis-rest-server:latest
+  image: hiett/serverless-redis-http:latest
   ports:
-    - '8079:8079'
+    - '8079:80'
   environment:
-    - REDIS_URL=redis://redis:6379
+    - SRH_MODE=env
+    - SRH_TOKEN=local-dev-token
+    - SRH_CONNECTION_STRING=redis://redis:6379
 ```
 
 **Purpose**:
@@ -122,13 +124,15 @@ services:
       --health-retries 5
 
   upstash-redis:
-    image: upstash/redis-rest-server:latest
+    image: hiett/serverless-redis-http:latest
     ports:
-      - 8079:8079
+      - 8079:80
     env:
-      REDIS_URL: redis://redis:6379
+      SRH_MODE: env
+      SRH_TOKEN: github-actions-token
+      SRH_CONNECTION_STRING: redis://redis:6379
     options: >-
-      --health-cmd "curl -f http://localhost:8079/health || exit 1"
+      --health-cmd "curl -f http://localhost:80/ || exit 1"
       --health-interval 10s
       --health-timeout 5s
       --health-retries 5
