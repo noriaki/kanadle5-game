@@ -11,7 +11,6 @@
         "bradlc.vscode-tailwindcss",
         "esbenp.prettier-vscode",
         "dbaeumer.vscode-eslint",
-        "ms-vscode.vscode-json",
         "redhat.vscode-yaml"
       ],
       "settings": {
@@ -31,7 +30,7 @@
       "onAutoForward": "notify"
     },
     "8079": {
-      "label": "Upstash REST Server",
+      "label": "Serverless Redis HTTP (SRH)",
       "onAutoForward": "silent"
     },
     "6379": {
@@ -39,7 +38,7 @@
       "onAutoForward": "silent"
     }
   },
-  "postCreateCommand": "pnpm install",
-  "postStartCommand": "pnpm run dev",
+  "postCreateCommand": "npm install -g pnpm@9 && pnpm install",
+  "postStartCommand": "echo 'Development environment ready'",
   "remoteUser": "node"
 }
