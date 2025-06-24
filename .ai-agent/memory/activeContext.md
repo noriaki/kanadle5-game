@@ -1,6 +1,6 @@
 # Active Context - Kanadle5 Game
 
-Last Updated: 2025-06-17
+Last Updated: 2025-06-24
 
 ## Current Focus
 
@@ -58,6 +58,18 @@ Last Updated: 2025-06-17
 ## Recent Changes
 
 ### Code Changes
+
+- 2025-06-24: **DEVCONTAINER INFRASTRUCTURE IMPROVEMENT**: Successfully resolved devcontainer setup issues with comprehensive Node.js Feature implementation
+
+  - Migrated to official `ghcr.io/devcontainers/features/node:1` feature for reliable Node.js 22 and pnpm 9 setup
+  - Enabled nodeGypDependencies support for native module compilation requirements
+  - Eliminated permission errors through proper Corepack management and official feature usage
+  - Streamlined devcontainer configuration with minimal, stable commands
+  - Updated docker-compose.yml with correct Serverless Redis HTTP (SRH) configuration using hiett/serverless-redis-http
+  - Corrected port mapping from 8079:8079 to 8079:80 for proper SRH internal port handling
+  - Enhanced .gitignore with claude-code specific patterns for development environment compatibility
+  - All 121 unit tests passing, complete quality checks successful
+  - Infrastructure now production-ready with reliable, reproducible development environment
 
 - 2025-06-17: **REDIS ENVIRONMENT CONFIGURATION UPDATE**: Modified Redis configuration strategy for Preview environment
 
