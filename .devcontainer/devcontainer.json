@@ -4,6 +4,15 @@
   "service": "app",
   "workspaceFolder": "/workspace",
   "shutdownAction": "stopCompose",
+
+  "features": {
+    "ghcr.io/devcontainers/features/common-utils:2": {
+      "installZsh": false,
+      "installOhMyZsh": false,
+      "username": "node"
+    }
+  },
+
   "customizations": {
     "vscode": {
       "extensions": [
@@ -38,7 +47,7 @@
       "onAutoForward": "silent"
     }
   },
-  "postCreateCommand": "npm install -g pnpm@9 && pnpm install",
+  "postCreateCommand": "corepack enable && corepack prepare pnpm@9 --activate && pnpm install",
   "postStartCommand": "echo 'Development environment ready'",
   "remoteUser": "node"
 }
