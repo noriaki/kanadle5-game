@@ -6,6 +6,12 @@
   "shutdownAction": "stopCompose",
 
   "features": {
+    "ghcr.io/devcontainers/features/node:1": {
+      "version": "22",
+      "pnpmVersion": "9",
+      "nodeGypDependencies": true,
+      "installYarnUsingApt": false
+    },
     "ghcr.io/devcontainers/features/common-utils:2": {
       "installZsh": false,
       "installOhMyZsh": false,
@@ -47,7 +53,7 @@
       "onAutoForward": "silent"
     }
   },
-  "postCreateCommand": "corepack enable && corepack prepare pnpm@9 --activate && pnpm install",
+  "postCreateCommand": "pnpm install",
   "postStartCommand": "echo 'Development environment ready'",
   "remoteUser": "node"
 }
