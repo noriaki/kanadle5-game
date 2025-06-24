@@ -4,10 +4,10 @@ services:
     working_dir: /workspace
     volumes:
       - ../:/workspace:cached
-      - node_modules:/workspace/node_modules
     command: sleep infinity
     environment:
       - NODE_ENV=development
+    user: "1000:1000"
     depends_on:
       - redis
       - upstash-redis
@@ -52,7 +52,6 @@ services:
       - development
 
 volumes:
-  node_modules:
   redis_data:
 
 networks:

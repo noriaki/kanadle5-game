@@ -13,11 +13,14 @@
       "installYarnUsingApt": false
     },
     "ghcr.io/devcontainers/features/common-utils:2": {
-      "installZsh": false,
-      "installOhMyZsh": false,
-      "username": "node"
-    }
+      "configureZshAsDefaultShell": true,
+      "username": "node",
+      "updateRCFile": false
+    },
+    "ghcr.io/devcontainers/features/github-cli:1": {},
+    "ghcr.io/anthropics/devcontainer-features/claude-code:latest": {}
   },
+  "updateRemoteUserUID": true,
 
   "customizations": {
     "vscode": {
