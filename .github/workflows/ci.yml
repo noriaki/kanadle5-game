@@ -19,11 +19,7 @@ jobs:
         image: redis:7-alpine
         ports:
           - 6379:6379
-        options: >
-          --health-cmd "redis-cli ping"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
+        options: --health-cmd "redis-cli ping" --health-interval 10s --health-timeout 5s --health-retries 5
       
       upstash-redis:
         image: hiett/serverless-redis-http:latest
@@ -33,11 +29,7 @@ jobs:
           SRH_MODE: env
           SRH_TOKEN: github-actions-token
           SRH_CONNECTION_STRING: redis://redis:6379
-        options: >
-          --health-cmd "curl -f http://localhost:80/ || exit 1"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
+        options: --health-cmd "curl -f http://localhost:80/ || exit 1" --health-interval 10s --health-timeout 5s --health-retries 5
 
     steps:
     - name: Checkout code
