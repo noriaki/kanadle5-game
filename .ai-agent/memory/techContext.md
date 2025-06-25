@@ -16,8 +16,8 @@
 - **Language**: TypeScript/JavaScript (Node.js runtime)
 - **Framework**: Next.js API Routes ✅
 - **API**: REST API ✅ (game endpoints implemented)
-- **Database**: Upstash Redis (via Vercel integration) 📋 (infrastructure planned, see `.ai-agent/memory-bank/infrastructure/redis-environment-configuration.md`)
-- **Caching**: Upstash Redis for caching 📋 (infrastructure planned)
+- **Database**: Upstash Redis (via Vercel integration) ✅ (infrastructure complete with DevContainer setup)
+- **Caching**: Upstash Redis for caching ✅ (infrastructure complete)
 - **Authentication**: LINE Login (LIFF) 📋 (pending implementation)
 - **Testing**: Jest for API testing ✅ (complete coverage)
 - **Business Logic**: Service layer separation ✅ (gameService implemented)
@@ -51,6 +51,8 @@
 
 ### Environment Configuration
 
+**DevContainer Environment**: Complete Redis development environment with Docker Compose orchestration (Redis 7 + Upstash HTTP proxy)
+
 For detailed Redis environment configuration across all environments, see `.ai-agent/memory-bank/infrastructure/redis-environment-configuration.md`
 
 ```env
@@ -72,11 +74,13 @@ DAILY_WORD_REFRESH_TIME=00:00:00 # Japan time
 
 ### Local Development Workflow
 
-1. Start the development server
-2. Test with LINE LIFF Simulator for LINE-specific features
-3. Use browser developer tools for debugging
-4. Implement features and run tests locally
-5. Commit changes and push to GitHub for deployment
+1. **DevContainer Setup**: Use VS Code DevContainer for consistent Redis development environment
+2. Start the development server with `pnpm dev`
+3. Test with LINE LIFF Simulator for LINE-specific features
+4. Use browser developer tools for debugging
+5. Run Redis integration tests with `pnpm test:integration`
+6. Implement features and run tests locally
+7. Commit changes and push to GitHub for deployment
 
 ## External Dependencies
 
@@ -128,7 +132,7 @@ DAILY_WORD_REFRESH_TIME=00:00:00 # Japan time
 
 - **Local Development**:
 
-  - URL: http://localhost:3000
+  - URL: <http://localhost:3000>
   - Redis: Local container (DB0)
   - Access: Development team only
 
@@ -176,7 +180,7 @@ DAILY_WORD_REFRESH_TIME=00:00:00 # Japan time
 - ✅ Word list stored as JSON in the codebase with TypeScript type definitions (WordEntry[])
 - ✅ Word validation against dictionary implemented for player submissions
 - 📋 Daily word selection algorithm uses date as seed for consistent selection (mock implementation active)
-- 📋 Additional copy in database for persistence (pending Vercel KV integration)
+- ✅ Redis infrastructure ready for word persistence (DevContainer environment operational)
 
 ### Hiragana Input System
 
