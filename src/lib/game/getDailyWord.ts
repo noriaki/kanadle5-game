@@ -1,15 +1,25 @@
+import { WordMaster } from '../wordMaster';
+import { getDailyWordRedis } from './getDailyWordRedis';
+
 /**
- * Mock implementation of getDailyWord function
- * Always returns "つきあかり" for testing purposes
+ * Gets the daily word for a specific date
+ * 
+ * This is the main interface for daily word functionality.
+ * Uses Redis-based caching and deterministic word selection.
  *
- * TODO: Implement full functionality as described in:
- * .ai-agent/memory-bank/lib/game/getDailyWord.plan.md
- *
- * @param date - The date to get the word for (ignored in mock)
- * @returns Always returns "つきあかり"
+ * @param date - The date to get the word for
+ * @returns Promise<string> The daily word for the specified date
  */
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export async function getDailyWord(_date: Date): Promise<string> {
-  // Mock implementation - always return the same word
-  return 'つきあかり';
+export async function getDailyWord(date: Date): Promise<string> {
+  try {
+    // Create WordMaster instance for accessing word database
+    const wordMaster = new WordMaster();
+    
+    // Use Redis-based implementation
+    return await getDailyWordRedis(date, wordMaster);
+  } catch (error) {
+    console.error('Error in getDailyWord:', error);
+    // Fallback to default word
+    return 'つきあかり';
+  }
 }
