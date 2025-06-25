@@ -29,7 +29,6 @@ jobs:
           SRH_MODE: env
           SRH_TOKEN: github-actions-token
           SRH_CONNECTION_STRING: redis://redis:6379
-        options: ""
 
     steps:
     - name: Checkout code
