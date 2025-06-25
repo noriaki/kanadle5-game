@@ -35,6 +35,12 @@ export type FileReader = (filePath: string, encoding: string) => Promise<string>
  * 
  * Handles synchronization of words from words.json file to the Redis-based
  * word master database. Provides validation and error handling for the sync process.
+ * 
+ * Key Features:
+ * - File-based word loading with validation
+ * - Bulk synchronization with progress tracking
+ * - Comprehensive error handling and reporting
+ * - Game-specific word validation rules
  */
 export class WordSync {
   private readonly wordsFilePath: string;
@@ -65,10 +71,15 @@ export class WordSync {
         return [];
       }
 
-      // Filter and validate word entries
+      // Filter and validate word entries with statistics
       const validWords = rawWords.filter((entry: unknown) => this.validateWordEntry(entry));
+      const invalidCount = rawWords.length - validWords.length;
       
-      console.log(`Loaded ${validWords.length} valid words from ${rawWords.length} entries`);
+      if (invalidCount > 0) {
+        console.warn(`Filtered out ${invalidCount} invalid entries from word list`);
+      }
+      console.log(`Loaded ${validWords.length} valid words from ${rawWords.length} total entries`);
+      
       return validWords;
     } catch (error) {
       console.error('Failed to load words from JSON file:', error);
@@ -94,19 +105,30 @@ export class WordSync {
       return false;
     }
 
+    return this.isValidKana(wordEntry.kana);
+  }
+
+  /**
+   * Validates if a string is valid hiragana for the game
+   * 
+   * @private
+   * @param kana The kana string to validate
+   * @returns boolean True if valid, false otherwise
+   */
+  private isValidKana(kana: string): boolean {
     // Check kana length (must be exactly 5 characters)
-    if (wordEntry.kana.length !== 5) {
+    if (kana.length !== 5) {
       return false;
     }
 
     // Check if kana contains only hiragana characters
     const hiraganaRegex = /^[\u3041-\u3096]+$/;
-    if (!hiraganaRegex.test(wordEntry.kana)) {
+    if (!hiraganaRegex.test(kana)) {
       return false;
     }
 
-    // Exclude words containing 'を' character
-    if (wordEntry.kana.includes('を')) {
+    // Exclude words containing 'を' character (game rule)
+    if (kana.includes('を')) {
       return false;
     }
 
