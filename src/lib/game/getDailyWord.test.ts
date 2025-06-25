@@ -19,7 +19,7 @@ jest.mock('../redis', () => {
     keys: jest.fn(),
     mget: jest.fn(),
   };
-  
+
   return {
     redis: mockRedis,
     resetRedisClient: jest.fn(),

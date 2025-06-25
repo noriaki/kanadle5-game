@@ -27,7 +27,7 @@ jest.mock('./redis', () => {
       exec: jest.fn(),
     })),
   };
-  
+
   return {
     redis: mockRedis,
     resetRedisClient: jest.fn(),
@@ -83,10 +83,7 @@ describe('WordSync', () => {
       const result = await wordSync.loadWordsFromJson();
 
       expect(result).toEqual(mockWordsData);
-      expect(mockFileReader).toHaveBeenCalledWith(
-        '/fake/path/words.json',
-        'utf8'
-      );
+      expect(mockFileReader).toHaveBeenCalledWith('/fake/path/words.json', 'utf8');
     });
 
     it('should handle file read errors', async () => {
@@ -169,7 +166,8 @@ describe('WordSync', () => {
       ];
 
       // Mock first word as duplicate, second as new
-      const mockAddWord = jest.spyOn(wordMaster, 'addWord')
+      const mockAddWord = jest
+        .spyOn(wordMaster, 'addWord')
         .mockResolvedValueOnce(false) // duplicate
         .mockResolvedValueOnce(true); // new
       const mockGetWordCount = jest.spyOn(wordMaster, 'getWordCount').mockResolvedValue(1);
@@ -188,7 +186,8 @@ describe('WordSync', () => {
         { kana: 'はなみずき', word: '花水木' },
       ];
 
-      const mockAddWord = jest.spyOn(wordMaster, 'addWord')
+      const mockAddWord = jest
+        .spyOn(wordMaster, 'addWord')
         .mockRejectedValue(new Error('Redis error'));
       const mockGetWordCount = jest.spyOn(wordMaster, 'getWordCount').mockResolvedValue(0);
 
@@ -247,7 +246,7 @@ describe('WordSync', () => {
     it('should reject entries with wrong kana length', () => {
       const shortEntry = { kana: 'つき', word: '月' };
       const longEntry = { kana: 'つきあかりが', word: '月明かりが' };
-      
+
       expect(wordSync.validateWordEntry(shortEntry)).toBe(false);
       expect(wordSync.validateWordEntry(longEntry)).toBe(false);
     });
@@ -265,7 +264,7 @@ describe('WordSync', () => {
     it('should reject entries with missing fields', () => {
       const missingKana = { word: '月明かり' } as any;
       const missingWord = { kana: 'つきあかり' } as any;
-      
+
       expect(wordSync.validateWordEntry(missingKana)).toBe(false);
       expect(wordSync.validateWordEntry(missingWord)).toBe(false);
     });

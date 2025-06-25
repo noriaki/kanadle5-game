@@ -18,6 +18,9 @@ const customJestConfig = {
     '/node_modules/',
     '\\.integration\\.(test|spec)\\.(ts|tsx|js|jsx)$',
   ],
+  transformIgnorePatterns: [
+    'node_modules/(?!(nanoid|@upstash|uncrypto)/)',
+  ],
 };
 
 module.exports = createJestConfig(customJestConfig);

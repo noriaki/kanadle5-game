@@ -32,10 +32,10 @@ export type FileReader = (filePath: string, encoding: string) => Promise<string>
 
 /**
  * Word Synchronization Manager
- * 
+ *
  * Handles synchronization of words from words.json file to the Redis-based
  * word master database. Provides validation and error handling for the sync process.
- * 
+ *
  * Key Features:
  * - File-based word loading with validation
  * - Bulk synchronization with progress tracking
@@ -53,12 +53,14 @@ export class WordSync {
   ) {
     // Path to the words.json file
     this.wordsFilePath = wordsFilePath || join(process.cwd(), 'src', 'data', 'words.json');
-    this.fileReader = fileReader || readFile;
+    this.fileReader =
+      fileReader ||
+      ((filePath: string, encoding: string) => readFile(filePath, encoding as BufferEncoding));
   }
 
   /**
    * Loads and validates words from the words.json file
-   * 
+   *
    * @returns Promise<WordEntry[]> Array of valid word entries
    */
   async loadWordsFromJson(): Promise<WordEntry[]> {
@@ -74,12 +76,12 @@ export class WordSync {
       // Filter and validate word entries with statistics
       const validWords = rawWords.filter((entry: unknown) => this.validateWordEntry(entry));
       const invalidCount = rawWords.length - validWords.length;
-      
+
       if (invalidCount > 0) {
         console.warn(`Filtered out ${invalidCount} invalid entries from word list`);
       }
       console.log(`Loaded ${validWords.length} valid words from ${rawWords.length} total entries`);
-      
+
       return validWords;
     } catch (error) {
       console.error('Failed to load words from JSON file:', error);
@@ -89,7 +91,7 @@ export class WordSync {
 
   /**
    * Validates a word entry from the JSON file
-   * 
+   *
    * @param entry The entry to validate
    * @returns boolean True if valid, false otherwise
    */
@@ -110,7 +112,7 @@ export class WordSync {
 
   /**
    * Validates if a string is valid hiragana for the game
-   * 
+   *
    * @private
    * @param kana The kana string to validate
    * @returns boolean True if valid, false otherwise
@@ -137,7 +139,7 @@ export class WordSync {
 
   /**
    * Synchronizes word entries to the master database
-   * 
+   *
    * @param words Array of word entries to sync
    * @returns Promise<WordSyncResult> Result of the sync operation
    */
@@ -166,7 +168,7 @@ export class WordSync {
 
         // Attempt to add to master database
         const added = await this.wordMaster.addWord(wordEntity);
-        
+
         if (added) {
           result.added++;
         } else {
@@ -189,14 +191,14 @@ export class WordSync {
 
   /**
    * Performs a complete synchronization from words.json to master database
-   * 
+   *
    * @returns Promise<FullSyncResult> Result of the full sync operation
    */
   async performFullSync(): Promise<FullSyncResult> {
     try {
       // Load words from JSON file
       const words = await this.loadWordsFromJson();
-      
+
       if (words.length === 0) {
         return {
           success: false,

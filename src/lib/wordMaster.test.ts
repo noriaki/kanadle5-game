@@ -16,7 +16,7 @@ jest.mock('./redis', () => {
       exec: jest.fn(),
     })),
   };
-  
+
   return {
     redis: mockRedis,
     resetRedisClient: jest.fn(),
@@ -146,12 +146,9 @@ describe('WordMaster', () => {
     it('should retrieve all words from the master database', async () => {
       const wordEntity1 = createWordEntity('つきあかり');
       const wordEntity2 = createWordEntity('はなみずき');
-      
+
       mockRedis.keys.mockResolvedValue([`word:${wordEntity1.id}`, `word:${wordEntity2.id}`]);
-      mockRedis.mget.mockResolvedValue([
-        JSON.stringify(wordEntity1),
-        JSON.stringify(wordEntity2),
-      ]);
+      mockRedis.mget.mockResolvedValue([JSON.stringify(wordEntity1), JSON.stringify(wordEntity2)]);
 
       const result = await wordMaster.getAllWords();
 
@@ -169,7 +166,7 @@ describe('WordMaster', () => {
 
     it('should filter out invalid entries', async () => {
       const wordEntity = createWordEntity('つきあかり');
-      
+
       mockRedis.keys.mockResolvedValue([`word:${wordEntity.id}`, 'word:invalid']);
       mockRedis.mget.mockResolvedValue([JSON.stringify(wordEntity), 'invalid json']);
 

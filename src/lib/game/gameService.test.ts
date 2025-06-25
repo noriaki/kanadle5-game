@@ -1,14 +1,14 @@
+// Mock dependencies first
+jest.mock('./validateWord');
+jest.mock('./evaluateGuess');
+jest.mock('./getDailyWord');
+
 import { submitGuess, getDailyGameState } from './gameService';
 import { validateWord } from './validateWord';
 import { evaluateGuess } from './evaluateGuess';
 import { getDailyWord } from './getDailyWord';
 import type { GuessResult } from '@/types/game';
 import type { WordEntry } from '@/types/words';
-
-// Mock dependencies
-jest.mock('./validateWord');
-jest.mock('./evaluateGuess');
-jest.mock('./getDailyWord');
 
 const mockValidateWord = validateWord as jest.MockedFunction<typeof validateWord>;
 const mockEvaluateGuess = evaluateGuess as jest.MockedFunction<typeof evaluateGuess>;

@@ -4,10 +4,10 @@ import { isValidWordId } from './wordId';
 
 /**
  * Word Master Database Manager
- * 
+ *
  * Handles CRUD operations for the word master database using Redis.
  * Manages word entities and their master database metadata.
- * 
+ *
  * Key Design Principles:
  * - All operations are atomic and safe
  * - Comprehensive error handling with fallbacks
@@ -54,7 +54,7 @@ export class WordMaster {
 
   /**
    * Adds a word to the master database
-   * 
+   *
    * @param wordEntity The word entity to add
    * @returns Promise<boolean> True if successfully added, false otherwise
    * @throws Error if word entity is invalid
@@ -64,7 +64,7 @@ export class WordMaster {
 
     return safeRedisOperation(async () => {
       const wordKey = this.createWordKey(wordEntity.id);
-      
+
       // Check if word already exists
       const exists = await redis.exists(wordKey);
       if (exists) {
@@ -82,7 +82,7 @@ export class WordMaster {
 
       // Store word entity and master entry atomically
       await redis.set(wordKey, JSON.stringify(wordEntity));
-      await redis.hset(this.MASTER_ENTRIES_KEY, wordEntity.id, JSON.stringify(masterEntry));
+      await redis.hset(this.MASTER_ENTRIES_KEY, { [wordEntity.id]: JSON.stringify(masterEntry) });
 
       return true;
     }, false);
@@ -90,7 +90,7 @@ export class WordMaster {
 
   /**
    * Retrieves a word by ID
-   * 
+   *
    * @param wordId The word ID to retrieve
    * @returns Promise<WordEntity | null> The word entity or null if not found
    * @throws Error if word ID is invalid
@@ -101,7 +101,7 @@ export class WordMaster {
     return safeRedisOperation(async () => {
       const wordKey = this.createWordKey(wordId);
       const result = await redis.get(wordKey);
-      
+
       if (!result) {
         return null;
       }
@@ -118,7 +118,7 @@ export class WordMaster {
 
   /**
    * Removes a word from the master database
-   * 
+   *
    * @param wordId The word ID to remove
    * @returns Promise<boolean> True if successfully removed, false otherwise
    * @throws Error if word ID is invalid
@@ -128,7 +128,7 @@ export class WordMaster {
 
     return safeRedisOperation(async () => {
       const wordKey = this.createWordKey(wordId);
-      
+
       // Remove word entity first
       const deletedCount = await redis.del(wordKey);
       if (deletedCount === 0) {
@@ -143,13 +143,13 @@ export class WordMaster {
 
   /**
    * Retrieves all words from the master database
-   * 
+   *
    * @returns Promise<WordEntity[]> Array of all word entities, sorted by creation date
    */
   async getAllWords(): Promise<WordEntity[]> {
     return safeRedisOperation(async () => {
       const keys = await redis.keys(`${this.WORD_KEY_PREFIX}*`);
-      
+
       if (keys.length === 0) {
         return [];
       }
@@ -177,7 +177,7 @@ export class WordMaster {
 
   /**
    * Gets the total count of words in the database
-   * 
+   *
    * @returns Promise<number> The number of words in the database
    */
   async getWordCount(): Promise<number> {
@@ -189,15 +189,15 @@ export class WordMaster {
 
   /**
    * Retrieves a word master entry by ID
-   * 
+   *
    * @param wordId The word ID to retrieve master entry for
    * @returns Promise<WordMasterEntry | null> The master entry or null if not found
    */
   async getMasterEntry(wordId: string): Promise<WordMasterEntry | null> {
     return safeRedisOperation(async () => {
       const entries = await redis.hgetall(this.MASTER_ENTRIES_KEY);
-      const entryData = entries[wordId];
-      
+      const entryData = entries?.[wordId];
+
       if (!entryData) {
         return null;
       }
@@ -212,7 +212,7 @@ export class WordMaster {
 
   /**
    * Updates the assignment count for a word
-   * 
+   *
    * @param wordId The word ID to update
    * @returns Promise<boolean> True if successfully updated, false otherwise
    * @throws Error if word ID is invalid
@@ -233,7 +233,7 @@ export class WordMaster {
         assignmentCount: masterEntry.assignmentCount + 1,
       };
 
-      await redis.hset(this.MASTER_ENTRIES_KEY, wordId, JSON.stringify(updatedEntry));
+      await redis.hset(this.MASTER_ENTRIES_KEY, { [wordId]: JSON.stringify(updatedEntry) });
       return true;
     }, false);
   }

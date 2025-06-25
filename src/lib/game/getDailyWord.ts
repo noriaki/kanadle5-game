@@ -3,7 +3,7 @@ import { getDailyWordRedis } from './getDailyWordRedis';
 
 /**
  * Gets the daily word for a specific date
- * 
+ *
  * This is the main interface for daily word functionality.
  * Uses Redis-based caching and deterministic word selection.
  *
@@ -14,7 +14,7 @@ export async function getDailyWord(date: Date): Promise<string> {
   try {
     // Create WordMaster instance for accessing word database
     const wordMaster = new WordMaster();
-    
+
     // Use Redis-based implementation
     return await getDailyWordRedis(date, wordMaster);
   } catch (error) {

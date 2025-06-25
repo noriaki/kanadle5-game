@@ -19,7 +19,7 @@ jest.mock('../redis', () => {
     keys: jest.fn(),
     mget: jest.fn(),
   };
-  
+
   return {
     redis: mockRedis,
     resetRedisClient: jest.fn(),
@@ -84,10 +84,7 @@ describe('getDailyWordRedis', () => {
       mockWordMaster.getWord.mockResolvedValue(null);
 
       // Mock fallback behavior
-      const mockWords = [
-        createWordEntity('つきあかり'),
-        createWordEntity('はなみずき'),
-      ];
+      const mockWords = [createWordEntity('つきあかり'), createWordEntity('はなみずき')];
       mockWordMaster.getAllWords.mockResolvedValue(mockWords);
       mockRedis.set.mockResolvedValue('OK');
 
@@ -139,13 +136,13 @@ describe('getDailyWordRedis', () => {
       mockRedis.set.mockResolvedValue('OK');
 
       const result1 = await getDailyWordRedis(date1, mockWordMaster);
-      
+
       // Reset mocks and simulate same behavior for second call
       jest.clearAllMocks();
       mockRedis.get.mockResolvedValue(null);
       mockWordMaster.getAllWords.mockResolvedValue(mockWords);
       mockRedis.set.mockResolvedValue('OK');
-      
+
       const result2 = await getDailyWordRedis(date2, mockWordMaster);
 
       expect(result1).toBe(result2);
@@ -168,13 +165,13 @@ describe('getDailyWordRedis', () => {
       mockRedis.set.mockResolvedValue('OK');
 
       const result1 = await getDailyWordRedis(date1, mockWordMaster);
-      
+
       // Reset mocks for second call
       jest.clearAllMocks();
       mockRedis.get.mockResolvedValue(null);
       mockWordMaster.getAllWords.mockResolvedValue(mockWords);
       mockRedis.set.mockResolvedValue('OK');
-      
+
       const result2 = await getDailyWordRedis(date2, mockWordMaster);
 
       expect(result1).not.toBe(result2);
@@ -197,7 +194,7 @@ describe('getDailyWordRedis', () => {
       const today = new Date('2024-06-25');
 
       mockRedis.get.mockRejectedValue(new Error('Redis connection failed'));
-      
+
       const mockWords = [createWordEntity('つきあかり')];
       mockWordMaster.getAllWords.mockResolvedValue(mockWords);
 
@@ -221,7 +218,7 @@ describe('getDailyWordRedis', () => {
       const invalidDate = new Date('invalid');
 
       mockRedis.get.mockResolvedValue(null);
-      
+
       const mockWords = [createWordEntity('つきあかり')];
       mockWordMaster.getAllWords.mockResolvedValue(mockWords);
       mockRedis.set.mockResolvedValue('OK');
@@ -238,7 +235,7 @@ describe('getDailyWordRedis', () => {
       const expectedKey = 'daily_word:2024-06-25';
 
       mockRedis.get.mockResolvedValue(null);
-      
+
       const mockWords = [createWordEntity('つきあかり')];
       mockWordMaster.getAllWords.mockResolvedValue(mockWords);
       mockRedis.set.mockResolvedValue('OK');
@@ -253,14 +250,14 @@ describe('getDailyWordRedis', () => {
       // Test with different timezone representations of the same date
       const utcDate = new Date('2024-06-25T00:00:00.000Z');
       const jstDate = new Date('2024-06-25T09:00:00.000+09:00');
-      
+
       mockRedis.get.mockResolvedValue(null);
       const mockWords = [createWordEntity('つきあかり')];
       mockWordMaster.getAllWords.mockResolvedValue(mockWords);
       mockRedis.set.mockResolvedValue('OK');
 
       await getDailyWordRedis(utcDate, mockWordMaster);
-      
+
       // Both should use the same cache key format
       expect(mockRedis.get).toHaveBeenCalledWith('daily_word:2024-06-25');
     });
