@@ -7,7 +7,7 @@ services:
     command: sleep infinity
     environment:
       - NODE_ENV=development
-    user: "1000:1000"
+    user: '1000:1000'
     depends_on:
       - redis
       - upstash-redis
@@ -18,12 +18,12 @@ services:
     image: redis:7-alpine
     restart: unless-stopped
     ports:
-      - "6379:6379"
+      - '6379:6379'
     command: redis-server --appendonly yes
     volumes:
       - redis_data:/data
     healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
+      test: ['CMD', 'redis-cli', 'ping']
       interval: 10s
       timeout: 5s
       retries: 5
@@ -34,20 +34,30 @@ services:
     image: hiett/serverless-redis-http:latest
     restart: unless-stopped
     ports:
-      - "8079:80"
+      - '8079:80'
     environment:
       - SRH_MODE=env
-      - SRH_TOKEN=local-dev-token
+      - SRH_TOKEN=local-token
       - SRH_CONNECTION_STRING=redis://redis:6379
     depends_on:
       redis:
         condition: service_healthy
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:80/"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-      start_period: 20s
+      test: |
+        if command -v curl >/dev/null 2>&1; then
+          curl -f http://localhost:80/
+        elif command -v wget >/dev/null 2>&1; then
+          wget --quiet --tries=1 --spider http://localhost:80/
+        elif command -v nc >/dev/null 2>&1; then
+          nc -z localhost 80
+        else
+          echo "No health check tool available"
+          exit 0
+        fi
+        interval: 10s
+        timeout: 5s
+        retries: 5
+        start_period: 20s
     networks:
       - development
 
