@@ -8,7 +8,7 @@
   "features": {
     "ghcr.io/devcontainers/features/node:1": {
       "version": "22",
-      "pnpmVersion": "9",
+      "pnpmVersion": "10",
       "nodeGypDependencies": true,
       "installYarnUsingApt": false
     },
@@ -56,7 +56,7 @@
       "onAutoForward": "silent"
     }
   },
-  "postCreateCommand": "pnpm install",
+  "postCreateCommand": "pnpm install && cd /usr/share/doc/git/contrib/diff-highlight && sudo npm x --yes -- tiged git/git/contrib/diff-highlight --force && sudo make && sudo install -m 755 diff-highlight /usr/local/bin",
   "postStartCommand": "echo 'Development environment ready'",
   "remoteUser": "node"
 }
