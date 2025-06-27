@@ -59,6 +59,22 @@ Last Updated: 2025-06-27
 
 ### Code Changes
 
+- 2025-06-27: **INTEGRATION TEST CI/CD IMPLEMENTATION**: Successfully implemented and fixed GitHub Actions workflow for integration tests
+
+  - Created new GitHub Actions workflow for dedicated integration test execution (.github/workflows/integration-test.yml)
+  - Implemented workflow_run trigger to execute integration tests after CI success
+  - Configured Redis 7-alpine and Upstash Redis HTTP services with proper health checks
+  - Set up Node.js 22.x and 24.x matrix testing for integration tests
+  - Established proper environment variables for CI environment (KV_REST_API_URL=<http://localhost:8079>)
+  - Added test results artifact upload for debugging and analysis
+  - Fixed Redis integration test JSON handling to work correctly with @upstash/redis client
+  - **CRITICAL FIX**: Resolved environment variable precedence issue in jest.integration.config.mjs
+  - Updated integration test configuration to prioritize CI environment variables over defaults
+  - Fixed hostname resolution errors (EAI_AGAIN upstash-redis) in GitHub Actions environment
+  - Corrected PR documentation language compliance (English for all documentation)
+  - Created PR #17 (feature/add-integration-test-workflow) with successful test execution
+  - **MILESTONE ACHIEVED**: All integration tests now pass successfully in GitHub Actions (Node 22.x, 24.x)
+
 - 2025-06-27: **INFRASTRUCTURE IMPROVEMENT**: Completed Jest configuration migration and Docker environment enhancements
 
   - Migrated Jest configuration from CommonJS to ESM format (.js → .mjs)

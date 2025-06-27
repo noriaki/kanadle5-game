@@ -25,11 +25,9 @@ describe('Redis Integration Tests', () => {
       const key = 'test:integration:json';
       const data = { id: 'test-123', name: 'Test User' };
 
-      await redis.set(key, JSON.stringify(data));
+      await redis.set(key, data);
       const retrieved = await redis.get(key);
-      const parsed = JSON.parse(retrieved as string);
-
-      expect(parsed).toEqual(data);
+      expect(retrieved).toEqual(data);
     });
 
     it('should delete a key', async () => {
