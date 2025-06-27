@@ -8,7 +8,7 @@
 - **State Management**: React Context API / React Hooks
 - **UI Components**: Custom components with React
 - **Styling**: Tailwind CSS
-- **Testing**: Jest with TypeScript support, React Testing Library for component tests, @testing-library/jest-dom for DOM matchers
+- **Testing**: Jest with ES Module support (ESM configuration), TypeScript support, React Testing Library for component tests, @testing-library/jest-dom for DOM matchers
 - **Build Tools**: Next.js built-in build system
 
 ### Backend
@@ -48,6 +48,7 @@
 3. Set up environment variables for local development (copy `.env.local.example` to `.env.local`)
 4. Run the development server with `pnpm dev`
 5. Run tests with `pnpm test` or `pnpm test:watch` for watch mode
+6. Run integration tests with `pnpm test:integration` (uses ESM configuration)
 
 ### Environment Configuration
 

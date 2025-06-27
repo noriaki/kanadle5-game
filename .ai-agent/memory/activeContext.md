@@ -1,6 +1,6 @@
 # Active Context - Kanadle5 Game
 
-Last Updated: 2025-06-25
+Last Updated: 2025-06-27
 
 ## Current Focus
 
@@ -58,6 +58,17 @@ Last Updated: 2025-06-25
 ## Recent Changes
 
 ### Code Changes
+
+- 2025-06-27: **INFRASTRUCTURE IMPROVEMENT**: Completed Jest configuration migration and Docker environment enhancements
+
+  - Migrated Jest configuration from CommonJS to ESM format (.js → .mjs)
+  - Updated package.json test scripts to reference new ESM configuration files
+  - Enhanced Jest integration config with environment variables setup for better test isolation
+  - Improved Docker Compose configuration with standardized quote style and robust health checks
+  - Added fallback health check commands (curl, wget, nc) for upstash-redis service reliability
+  - Updated SRH_TOKEN configuration to match integration test requirements
+  - Followed GitHub Flow workflow with appropriate commit granularity (chore + refactor commits)
+  - All changes maintain test suite integrity with 121 tests continuing to pass
 
 - 2025-06-25: **FEATURE 17A COMPLETION**: Successfully completed and merged Feature 17A - Redis Environment Setup
 
