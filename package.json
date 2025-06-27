@@ -17,8 +17,8 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
-    "test:integration": "jest --config jest.integration.config.js",
-    "test:integration:watch": "jest --config jest.integration.config.js --watch",
+    "test:integration": "jest --config jest.integration.config.mjs",
+    "test:integration:watch": "jest --config jest.integration.config.mjs --watch",
     "test:all": "pnpm test && pnpm test:integration",
     "prepare": "husky"
   },

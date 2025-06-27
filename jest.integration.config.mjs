@@ -1,4 +1,13 @@
-const nextJest = require('next/jest');
+import nextJest from 'next/jest.js';
+
+// Set environment variables for integration tests
+process.env.NODE_ENV = 'test';
+process.env.KV_REST_API_URL = 'http://upstash-redis:80';
+process.env.KV_REST_API_TOKEN = 'local-token';
+process.env.NEXT_PUBLIC_LIFF_ID = 'test-liff-id';
+process.env.LIFF_CHANNEL_ID = 'test-channel-id';
+process.env.LIFF_CHANNEL_SECRET = 'test-channel-secret';
+process.env.DAILY_WORD_REFRESH_TIME = '00:00:00';
 
 const createJestConfig = nextJest({
   dir: './',
@@ -27,4 +36,4 @@ const customJestConfig = {
   },
 };
 
-module.exports = createJestConfig(customJestConfig);
+export default createJestConfig(customJestConfig);
